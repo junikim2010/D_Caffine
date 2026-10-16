@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fdf8f5">
+    <link rel="icon" href="data:,">
+    <title>:DCaffein | Caffeine-Off</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --paper: #fdf8f5;
+            --ink: #302922;
+            --muted: #968a81;
+            --line: #eee5df;
+            --rose: #db8370;
+            --rose-dark: #b95d4b;
+            --rose-pale: #f8e9e3;
+            --sage: #84917c;
+            --sage-pale: #e9eee5;
+            --card: #fffdfb;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        button, input, select { font: inherit; }
+        button { color: inherit; }
+        button:focus-visible, input:focus-visible, select:focus-visible {
+            outline: 3px solid #d99482;
+            outline-offset: 3px;
+        }
+        .app-shell { min-height: 100vh; display: grid; grid-template-columns: 236px minmax(0, 1fr); }
+        .sidebar {
+            position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column;
+            padding: 30px 18px 22px; border-right: 1px solid var(--line); background: #fffaf7;
+        }
+        .brand { display: flex; align-items: center; gap: 11px; padding: 0 9px; }
+        .brand-mark {
+            width: 39px; height: 39px; display: grid; place-items: center; border-radius: 14px;
+            background: #eab5a7; color: white; font-weight: 800; letter-spacing: -2px; font-size: 15px;
+        }
+        .brand-name { font-weight: 800; letter-spacing: -0.8px; font-size: 17px; }
+        .brand-sub { margin-top: 2px; color: #a99c93; font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase; }
+        .nav-label { margin: 42px 11px 12px; color: #b5a9a1; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; }
+        .nav-list { display: grid; gap: 6px; }
+        .nav-item {
+            min-height: 45px; display: flex; align-items: center; gap: 12px; padding: 0 13px;
+            border: 0; border-radius: 13px; background: transparent; color: #877b73;
+            text-align: left; cursor: pointer; transition: background .18s ease, color .18s ease;
+        }
+        .nav-item:hover { background: #f8efea; color: var(--ink); }
+        .nav-item.active { background: var(--rose-pale); color: var(--rose-dark); font-weight: 700; }
+        .nav-icon { width: 19px; height: 19px; display: block; flex: none; }
+        .side-note { margin-top: auto; padding: 16px 15px; border: 1px solid #eee4dc; border-radius: 16px; background: #fffdfb; }
+        .side-note-title { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; }
+        .side-note p { margin: 8px 0 0; color: #8e8178; font-size: 11px; line-height: 1.65; }
+        .main { width: min(100%, 1420px); margin: 0 auto; padding: 31px clamp(20px, 4vw, 56px) 52px; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 31px; }
+        .eyebrow { color: var(--rose-dark); font-size: 11px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
+        .today-date { margin-top: 6px; color: #91857c; font-size: 13px; }
+        .profile-chip { display: flex; align-items: center; gap: 10px; color: #71655d; font-size: 12px; }
+        .avatar { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 50%; background: #e8c9bd; color: #704f43; font-weight: 700; }
+        .page-title { margin: 0; font-size: clamp(26px, 3vw, 34px); font-weight: 700; letter-spacing: -1.7px; }
+        .hero {
+            position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr);
+            gap: 18px; min-height: 272px; padding: clamp(25px, 4vw, 43px); border: 1px solid #f2e1d9;
+            border-radius: 25px; background: #f7e8e1;
+        }
+        .hero::after { content: ''; position: absolute; width: 250px; height: 250px; right: 29%; top: -185px; border: 1px solid rgba(188, 113, 96, .13); border-radius: 50%; box-shadow: 0 0 0 28px rgba(255,255,255,.12), 0 0 0 58px rgba(255,255,255,.1); pointer-events: none; }
+        .hero-copy { position: relative; z-index: 1; align-self: center; max-width: 480px; }
+        .hero-kicker { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid rgba(177, 100, 82, .15); border-radius: 999px; background: rgba(255,255,255,.44); color: #9e6455; font-size: 11px; font-weight: 600; }
+        .hero-copy h2 { max-width: 430px; margin: 17px 0 10px; font-size: clamp(25px, 3vw, 36px); line-height: 1.25; letter-spacing: -1.5px; }
+        .hero-copy p { margin: 0; color: #806f65; font-size: 13px; line-height: 1.75; }
+        .button-primary { min-height: 45px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 17px; border: 0; border-radius: 12px; background: #b96351; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 6px 14px rgba(150, 78, 61, .13); transition: transform .18s ease, background .18s ease; }
+        .button-primary:hover { transform: translateY(-1px); background: #a85141; }
+        .hero-copy .button-primary { margin-top: 21px; }
+        .hero-summary { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 20px; }
+        .ring-wrap { position: relative; width: 174px; height: 174px; flex: none; }
+        .ring-svg { width: 100%; height: 100%; overflow: visible; }
+        .ring-track, .progress-ring__circle { fill: none; stroke-width: 9; }
+        .ring-track { stroke: rgba(255,255,255,.68); }
+        .progress-ring__circle { stroke: #bb6a57; stroke-linecap: round; stroke-dasharray: 408.4; stroke-dashoffset: 119; transition: stroke-dashoffset .5s ease-in-out; transform: rotate(-90deg); transform-origin: 50% 50%; }
+        .ring-center { position: absolute; inset: 0; display: grid; align-content: center; justify-items: center; text-align: center; }
+        .ring-center strong { font-size: 32px; letter-spacing: -1.5px; }
+        .ring-center span { margin-top: 3px; color: #806f65; font-size: 11px; }
+        .ring-meta { min-width: 89px; }
+        .ring-meta-label { color: #927b70; font-size: 10px; font-weight: 600; }
+        .ring-meta-value { margin-top: 6px; font-size: 18px; font-weight: 700; letter-spacing: -.5px; }
+        .ring-meta-note { margin-top: 5px; color: #927b70; font-size: 10px; line-height: 1.5; }
+        .sample-notice { display: flex; align-items: flex-start; gap: 8px; margin: 14px 2px 0; color: #907a70; font-size: 10px; line-height: 1.6; }
+        .dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(260px, .85fr); gap: 18px; margin-top: 20px; }
+        .card { min-width: 0; padding: 23px; border: 1px solid var(--line); border-radius: 19px; background: var(--card); }
+        .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+        .card-title { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -.3px; }
+        .card-sub { margin: 6px 0 0; color: #a0948b; font-size: 11px; }
+        .period-pill { padding: 7px 10px; border: 1px solid #eee5df; border-radius: 9px; background: #fffaf7; color: #887a70; font-size: 10px; }
+        .week-chart { height: 155px; display: grid; grid-template-columns: repeat(7, 1fr); align-items: end; gap: clamp(8px, 2.4vw, 25px); padding: 20px 8px 0; }
+        .chart-day { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: end; gap: 9px; color: #a3978e; font-size: 10px; }
+        .bar-area { width: 100%; height: 106px; display: flex; align-items: end; justify-content: center; }
+        .bar { position: relative; width: min(30px, 72%); min-height: 8px; border-radius: 8px 8px 4px 4px; background: #eadbd2; transition: height .35s ease, background .2s ease; }
+        .bar.today { background: #d58c78; }
+        .chart-day.current { color: #a85e4e; font-weight: 700; }
+        .chart-note { display: flex; align-items: center; gap: 7px; margin-top: 14px; color: #92877f; font-size: 10px; }
+        .dot { width: 7px; height: 7px; border-radius: 50%; background: #d58c78; }
+        .insight-card { display: flex; flex-direction: column; background: #f8faf6; border-color: #e7ede3; }
+        .insight-top { display: flex; align-items: center; justify-content: space-between; }
+        .insight-icon { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 12px; background: var(--sage-pale); color: #65765e; }
+        .insight-tag { padding: 6px 8px; border-radius: 8px; background: #e9eee5; color: #697a61; font-size: 9px; font-weight: 700; }
+        .insight-card h3 { margin: 18px 0 8px; font-size: 15px; letter-spacing: -.3px; }
+        .insight-card p { margin: 0; color: #7f8879; font-size: 11px; line-height: 1.75; }
+        .insight-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 20px; color: #73806b; font-size: 10px; }
+        .text-button { border: 0; background: transparent; color: #66785f; font-size: 10px; font-weight: 700; cursor: pointer; }
+        .log-card { margin-top: 18px; }
+        .log-list { display: grid; gap: 2px; margin-top: 14px; }
+        .log-row { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 12px 2px; border-top: 1px solid #f1ebe6; }
+        .drink-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 13px; background: #f7ede7; color: #9c6553; }
+        .drink-info { min-width: 0; }
+        .drink-name { overflow: hidden; color: #493d35; font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+        .drink-detail { margin-top: 4px; color: #a1968d; font-size: 10px; }
+        .sleep-score { padding: 6px 9px; border-radius: 8px; background: #f0f3eb; color: #718068; font-size: 10px; white-space: nowrap; }
+        .log-time { color: #9b9088; font-size: 10px; white-space: nowrap; }
+        .empty-state { padding: 27px 10px; color: #a0948b; text-align: center; font-size: 12px; }
+        .history-view { display: none; }
+        .history-view.show { display: block; }
+        .dashboard-view.hide { display: none; }
+        .history-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 5px 0 20px; }
+        .history-head p { margin: 8px 0 0; color: #92877f; font-size: 12px; }
+        .history-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 17px; }
+        .mini-stat { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+        .mini-stat span { color: #958980; font-size: 10px; }
+        .mini-stat strong { display: block; margin-top: 8px; font-size: 22px; letter-spacing: -.7px; }
+        .history-item { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 0; border-top: 1px solid #f1ebe6; }
+        .history-meta { margin-top: 5px; color: #9b9088; font-size: 10px; }
+        .history-right { text-align: right; white-space: nowrap; }
+        .history-mg { font-size: 12px; font-weight: 700; }
+        .delete-button { margin-top: 5px; border: 0; background: transparent; color: #b79f94; font-size: 10px; cursor: pointer; }
+        .mobile-nav { display: none; }
+        .modal-backdrop { position: fixed; z-index: 10; inset: 0; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(54, 43, 36, .36); backdrop-filter: blur(4px); }
+        .modal-backdrop.open { display: flex; }
+        .modal { width: min(100%, 570px); max-height: min(92vh, 840px); overflow: auto; padding: 25px; border: 1px solid #efe3db; border-radius: 22px; background: #fffdfb; box-shadow: 0 24px 80px rgba(59, 43, 33, .18); }
+        .modal-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 15px; margin-bottom: 19px; }
+        .modal-head h2 { margin: 0; font-size: 20px; letter-spacing: -.7px; }
+        .modal-head p { margin: 6px 0 0; color: #94877e; font-size: 11px; }
+        .close-button { width: 34px; height: 34px; display: grid; place-items: center; border: 0; border-radius: 10px; background: #f8f1ed; color: #786a61; cursor: pointer; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+        .field { min-width: 0; }
+        .field.full { grid-column: 1 / -1; }
+        .field label, .fieldset-title { display: block; margin-bottom: 7px; color: #60544b; font-size: 11px; font-weight: 700; }
+        .input, .select { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid #e9dfd8; border-radius: 10px; background: white; color: #40362f; font-size: 12px; }
+        .input:focus, .select:focus { border-color: #d99582; outline: 3px solid #f8e9e3; }
+        .custom-fields { display: none; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .custom-fields.show { display: grid; }
+        .helper { margin: 6px 0 0; color: #a0948b; font-size: 10px; line-height: 1.5; }
+        .range-line { display: flex; align-items: center; gap: 11px; }
+        input[type="range"] { width: 100%; accent-color: #ba6b59; }
+        .range-value { min-width: 49px; color: #9f5b4c; font-size: 12px; font-weight: 700; text-align: right; }
+        .yes-no { display: flex; gap: 8px; }
+        .choice { position: relative; flex: 1; }
+        .choice input { position: absolute; opacity: 0; pointer-events: none; }
+        .choice span { min-height: 38px; display: grid; place-items: center; border: 1px solid #e9dfd8; border-radius: 9px; color: #897c73; font-size: 11px; cursor: pointer; transition: all .15s ease; }
+        .choice input:checked + span { border-color: #d89987; background: #fbefea; color: #a25645; font-weight: 700; }
+        .choice input:focus-visible + span { outline: 3px solid #d99482; outline-offset: 2px; }
+        .form-divider { grid-column: 1 / -1; height: 1px; margin: 4px 0; background: #f0e8e2; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 19px; }
+        .button-secondary { min-height: 42px; padding: 0 14px; border: 1px solid #e9dfd8; border-radius: 11px; background: white; color: #82766d; font-size: 11px; font-weight: 600; cursor: pointer; }
+        .toast { position: fixed; z-index: 20; right: 22px; bottom: 22px; max-width: calc(100vw - 44px); padding: 13px 16px; border: 1px solid #e8ddd5; border-radius: 12px; background: #fffdfb; color: #5e5148; font-size: 12px; box-shadow: 0 12px 34px rgba(48, 41, 34, .12); opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .limit-note { margin-top: 15px; padding: 11px 12px; border-radius: 10px; background: #fbf3ed; color: #8e766b; font-size: 10px; line-height: 1.6; }
+        .shake { animation: shake .3s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+        @media (max-width: 920px) {
+            .app-shell { grid-template-columns: 190px minmax(0, 1fr); }
+            .sidebar { padding-inline: 13px; }
+            .main { padding-inline: 24px; }
+            .hero { grid-template-columns: 1fr 1fr; }
+            .hero-summary { gap: 10px; }
+            .ring-wrap { width: 145px; height: 145px; }
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .insight-card { min-height: 210px; }
+        }
+        @media (max-width: 650px) {
+            .app-shell { display: block; padding-bottom: 73px; }
+            .sidebar { display: none; }
+            .main { padding: 22px 16px 32px; }
+            .topbar { margin-bottom: 22px; }
+            .hero { grid-template-columns: 1fr; gap: 22px; padding: 24px 21px; border-radius: 21px; }
+            .hero-copy h2 { max-width: 350px; margin-top: 14px; font-size: 27px; }
+            .hero-copy p { max-width: 340px; }
+            .hero-copy .button-primary { margin-top: 16px; }
+            .hero-summary { justify-content: flex-start; padding: 15px 13px 3px; border-top: 1px solid rgba(164, 101, 85, .13); }
+            .ring-wrap { width: 132px; height: 132px; }
+            .ring-center strong { font-size: 27px; }
+            .ring-meta-value { font-size: 17px; }
+            .dashboard-grid { gap: 13px; margin-top: 13px; }
+            .card { padding: 18px; border-radius: 16px; }
+            .log-card { margin-top: 13px; }
+            .week-chart { gap: 9px; padding-inline: 0; }
+            .log-row { grid-template-columns: 38px minmax(0, 1fr) auto; gap: 9px; }
+            .log-time { display: none; }
+            .mobile-nav { position: fixed; z-index: 5; right: 0; bottom: 0; left: 0; display: grid; grid-template-columns: repeat(3, 1fr); padding: 8px 10px max(8px, env(safe-area-inset-bottom)); border-top: 1px solid #eee5df; background: rgba(255, 251, 248, .96); backdrop-filter: blur(12px); }
+            .mobile-nav .nav-item { min-height: 48px; display: grid; justify-items: center; align-content: center; gap: 3px; padding: 4px; border-radius: 11px; font-size: 9px; }
+            .mobile-nav .nav-icon { width: 17px; height: 17px; }
+            .history-head { align-items: flex-start; flex-direction: column; }
+            .history-head .button-primary { min-height: 40px; }
+            .history-summary { gap: 8px; }
+            .mini-stat { padding: 13px 11px; }
+            .mini-stat strong { font-size: 18px; }
+            .mini-stat span { font-size: 9px; }
+            .modal { padding: 20px 17px; }
+            .form-grid { gap: 11px; }
+            .field label, .fieldset-title { font-size: 10px; }
+            .toast { right: 13px; bottom: 86px; }
+        }
+        @media (max-width: 390px) {
+            .profile-chip span { display: none; }
+            .history-summary { grid-template-columns: 1fr 1fr; }
+            .history-summary .mini-stat:last-child { grid-column: 1 / -1; }
+            .form-grid { grid-template-columns: 1fr; }
+            .field.full, .form-divider { grid-column: auto; }
+            .custom-fields { grid-template-columns: 1fr 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar" aria-label="주 메뉴">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">:D</div>
+                <div><div class="brand-name">:DCaffein</div><div class="brand-sub">caffeine-off journal</div></div>
+            </div>
+            <div class="nav-label">WORKSPACE</div>
+            <nav class="nav-list">
+                <button class="nav-item active" data-view="today" type="button">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.7"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.7"/></svg>오늘 한눈에
+                </button>
+                <button class="nav-item" data-view="history" type="button">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16M4 12h16M4 18.5h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="6" cy="5.5" r="1" fill="currentColor"/><circle cx="6" cy="12" r="1" fill="currentColor"/><circle cx="6" cy="18.5" r="1" fill="currentColor"/></svg>나의 기록
+                </button>
+                <button class="nav-item" data-view="insights" type="button">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="m7 15 3.2-3.8 3.1 2.2L19 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 7h3v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>패턴 살펴보기
+                </button>
+            </nav>
+            <div class="side-note">
+                <div class="side-note-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 20 7v5.2c0 4.4-3 7.2-8 8.8-5-1.6-8-4.4-8-8.8V7l8-3.5Z" stroke="#8b987f" stroke-width="1.7"/><path d="m8.7 12.2 2.1 2.1 4.5-4.7" stroke="#8b987f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>나의 기록은 나만 보기</div>
+                <p>이 화면의 기록은 현재 사용 중인 브라우저에 저장됩니다. 샘플 기록은 직접 입력하면 교체돼요.</p>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar">
+                <div><div class="eyebrow">CAFFEINE, IN BALANCE</div><div class="today-date" id="todayDate"></div></div>
+                <div class="profile-chip"><span>나의 기록 공간</span><div class="avatar" aria-hidden="true">D</div></div>
+            </header>
+
+            <section class="dashboard-view" id="dashboardView">
+                <h1 class="page-title" style="margin-bottom:18px">오늘 한눈에</h1>
+                <section class="hero" aria-labelledby="heroTitle">
+                    <div class="hero-copy">
+                        <div class="hero-kicker"><span aria-hidden="true">✦</span> 나를 알아가는 작은 기록</div>
+                        <h2 id="heroTitle">오늘의 한 잔,<br>가볍게 기록해 볼까요?</h2>
+                        <p>마신 음료와 잠든 뒤의 기분을 함께 남기면<br>나에게 맞는 패턴을 천천히 발견할 수 있어요.</p>
+                        <button class="button-primary open-modal" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>카페인 기록하기</button>
+                    </div>
+                    <div class="hero-summary">
+                        <div class="ring-wrap" aria-label="오늘의 카페인 합계">
+                            <svg class="ring-svg" viewBox="0 0 150 150" role="img" aria-label="오늘의 카페인 섭취 진행 표시">
+                                <circle class="ring-track" cx="75" cy="75" r="65"/>
+                                <circle class="progress-ring__circle" id="progressRing" cx="75" cy="75" r="65"/>
+                            </svg>
+                            <div class="ring-center"><strong id="todayMg">142</strong><span>오늘 기록한 mg</span></div>
+                        </div>
+                        <div class="ring-meta"><div class="ring-meta-label">나의 알림 기준</div><div class="ring-meta-value"><span id="limitText">200</span> mg</div><div class="ring-meta-note">사용자가 정하는<br>참고용 알림선</div><button class="text-button" id="setLimit" type="button" style="margin-top:10px;padding:0">기준 변경</button></div>
+                    </div>
+                </section>
+                <p class="sample-notice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#a78878" stroke-width="1.6"/><path d="M12 11v5m0-8h.01" stroke="#a78878" stroke-width="1.8" stroke-linecap="round"/></svg><span id="sampleNotice">화면 예시를 위한 샘플 기록입니다. 원형 표시는 개인 건강 권고량이 아니라 앱 알림 기준의 예시예요.</span></p>
+
+                <div class="dashboard-grid">
+                    <section class="card" aria-labelledby="weekTitle">
+                        <div class="card-head"><div><h2 class="card-title" id="weekTitle">이번 주 섭취 기록</h2><p class="card-sub">하루하루의 기록을 가볍게 돌아봐요</p></div><span class="period-pill">최근 7일</span></div>
+                        <div class="week-chart" id="weekChart" aria-label="최근 7일 카페인 섭취 기록 막대 그래프"></div>
+                        <div class="chart-note"><span class="dot"></span>기록한 카페인 추정량 <span style="color:#b5a9a1">·</span> 비어 있는 날은 아직 기록이 없어요</div>
+                    </section>
+                    <section class="card insight-card" aria-labelledby="insightTitle">
+                        <div class="insight-top"><div class="insight-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5a7 7 0 0 0-4.3 12.5c.7.5 1.1 1.3 1.1 2.1h6.4c0-.8.4-1.6 1.1-2.1A7 7 0 0 0 12 3.5Z" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 21h5M10 18.2h4M12 7v4l2.4 1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="insight-tag" id="insightTag">샘플 패턴</span></div>
+                        <h3 id="insightTitle">조금씩 쌓이면 패턴이 보여요</h3>
+                        <p id="insightText">수면 기록과 스트레스·숙취 같은 조건을 함께 남겨 보세요. 기록이 쌓이면 내 기록에서 관찰된 경향을 확인할 수 있어요.</p>
+                        <div class="insight-bottom"><span id="insightCount">현재 예시 기록 4일</span><button class="text-button" type="button" data-view="insights">기록 기준 보기 <span aria-hidden="true">→</span></button></div>
+                    </section>
+                </div>
+
+                <section class="card log-card" aria-labelledby="logTitle">
+                    <div class="card-head"><div><h2 class="card-title" id="logTitle">오늘의 음료</h2><p class="card-sub">마신 음료와 함께 남긴 기록이에요</p></div><button class="text-button" type="button" data-view="history">전체 기록 <span aria-hidden="true">→</span></button></div>
+                    <div class="log-list" id="todayLogList"></div>
+                </section>
+            </section>
+
+            <section class="history-view" id="historyView">
+                <div class="history-head"><div><h1 class="page-title">나의 기록</h1><p>마신 음료와 다음 날의 컨디션을 모아봤어요.</p></div><button class="button-primary open-modal" type="button">+ 카페인 기록하기</button></div>
+                <div class="history-summary"><div class="mini-stat"><span>오늘 기록한 양</span><strong><span id="historyToday">142</span> mg</strong></div><div class="mini-stat"><span>기록한 음료</span><strong><span id="historyCount">2</span> 잔</strong></div><div class="mini-stat"><span>수면 기록</span><strong><span id="sleepCount">2</span> 회</strong></div></div>
+                <section class="card"><div class="card-head"><div><h2 class="card-title">전체 타임라인</h2><p class="card-sub">날짜와 음료별로 확인할 수 있어요</p></div></div><div id="historyList" style="margin-top:12px"></div></section>
+            </section>
+
+            <section class="history-view" id="insightsView">
+                <div class="history-head"><div><h1 class="page-title">패턴 살펴보기</h1><p>기록을 쌓아 나만의 경향을 천천히 확인해요.</p></div></div>
+                <section class="card" style="margin-bottom:15px"><div class="insight-top"><div class="insight-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="m7 15 3.2-3.8 3.1 2.2L19 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="insight-tag" id="detailInsightTag">기록 참고</span></div><h2 id="detailInsightTitle" style="margin:17px 0 8px;font-size:17px">아직은 개인 패턴을 계산하기 어려워요</h2><p id="detailInsightText" style="max-width:700px;margin:0;color:#82786f;font-size:12px;line-height:1.8">음료 섭취 시각과 수면 상태, 스트레스·숙취 여부를 함께 기록해 주세요. 이 화면은 원인을 진단하지 않고 기록에서 함께 나타난 경향만 보여줍니다.</p><div class="limit-note">이 앱의 기록과 알림은 개인의 의료 조언이나 안전 섭취량을 뜻하지 않습니다. 음료별 카페인 함량은 제품과 제공량에 따라 다를 수 있어요.</div></section>
+                <section class="card"><div class="card-head"><div><h2 class="card-title">동반 요인 기록</h2><p class="card-sub">수면 평가 때 체크한 조건을 함께 살펴봅니다</p></div></div><div id="factorSummary" style="margin-top:16px"></div></section>
+            </section>
+        </main>
+    </div>
+
+    <nav class="mobile-nav" aria-label="모바일 메뉴">
+        <button class="nav-item active" data-view="today" type="button"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.7"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.7"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8" stroke="currentColor" stroke-width="1.7"/></svg>오늘</button>
+        <button class="nav-item" data-view="history" type="button"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16M4 12h16M4 18.5h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>기록</button>
+        <button class="nav-item" data-view="insights" type="button"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="m7 15 3.2-3.8 3.1 2.2L19 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>패턴</button>
+    </nav>
+
+    <div class="modal-backdrop" id="recordModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <form class="modal" id="recordForm">
+            <div class="modal-head"><div><h2 id="modalTitle">카페인 기록하기</h2><p>오늘 마신 음료와 다음 날 돌아볼 정보를 적어 주세요.</p></div><button class="close-button" id="closeModal" type="button" aria-label="창 닫기"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+            <div class="form-grid">
+                <div class="field full"><label for="drinkSelect">음료 종류</label><select class="select" id="drinkSelect"><option value="아메리카노" data-mg="150">아메리카노 · 약 150mg</option><option value="라테" data-mg="120">라테 · 약 120mg</option><option value="드립커피" data-mg="140">드립커피 · 약 140mg</option><option value="에너지 음료" data-mg="100">에너지 음료 · 약 100mg</option><option value="콜라" data-mg="35">콜라 · 약 35mg</option><option value="녹차" data-mg="30">녹차 · 약 30mg</option><option value="홍차" data-mg="45">홍차 · 약 45mg</option><option value="직접 입력" data-mg="0">직접 입력하기</option></select><div class="custom-fields" id="customFields"><input class="input" id="customName" type="text" maxlength="40" placeholder="음료 이름"><input class="input" id="customMg" type="number" min="0" max="2000" placeholder="1회 카페인 mg"></div><p class="helper">카페인 양은 제품과 제공량에 따라 달라질 수 있는 추정값이에요.</p></div>
+                <div class="field"><label for="quantity">마신 양 (잔/캔)</label><input class="input" id="quantity" type="number" min="0.25" max="20" step="0.25" value="1" required></div>
+                <div class="field"><label for="drinkTime">마신 시각</label><input class="input" id="drinkTime" type="time" required></div>
+                <div class="form-divider"></div>
+                <div class="field"><label for="sleepHours">마신 뒤 잠들기까지</label><select class="select" id="sleepHours"><option value="">다음 날 입력할게요</option><option value="1">1시간 이내</option><option value="2">1~2시간</option><option value="4">2~4시간</option><option value="6">4~6시간</option><option value="8">6~8시간</option><option value="10">8시간 이상</option></select></div>
+                <div class="field"><label for="sleepQuality">수면의 질</label><div class="range-line"><input id="sleepQuality" type="range" min="1" max="100" value="70"><output class="range-value" id="sleepQualityOut">70점</output></div></div>
+                <div class="field full"><label for="effect">카페인 효과 만족도</label><div class="range-line"><input id="effect" type="range" min="1" max="100" value="70"><output class="range-value" id="effectOut">70점</output></div><p class="helper">각성이나 집중에 얼마나 도움이 되었는지 생각하며 선택해 주세요.</p></div>
+                <div class="form-divider"></div>
+                <div class="field"><span class="fieldset-title">평소보다 스트레스가 컸나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="stress" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="stress" value="no" checked><span>아니요</span></label></div></div>
+                <div class="field"><span class="fieldset-title">음주 또는 숙취가 있었나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="alcohol" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="alcohol" value="no" checked><span>아니요</span></label></div></div>
+                <div class="field"><span class="fieldset-title">몸이 아프거나 불편했나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="unwell" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="unwell" value="no" checked><span>아니요</span></label></div></div>
+                <div class="field"><span class="fieldset-title">늦은 낮잠이나 취침 전 화면이 있었나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="routine" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="routine" value="no" checked><span>아니요</span></label></div></div>
+            </div>
+            <div class="limit-note">동반 요인은 수면에 영향을 줄 수 있는 조건을 기록하는 항목이며, 원인을 진단하지 않습니다. 건너뛰어도 괜찮아요.</div>
+            <div class="modal-actions"><button class="button-secondary" id="cancelModal" type="button">취소</button><button class="button-primary" type="submit">기록 저장하기</button></div>
+        </form>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        const storeKey = 'dcaffein-records-v1';
+        const limitKey = 'dcaffein-alert-limit-v1';
+        const todayKey = localDateString();
+        const demoRecords = [
+            { id: 'demo-1', name: '아메리카노', mg: 95, quantity: 0.65, time: '09:20', date: todayKey, sleepHours: 8, sleepQuality: 78, effect: 82, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true },
+            { id: 'demo-2', name: '라테', mg: 47, quantity: 0.4, time: '13:10', date: todayKey, sleepHours: 7, sleepQuality: 74, effect: 69, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true },
+            { id: 'demo-3', name: '드립커피', mg: 120, quantity: 0.8, time: '10:15', date: shiftDate(todayKey, -1), sleepHours: 8, sleepQuality: 82, effect: 77, factors: { stress: true, alcohol: false, unwell: false, routine: false }, sample: true },
+            { id: 'demo-4', name: '에너지 음료', mg: 100, quantity: 1, time: '15:40', date: shiftDate(todayKey, -2), sleepHours: 5, sleepQuality: 58, effect: 88, factors: { stress: false, alcohol: false, unwell: false, routine: true }, sample: true },
+            { id: 'demo-5', name: '녹차', mg: 30, quantity: 1, time: '11:00', date: shiftDate(todayKey, -3), sleepHours: 8, sleepQuality: 86, effect: 61, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true }
+        ];
+        function localDateString(date = new Date()) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; }
+        function shiftDate(date, offset) { const d = new Date(date + 'T12:00:00'); d.setDate(d.getDate() + offset); return localDateString(d); }
+        let stored = null;
+        try { stored = JSON.parse(localStorage.getItem(storeKey)); } catch (_) {}
+        let records = Array.isArray(stored) ? stored : demoRecords;
+        let isSample = !Array.isArray(stored);
+        let alertLimit = Number(localStorage.getItem(limitKey)) || 200;
+        const $ = (selector, root = document) => root.querySelector(selector);
+        const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+        const modal = $('#recordModal');
+        const toast = $('#toast');
+
+        function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
+        function dayTotal(date) { return records.filter(item => item.date === date).reduce((sum, item) => sum + item.mg * item.quantity, 0); }
+        function todayRecords() { return records.filter(item => item.date === todayKey).sort((a, b) => a.time.localeCompare(b.time)); }
+        function prettyDate(date) { const d = new Date(date + 'T12:00:00'); return new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }).format(d); }
+        function showToast(message) { toast.textContent = message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove('show'), 2800); }
+        function iconCup() { return '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 8h12l-1 10H7L5 8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M17 10h1.4a2.1 2.1 0 0 1 0 4.2h-1.8M8 5c0 1 .8 1.1.8 2.1M12 5c0 1 .8 1.1.8 2.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'; }
+        function updateDate() { $('#todayDate').textContent = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(new Date()); }
+
+        function renderChart() {
+            const labels = ['일', '월', '화', '수', '목', '금', '토'];
+            const days = Array.from({ length: 7 }, (_, i) => shiftDate(todayKey, i - 6));
+            const values = days.map(dayTotal);
+            const max = Math.max(200, ...values);
+            $('#weekChart').innerHTML = days.map((day, i) => {
+                const date = new Date(day + 'T12:00:00');
+                const height = values[i] ? Math.max(12, Math.round(values[i] / max * 92)) : 5;
+                const label = labels[date.getDay()];
+                return `<div class="chart-day ${day === todayKey ? 'current' : ''}" aria-label="${prettyDate(day)} ${Math.round(values[i])}mg"><div class="bar-area"><div class="bar ${day === todayKey ? 'today' : ''}" style="height:${height}%" title="${Math.round(values[i])}mg"></div></div><span>${label}</span></div>`;
+            }).join('');
+        }
+
+        function renderTodayList() {
+            const items = todayRecords();
+            $('#todayLogList').innerHTML = items.length ? items.map(item => `<div class="log-row"><div class="drink-icon">${iconCup()}</div><div class="drink-info"><div class="drink-name">${escapeHtml(item.name)}${item.sample ? ' <span style="color:#bca99e;font-weight:500">· 예시</span>' : ''}</div><div class="drink-detail">${item.quantity}회 · 약 ${Math.round(item.mg * item.quantity)}mg</div></div><span class="sleep-score">수면 ${item.sleepQuality ? item.sleepQuality + '점' : '미기록'}</span><span class="log-time">${escapeHtml(item.time)}</span></div>`).join('') : '<div class="empty-state">오늘 기록이 없어요. 첫 음료를 기록해 보세요.</div>';
+        }
+
+        function renderHistory() {
+            const sorted = [...records].sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
+            $('#historyList').innerHTML = sorted.length ? sorted.map(item => `<div class="history-item"><div class="drink-info"><div class="drink-name">${escapeHtml(item.name)}${item.sample ? ' <span style="color:#bca99e;font-weight:500">· 예시</span>' : ''}</div><div class="history-meta">${prettyDate(item.date)} · ${escapeHtml(item.time)} · ${item.quantity}회${item.sleepQuality ? ` · 수면 ${item.sleepQuality}점` : ''}</div></div><div class="history-right"><div class="history-mg">약 ${Math.round(item.mg * item.quantity)}mg</div>${item.sample ? '' : `<button class="delete-button" type="button" data-delete="${escapeHtml(item.id)}">삭제</button>`}</div></div>`).join('') : '<div class="empty-state">아직 기록이 없어요.</div>';
+            $('#historyToday').textContent = Math.round(dayTotal(todayKey));
+            $('#historyCount').textContent = todayRecords().length;
+            $('#sleepCount').textContent = records.filter(item => item.sleepQuality != null).length;
+        }
+
+        function renderInsights() {
+            const observed = records.filter(item => !item.sample && item.sleepQuality != null);
+            const factorNames = { stress: '평소보다 높은 스트레스', alcohol: '음주 또는 숙취', unwell: '몸이 아프거나 불편함', routine: '늦은 낮잠 또는 취침 전 화면' };
+            const factorEntries = Object.keys(factorNames).map(key => {
+                const yes = observed.filter(item => item.factors && item.factors[key]).length;
+                const no = observed.filter(item => item.factors && !item.factors[key]).length;
+                return `<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #f1ebe6;font-size:11px"><span style="color:#6f635a">${factorNames[key]}</span><span style="color:#93877e;white-space:nowrap">예 ${yes}회 · 아니요 ${no}회</span></div>`;
+            }).join('');
+            $('#factorSummary').innerHTML = factorEntries || '<div class="empty-state">수면 평가와 동반 요인을 기록하면 여기에 모아 보여드려요.</div>';
+            if (observed.length < 5) {
+                const message = `수면 평가가 입력된 나의 기록 ${observed.length}회 · 패턴을 살펴보려면 기록을 더 모아주세요.`;
+                $('#detailInsightTag').textContent = observed.length ? '기록 수집 중' : '기록 수집 전';
+                $('#detailInsightTitle').textContent = observed.length ? '조금 더 기록하면 나만의 비교가 가능해요' : '아직은 개인 패턴을 계산하기 어려워요';
+                $('#detailInsightText').textContent = `${message} 현재 화면의 샘플 기록은 분석에서 제외됩니다. 충분한 기록이 쌓이기 전에는 개인 권고량이나 취침 전 제한 시간을 정하지 않아요.`;
+                $('#insightTag').textContent = isSample ? '샘플 패턴' : '기록 수집 중';
+                $('#insightTitle').textContent = isSample ? '조금씩 쌓이면 패턴이 보여요' : '나의 기록을 모으고 있어요';
+                $('#insightText').textContent = isSample ? '수면 기록과 스트레스·숙취 같은 조건을 함께 남겨 보세요. 기록이 쌓이면 내 기록에서 관찰된 경향을 확인할 수 있어요.' : '수면 점수와 함께 스트레스·숙취 같은 조건을 기록해 주세요. 지금은 개인별 추천을 만들기에는 기록이 부족해요.';
+                $('#insightCount').textContent = isSample ? '현재 예시 기록 4일' : `수면 기록 ${observed.length}회`;
+            } else {
+                const avgGood = observed.reduce((sum, item) => sum + item.sleepQuality, 0) / observed.length;
+                const withStress = observed.filter(item => item.factors && item.factors.stress);
+                const withoutStress = observed.filter(item => item.factors && !item.factors.stress);
+                let insight = `최근 기록 ${observed.length}회에서 수면 점수 평균은 ${Math.round(avgGood)}점이에요. 이 결과는 개인의 기록을 요약한 것이며 의학적 권고가 아닙니다.`;
+                if (withStress.length >= 2 && withoutStress.length >= 2) {
+                    const a = withStress.reduce((sum, item) => sum + item.sleepQuality, 0) / withStress.length;
+                    const b = withoutStress.reduce((sum, item) => sum + item.sleepQuality, 0) / withoutStress.length;
+                    insight += ` 스트레스 '예' 기록의 평균은 ${Math.round(a)}점, '아니요' 기록은 ${Math.round(b)}점으로 나타났어요.`;
+                }
+                $('#detailInsightTag').textContent = '내 기록 요약';
+                $('#detailInsightTitle').textContent = '기록에서 보이는 경향';
+                $('#detailInsightText').textContent = insight;
+                $('#insightTag').textContent = '내 기록';
+                $('#insightTitle').textContent = '나의 수면 기록 요약';
+                $('#insightText').textContent = insight;
+                $('#insightCount').textContent = `수면 기록 ${observed.length}회`;
+            }
+        }
+
+        function render() {
+            const total = dayTotal(todayKey);
+            $('#todayMg').textContent = Math.round(total);
+            $('#limitText').textContent = alertLimit;
+            const ratio = Math.min(total / alertLimit, 1);
+            $('#progressRing').style.strokeDashoffset = String(408.4 * (1 - ratio));
+            $('#progressRing').style.stroke = total >= alertLimit ? '#b64f43' : '#bb6a57';
+            $('#sampleNotice').textContent = isSample ? '화면 예시를 위한 샘플 기록입니다. 원형 표시는 개인 건강 권고량이 아니라 앱 알림 기준의 예시예요.' : '원형 표시는 설정한 앱 알림 기준과 오늘의 기록을 비교합니다. 의학적 권고량을 뜻하지 않아요.';
+            renderChart(); renderTodayList(); renderHistory(); renderInsights();
+        }
+
+        function openModal() { $('#drinkTime').value = new Date().toTimeString().slice(0, 5); modal.classList.add('open'); document.body.style.overflow = 'hidden'; setTimeout(() => $('#drinkSelect').focus(), 20); }
+        function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+        function switchView(view) {
+            $('#dashboardView').classList.toggle('hide', view !== 'today');
+            $('#historyView').classList.toggle('show', view === 'history');
+            $('#insightsView').classList.toggle('show', view === 'insights');
+            $$('[data-view]').forEach(button => button.classList.toggle('active', button.dataset.view === view));
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        $$('.open-modal').forEach(button => button.addEventListener('click', openModal));
+        $('#closeModal').addEventListener('click', closeModal);
+        $('#cancelModal').addEventListener('click', closeModal);
+        modal.addEventListener('click', event => { if (event.target === modal) closeModal(); });
+        document.addEventListener('keydown', event => { if (event.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+        $$('[data-view]').forEach(button => button.addEventListener('click', () => switchView(button.dataset.view)));
+        $('#drinkSelect').addEventListener('change', event => {
+            const custom = event.target.value === '직접 입력';
+            $('#customFields').classList.toggle('show', custom);
+            $('#customName').required = custom;
+            $('#customMg').required = custom;
+        });
+        [['sleepQuality', 'sleepQualityOut'], ['effect', 'effectOut']].forEach(([input, output]) => $( `#${input}`).addEventListener('input', event => { $(`#${output}`).textContent = `${event.target.value}점`; }));
+        $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
+        $('#setLimit').addEventListener('click', () => {
+            const answer = window.prompt('앱 알림 기준(mg)을 입력해 주세요. 의학적 권고량이 아닌 개인 참고 설정입니다.', String(alertLimit));
+            if (answer === null) return;
+            const nextLimit = Number(answer);
+            if (!Number.isFinite(nextLimit) || nextLimit <= 0 || nextLimit > 5000) { showToast('1~5000 사이의 숫자로 입력해 주세요.'); return; }
+            alertLimit = Math.round(nextLimit);
+            localStorage.setItem(limitKey, String(alertLimit));
+            render(); showToast(`앱 알림 기준을 ${alertLimit}mg으로 변경했어요.`);
+        });
+
+        $('#recordForm').addEventListener('submit', event => {
+            event.preventDefault();
+            const selected = $('#drinkSelect').selectedOptions[0];
+            const custom = selected.value === '직접 입력';
+            const name = custom ? $('#customName').value.trim() : selected.value;
+            const mg = custom ? Number($('#customMg').value) : Number(selected.dataset.mg);
+            const quantity = Number($('#quantity').value);
+            if (!name || !Number.isFinite(mg) || mg < 0 || !Number.isFinite(quantity) || quantity <= 0) return;
+            if (isSample) { records = []; isSample = false; }
+            const record = {
+                id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                name, mg, quantity, time: $('#drinkTime').value, date: todayKey,
+                sleepHours: $('#sleepHours').value ? Number($('#sleepHours').value) : null,
+                sleepQuality: Number($('#sleepQuality').value), effect: Number($('#effect').value),
+                factors: Object.fromEntries(['stress', 'alcohol', 'unwell', 'routine'].map(key => [key, $(`input[name="${key}"]:checked`).value === 'yes']))
+            };
+            records.push(record);
+            localStorage.setItem(storeKey, JSON.stringify(records));
+            render(); closeModal(); event.target.reset(); $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
+            $('#sleepQuality').value = 70; $('#effect').value = 70; $('#sleepQualityOut').textContent = '70점'; $('#effectOut').textContent = '70점';
+            $('#customFields').classList.remove('show'); $('#customName').required = false; $('#customMg').required = false;
+            if (dayTotal(todayKey) >= alertLimit) {
+                $('#progressRing').classList.remove('shake'); void $('#progressRing').getBoundingClientRect(); $('#progressRing').classList.add('shake');
+                showToast(`오늘 기록이 설정한 알림선 ${alertLimit}mg에 도달했어요. 이 기준은 개인 참고용입니다.`);
+            } else showToast('오늘의 기록을 저장했어요.');
+        });
+
+        $('#historyList').addEventListener('click', event => {
+            const button = event.target.closest('[data-delete]');
+            if (!button) return;
+            records = records.filter(item => item.id !== button.dataset.delete);
+            localStorage.setItem(storeKey, JSON.stringify(records)); render(); showToast('기록을 삭제했어요.');
+        });
+
+        updateDate(); render();
+    </script>
+</body>
+</html>

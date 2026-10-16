@@ -1,0 +1,3 @@
+[     636ms] [INFO] [preview-bridge] v1.1.0 @ https://nmlxb0cguw8h5af9.jitda.io/__preview-bridge.js:1
+[     725ms] [WARNING] cdn.tailwindcss.com should not be used in production. To use Tailwind CSS in production, install it as a PostCSS plugin or use the Tailwind CLI: https://tailwindcss.com/docs/installation @ https://nmlxb0cguw8h5af9.jitda.io/__preview-bridge.js:1
+[    1182ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://nmlxb0cguw8h5af9.jitda.io/favicon.ico:0
