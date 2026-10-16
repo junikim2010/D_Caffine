@@ -65,6 +65,10 @@
         .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 31px; }
         .eyebrow { color: var(--rose-dark); font-size: 11px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
         .today-date { margin-top: 6px; color: #91857c; font-size: 13px; }
+        .date-tools { display: flex; align-items: center; gap: 12px; }
+        .date-picker { min-height: 35px; display: inline-flex; align-items: center; gap: 7px; padding: 0 9px; border: 1px solid #eee2da; border-radius: 9px; background: #fffdfb; color: #8e7d72; }
+        .date-picker svg { flex: none; }
+        .date-picker input { width: 125px; border: 0; background: transparent; color: #6e5c50; font-size: 11px; }
         .profile-chip { display: flex; align-items: center; gap: 10px; color: #71655d; font-size: 12px; }
         .avatar { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 50%; background: #e8c9bd; color: #704f43; font-weight: 700; }
         .page-title { margin: 0; font-size: clamp(26px, 3vw, 34px); font-weight: 700; letter-spacing: -1.7px; }
@@ -155,7 +159,7 @@
         .field label, .fieldset-title { display: block; margin-bottom: 7px; color: #60544b; font-size: 11px; font-weight: 700; }
         .input, .select { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid #e9dfd8; border-radius: 10px; background: white; color: #40362f; font-size: 12px; }
         .input:focus, .select:focus { border-color: #d99582; outline: 3px solid #f8e9e3; }
-        .custom-fields { display: none; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .custom-fields { display: none; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
         .custom-fields.show { display: grid; }
         .helper { margin: 6px 0 0; color: #a0948b; font-size: 10px; line-height: 1.5; }
         .range-line { display: flex; align-items: center; gap: 11px; }
@@ -226,7 +230,6 @@
             .history-summary .mini-stat:last-child { grid-column: 1 / -1; }
             .form-grid { grid-template-columns: 1fr; }
             .field.full, .form-divider { grid-column: auto; }
-            .custom-fields { grid-template-columns: 1fr 1fr; }
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -260,17 +263,17 @@
 
         <main class="main">
             <header class="topbar">
-                <div><div class="eyebrow">CAFFEINE, IN BALANCE</div><div class="today-date" id="todayDate"></div></div>
+                <div><div class="eyebrow">CAFFEINE, IN BALANCE</div><div class="date-tools"><div class="today-date" id="todayDate"></div><label class="date-picker" aria-label="조회할 날짜"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 3v4M16.5 3v4M4 9h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input type="date" id="selectedDate" aria-label="카페인 기록을 조회할 날짜"></label></div></div>
                 <div class="profile-chip"><span>나의 기록 공간</span><div class="avatar" aria-hidden="true">D</div></div>
             </header>
 
             <section class="dashboard-view" id="dashboardView">
-                <h1 class="page-title" style="margin-bottom:18px">오늘 한눈에</h1>
+                <h1 class="page-title" id="dailyTitle" style="margin-bottom:18px">오늘 한눈에</h1>
                 <section class="hero" aria-labelledby="heroTitle">
                     <div class="hero-copy">
                         <div class="hero-kicker"><span aria-hidden="true">✦</span> 나를 알아가는 작은 기록</div>
-                        <h2 id="heroTitle">오늘의 한 잔,<br>가볍게 기록해 볼까요?</h2>
-                        <p>마신 음료와 잠든 뒤의 기분을 함께 남기면<br>나에게 맞는 패턴을 천천히 발견할 수 있어요.</p>
+                        <h2 id="heroTitle">마신 음료를<br>정확하게 기록해 볼까요?</h2>
+                        <p>날짜별 음료 양과 제품 표시의 카페인 함량을 입력해<br>선택한 날의 섭취 합계를 확인할 수 있어요.</p>
                         <button class="button-primary open-modal" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>카페인 기록하기</button>
                     </div>
                     <div class="hero-summary">
@@ -279,7 +282,7 @@
                                 <circle class="ring-track" cx="75" cy="75" r="65"/>
                                 <circle class="progress-ring__circle" id="progressRing" cx="75" cy="75" r="65"/>
                             </svg>
-                            <div class="ring-center"><strong id="todayMg">142</strong><span>오늘 기록한 mg</span></div>
+                            <div class="ring-center"><strong id="todayMg">0</strong><span>선택 날짜의 mg</span></div>
                         </div>
                         <div class="ring-meta"><div class="ring-meta-label">나의 알림 기준</div><div class="ring-meta-value"><span id="limitText">200</span> mg</div><div class="ring-meta-note">사용자가 정하는<br>참고용 알림선</div><button class="text-button" id="setLimit" type="button" style="margin-top:10px;padding:0">기준 변경</button></div>
                     </div>
@@ -290,7 +293,7 @@
                     <section class="card" aria-labelledby="weekTitle">
                         <div class="card-head"><div><h2 class="card-title" id="weekTitle">이번 주 섭취 기록</h2><p class="card-sub">하루하루의 기록을 가볍게 돌아봐요</p></div><span class="period-pill">최근 7일</span></div>
                         <div class="week-chart" id="weekChart" aria-label="최근 7일 카페인 섭취 기록 막대 그래프"></div>
-                        <div class="chart-note"><span class="dot"></span>기록한 카페인 추정량 <span style="color:#b5a9a1">·</span> 비어 있는 날은 아직 기록이 없어요</div>
+                        <div class="chart-note"><span class="dot"></span>입력한 카페인 합계 <span style="color:#b5a9a1">·</span> 제품 표시값을 기준으로 계산해요</div>
                     </section>
                     <section class="card insight-card" aria-labelledby="insightTitle">
                         <div class="insight-top"><div class="insight-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5a7 7 0 0 0-4.3 12.5c.7.5 1.1 1.3 1.1 2.1h6.4c0-.8.4-1.6 1.1-2.1A7 7 0 0 0 12 3.5Z" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 21h5M10 18.2h4M12 7v4l2.4 1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="insight-tag" id="insightTag">샘플 패턴</span></div>
@@ -301,14 +304,14 @@
                 </div>
 
                 <section class="card log-card" aria-labelledby="logTitle">
-                    <div class="card-head"><div><h2 class="card-title" id="logTitle">오늘의 음료</h2><p class="card-sub">마신 음료와 함께 남긴 기록이에요</p></div><button class="text-button" type="button" data-view="history">전체 기록 <span aria-hidden="true">→</span></button></div>
+                    <div class="card-head"><div><h2 class="card-title" id="logTitle">선택한 날짜의 음료</h2><p class="card-sub">마신 양과 입력한 카페인 함량을 보여줘요</p></div><button class="text-button" type="button" data-view="history">전체 기록 <span aria-hidden="true">→</span></button></div>
                     <div class="log-list" id="todayLogList"></div>
                 </section>
             </section>
 
             <section class="history-view" id="historyView">
                 <div class="history-head"><div><h1 class="page-title">나의 기록</h1><p>마신 음료와 다음 날의 컨디션을 모아봤어요.</p></div><button class="button-primary open-modal" type="button">+ 카페인 기록하기</button></div>
-                <div class="history-summary"><div class="mini-stat"><span>오늘 기록한 양</span><strong><span id="historyToday">142</span> mg</strong></div><div class="mini-stat"><span>기록한 음료</span><strong><span id="historyCount">2</span> 잔</strong></div><div class="mini-stat"><span>수면 기록</span><strong><span id="sleepCount">2</span> 회</strong></div></div>
+                <div class="history-summary"><div class="mini-stat"><span>선택 날짜 카페인 합계</span><strong><span id="historyToday">0</span> mg</strong></div><div class="mini-stat"><span>선택 날짜 음료 기록</span><strong><span id="historyCount">0</span> 건</strong></div><div class="mini-stat"><span>수면 기록</span><strong><span id="sleepCount">0</span> 회</strong></div></div>
                 <section class="card"><div class="card-head"><div><h2 class="card-title">전체 타임라인</h2><p class="card-sub">날짜와 음료별로 확인할 수 있어요</p></div></div><div id="historyList" style="margin-top:12px"></div></section>
             </section>
 
@@ -328,11 +331,13 @@
 
     <div class="modal-backdrop" id="recordModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <form class="modal" id="recordForm">
-            <div class="modal-head"><div><h2 id="modalTitle">카페인 기록하기</h2><p>오늘 마신 음료와 다음 날 돌아볼 정보를 적어 주세요.</p></div><button class="close-button" id="closeModal" type="button" aria-label="창 닫기"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+            <div class="modal-head"><div><h2 id="modalTitle">카페인 기록하기</h2><p>마신 날짜와 양, 제품에 표시된 카페인 함량을 적어 주세요.</p></div><button class="close-button" id="closeModal" type="button" aria-label="창 닫기"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
             <div class="form-grid">
-                <div class="field full"><label for="drinkSelect">음료 종류</label><select class="select" id="drinkSelect"><option value="아메리카노" data-mg="150">아메리카노 · 약 150mg</option><option value="라테" data-mg="120">라테 · 약 120mg</option><option value="드립커피" data-mg="140">드립커피 · 약 140mg</option><option value="에너지 음료" data-mg="100">에너지 음료 · 약 100mg</option><option value="콜라" data-mg="35">콜라 · 약 35mg</option><option value="녹차" data-mg="30">녹차 · 약 30mg</option><option value="홍차" data-mg="45">홍차 · 약 45mg</option><option value="직접 입력" data-mg="0">직접 입력하기</option></select><div class="custom-fields" id="customFields"><input class="input" id="customName" type="text" maxlength="40" placeholder="음료 이름"><input class="input" id="customMg" type="number" min="0" max="2000" placeholder="1회 카페인 mg"></div><p class="helper">카페인 양은 제품과 제공량에 따라 달라질 수 있는 추정값이에요.</p></div>
-                <div class="field"><label for="quantity">마신 양 (잔/캔)</label><input class="input" id="quantity" type="number" min="0.25" max="20" step="0.25" value="1" required></div>
+                <div class="field full"><label for="drinkSelect">음료 종류</label><select class="select" id="drinkSelect"><option value="아메리카노">아메리카노</option><option value="라테">라테</option><option value="드립커피">드립커피</option><option value="에너지 음료">에너지 음료</option><option value="콜라">콜라</option><option value="녹차">녹차</option><option value="홍차">홍차</option><option value="직접 입력">직접 입력하기</option></select><div class="custom-fields" id="customFields"><input class="input" id="customName" type="text" maxlength="40" placeholder="음료 이름"></div><p class="helper">음료 종류를 고른 뒤, 제품 라벨이나 매장 정보를 확인해 입력해 주세요.</p></div>
+                <div class="field"><label for="drinkDate">마신 날짜</label><input class="input" id="drinkDate" type="date" required></div>
                 <div class="field"><label for="drinkTime">마신 시각</label><input class="input" id="drinkTime" type="time" required></div>
+                <div class="field"><label for="volumeMl">실제로 마신 양 (mL)</label><input class="input" id="volumeMl" type="number" min="1" max="10000" step="1" placeholder="예: 355" required></div>
+                <div class="field"><label for="caffeineMg">해당 양의 카페인 (mg)</label><input class="input" id="caffeineMg" type="number" min="0" max="5000" step="1" placeholder="제품 표시값 입력" required><p class="helper">입력한 mg를 그대로 합산합니다.</p></div>
                 <div class="form-divider"></div>
                 <div class="field"><label for="sleepHours">마신 뒤 잠들기까지</label><select class="select" id="sleepHours"><option value="">다음 날 입력할게요</option><option value="1">1시간 이내</option><option value="2">1~2시간</option><option value="4">2~4시간</option><option value="6">4~6시간</option><option value="8">6~8시간</option><option value="10">8시간 이상</option></select></div>
                 <div class="field"><label for="sleepQuality">수면의 질</label><div class="range-line"><input id="sleepQuality" type="range" min="1" max="100" value="70"><output class="range-value" id="sleepQualityOut">70점</output></div></div>
@@ -350,22 +355,29 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
-        const storeKey = 'dcaffein-records-v1';
+        const storeKey = 'dcaffein-records-v2';
+        const legacyStoreKey = 'dcaffein-records-v1';
         const limitKey = 'dcaffein-alert-limit-v1';
         const todayKey = localDateString();
         const demoRecords = [
-            { id: 'demo-1', name: '아메리카노', mg: 95, quantity: 0.65, time: '09:20', date: todayKey, sleepHours: 8, sleepQuality: 78, effect: 82, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true },
-            { id: 'demo-2', name: '라테', mg: 47, quantity: 0.4, time: '13:10', date: todayKey, sleepHours: 7, sleepQuality: 74, effect: 69, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true },
-            { id: 'demo-3', name: '드립커피', mg: 120, quantity: 0.8, time: '10:15', date: shiftDate(todayKey, -1), sleepHours: 8, sleepQuality: 82, effect: 77, factors: { stress: true, alcohol: false, unwell: false, routine: false }, sample: true },
-            { id: 'demo-4', name: '에너지 음료', mg: 100, quantity: 1, time: '15:40', date: shiftDate(todayKey, -2), sleepHours: 5, sleepQuality: 58, effect: 88, factors: { stress: false, alcohol: false, unwell: false, routine: true }, sample: true },
-            { id: 'demo-5', name: '녹차', mg: 30, quantity: 1, time: '11:00', date: shiftDate(todayKey, -3), sleepHours: 8, sleepQuality: 86, effect: 61, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true }
+            { id: 'demo-1', name: '아메리카노', caffeineMg: 95, volumeMl: 200, time: '09:20', date: todayKey, sleepHours: 8, sleepQuality: 78, effect: 82, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true },
+            { id: 'demo-2', name: '라테', caffeineMg: 47, volumeMl: 150, time: '13:10', date: todayKey, sleepHours: 7, sleepQuality: 74, effect: 69, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true },
+            { id: 'demo-3', name: '드립커피', caffeineMg: 120, volumeMl: 240, time: '10:15', date: shiftDate(todayKey, -1), sleepHours: 8, sleepQuality: 82, effect: 77, factors: { stress: true, alcohol: false, unwell: false, routine: false }, sample: true },
+            { id: 'demo-4', name: '에너지 음료', caffeineMg: 100, volumeMl: 250, time: '15:40', date: shiftDate(todayKey, -2), sleepHours: 5, sleepQuality: 58, effect: 88, factors: { stress: false, alcohol: false, unwell: false, routine: true }, sample: true },
+            { id: 'demo-5', name: '녹차', caffeineMg: 30, volumeMl: 180, time: '11:00', date: shiftDate(todayKey, -3), sleepHours: 8, sleepQuality: 86, effect: 61, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true }
         ];
         function localDateString(date = new Date()) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; }
         function shiftDate(date, offset) { const d = new Date(date + 'T12:00:00'); d.setDate(d.getDate() + offset); return localDateString(d); }
         let stored = null;
-        try { stored = JSON.parse(localStorage.getItem(storeKey)); } catch (_) {}
-        let records = Array.isArray(stored) ? stored : demoRecords;
-        let isSample = !Array.isArray(stored);
+        let legacyStored = null;
+        try {
+            stored = JSON.parse(localStorage.getItem(storeKey));
+            legacyStored = stored ? null : JSON.parse(localStorage.getItem(legacyStoreKey));
+        } catch (_) {}
+        let records = Array.isArray(stored) ? stored : Array.isArray(legacyStored) ? legacyStored.map(item => ({ ...item, caffeineMg: null, volumeMl: null, legacyMgEstimate: Math.round((Number(item.mg) || 0) * (Number(item.quantity) || 0)) })) : demoRecords;
+        let isSample = !Array.isArray(stored) && !Array.isArray(legacyStored);
+        if (!Array.isArray(stored) && Array.isArray(legacyStored)) localStorage.setItem(storeKey, JSON.stringify(records));
+        let selectedDate = todayKey;
         let alertLimit = Number(localStorage.getItem(limitKey)) || 200;
         const $ = (selector, root = document) => root.querySelector(selector);
         const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -373,37 +385,52 @@
         const toast = $('#toast');
 
         function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
-        function dayTotal(date) { return records.filter(item => item.date === date).reduce((sum, item) => sum + item.mg * item.quantity, 0); }
-        function todayRecords() { return records.filter(item => item.date === todayKey).sort((a, b) => a.time.localeCompare(b.time)); }
+        function dayTotal(date) { return records.filter(item => item.date === date && item.caffeineMg !== null && item.caffeineMg !== undefined && Number.isFinite(Number(item.caffeineMg))).reduce((sum, item) => sum + Number(item.caffeineMg), 0); }
+        function dayRecords(date) { return records.filter(item => item.date === date).sort((a, b) => a.time.localeCompare(b.time)); }
+        function formatNumber(value) { return Number(value || 0).toLocaleString('ko-KR'); }
         function prettyDate(date) { const d = new Date(date + 'T12:00:00'); return new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }).format(d); }
         function showToast(message) { toast.textContent = message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove('show'), 2800); }
         function iconCup() { return '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 8h12l-1 10H7L5 8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M17 10h1.4a2.1 2.1 0 0 1 0 4.2h-1.8M8 5c0 1 .8 1.1.8 2.1M12 5c0 1 .8 1.1.8 2.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'; }
-        function updateDate() { $('#todayDate').textContent = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(new Date()); }
+        function updateDate() {
+            const date = new Date(selectedDate + 'T12:00:00');
+            $('#selectedDate').value = selectedDate;
+            $('#todayDate').textContent = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(date);
+            $('#dailyTitle').textContent = selectedDate === todayKey ? '오늘 한눈에' : `${date.getMonth() + 1}월 ${date.getDate()}일 기록`;
+            $('#logTitle').textContent = `${date.getMonth() + 1}월 ${date.getDate()}일의 음료`;
+        }
 
         function renderChart() {
             const labels = ['일', '월', '화', '수', '목', '금', '토'];
-            const days = Array.from({ length: 7 }, (_, i) => shiftDate(todayKey, i - 6));
+            const days = Array.from({ length: 7 }, (_, i) => shiftDate(selectedDate, i - 6));
             const values = days.map(dayTotal);
             const max = Math.max(200, ...values);
             $('#weekChart').innerHTML = days.map((day, i) => {
                 const date = new Date(day + 'T12:00:00');
                 const height = values[i] ? Math.max(12, Math.round(values[i] / max * 92)) : 5;
                 const label = labels[date.getDay()];
-                return `<div class="chart-day ${day === todayKey ? 'current' : ''}" aria-label="${prettyDate(day)} ${Math.round(values[i])}mg"><div class="bar-area"><div class="bar ${day === todayKey ? 'today' : ''}" style="height:${height}%" title="${Math.round(values[i])}mg"></div></div><span>${label}</span></div>`;
+                return `<div class="chart-day ${day === selectedDate ? 'current' : ''}" aria-label="${prettyDate(day)} ${formatNumber(values[i])}mg"><div class="bar-area"><div class="bar ${day === selectedDate ? 'today' : ''}" style="height:${height}%" title="${formatNumber(values[i])}mg"></div></div><span>${label}</span></div>`;
             }).join('');
         }
 
         function renderTodayList() {
-            const items = todayRecords();
-            $('#todayLogList').innerHTML = items.length ? items.map(item => `<div class="log-row"><div class="drink-icon">${iconCup()}</div><div class="drink-info"><div class="drink-name">${escapeHtml(item.name)}${item.sample ? ' <span style="color:#bca99e;font-weight:500">· 예시</span>' : ''}</div><div class="drink-detail">${item.quantity}회 · 약 ${Math.round(item.mg * item.quantity)}mg</div></div><span class="sleep-score">수면 ${item.sleepQuality ? item.sleepQuality + '점' : '미기록'}</span><span class="log-time">${escapeHtml(item.time)}</span></div>`).join('') : '<div class="empty-state">오늘 기록이 없어요. 첫 음료를 기록해 보세요.</div>';
+            const items = dayRecords(selectedDate);
+            $('#todayLogList').innerHTML = items.length ? items.map(item => {
+                const legacy = item.legacyMgEstimate != null;
+                const amount = legacy ? `${formatNumber(item.legacyMgEstimate)}mg · 이전 추정 기록` : `${formatNumber(item.volumeMl)}mL · ${formatNumber(item.caffeineMg)}mg`;
+                return `<div class="log-row"><div class="drink-icon">${iconCup()}</div><div class="drink-info"><div class="drink-name">${escapeHtml(item.name)}${item.sample ? ' <span style="color:#bca99e;font-weight:500">· 예시</span>' : ''}</div><div class="drink-detail">${amount}</div></div><span class="sleep-score">수면 ${item.sleepQuality ? item.sleepQuality + '점' : '미기록'}</span><span class="log-time">${escapeHtml(item.time)}</span></div>`;
+            }).join('') : '<div class="empty-state">선택한 날짜에는 기록이 없어요. 날짜를 바꾸거나 기록을 추가해 보세요.</div>';
         }
 
         function renderHistory() {
             const sorted = [...records].sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
-            $('#historyList').innerHTML = sorted.length ? sorted.map(item => `<div class="history-item"><div class="drink-info"><div class="drink-name">${escapeHtml(item.name)}${item.sample ? ' <span style="color:#bca99e;font-weight:500">· 예시</span>' : ''}</div><div class="history-meta">${prettyDate(item.date)} · ${escapeHtml(item.time)} · ${item.quantity}회${item.sleepQuality ? ` · 수면 ${item.sleepQuality}점` : ''}</div></div><div class="history-right"><div class="history-mg">약 ${Math.round(item.mg * item.quantity)}mg</div>${item.sample ? '' : `<button class="delete-button" type="button" data-delete="${escapeHtml(item.id)}">삭제</button>`}</div></div>`).join('') : '<div class="empty-state">아직 기록이 없어요.</div>';
-            $('#historyToday').textContent = Math.round(dayTotal(todayKey));
-            $('#historyCount').textContent = todayRecords().length;
-            $('#sleepCount').textContent = records.filter(item => item.sleepQuality != null).length;
+            $('#historyList').innerHTML = sorted.length ? sorted.map(item => {
+                const legacy = item.legacyMgEstimate != null;
+                const caffeine = legacy ? `이전 추정 ${formatNumber(item.legacyMgEstimate)}mg` : `${formatNumber(item.caffeineMg)}mg · ${formatNumber(item.volumeMl)}mL`;
+                return `<div class="history-item"><div class="drink-info"><div class="drink-name">${escapeHtml(item.name)}${item.sample ? ' <span style="color:#bca99e;font-weight:500">· 예시</span>' : ''}</div><div class="history-meta">${prettyDate(item.date)} · ${escapeHtml(item.time)} · ${caffeine}${item.sleepQuality ? ` · 수면 ${item.sleepQuality}점` : ''}</div></div><div class="history-right"><div class="history-mg">${legacy ? `이전 추정 ${formatNumber(item.legacyMgEstimate)}mg` : `${formatNumber(item.caffeineMg)}mg`}</div>${item.sample ? '' : `<button class="delete-button" type="button" data-delete="${escapeHtml(item.id)}">삭제</button>`}</div></div>`;
+            }).join('') : '<div class="empty-state">아직 기록이 없어요.</div>';
+            $('#historyToday').textContent = formatNumber(dayTotal(selectedDate));
+            $('#historyCount').textContent = dayRecords(selectedDate).length;
+            $('#sleepCount').textContent = dayRecords(selectedDate).filter(item => item.sleepQuality != null).length;
         }
 
         function renderInsights() {
@@ -445,17 +472,19 @@
         }
 
         function render() {
-            const total = dayTotal(todayKey);
-            $('#todayMg').textContent = Math.round(total);
+            updateDate();
+            const total = dayTotal(selectedDate);
+            $('#todayMg').textContent = formatNumber(total);
             $('#limitText').textContent = alertLimit;
             const ratio = Math.min(total / alertLimit, 1);
             $('#progressRing').style.strokeDashoffset = String(408.4 * (1 - ratio));
             $('#progressRing').style.stroke = total >= alertLimit ? '#b64f43' : '#bb6a57';
-            $('#sampleNotice').textContent = isSample ? '화면 예시를 위한 샘플 기록입니다. 원형 표시는 개인 건강 권고량이 아니라 앱 알림 기준의 예시예요.' : '원형 표시는 설정한 앱 알림 기준과 오늘의 기록을 비교합니다. 의학적 권고량을 뜻하지 않아요.';
+            const oldEstimates = dayRecords(selectedDate).filter(item => item.legacyMgEstimate != null).reduce((sum, item) => sum + item.legacyMgEstimate, 0);
+            $('#sampleNotice').textContent = isSample ? '화면 예시를 위한 샘플 기록입니다. 실제 기록은 제품 표시값의 mg를 입력해 정확히 합산하세요.' : oldEstimates ? `선택한 날짜의 정확 입력 합계는 ${formatNumber(total)}mg입니다. 기존 추정 기록 ${formatNumber(oldEstimates)}mg은 정확한 합계에서 제외했어요.` : '합계는 입력한 제품 표시값의 mg만 더합니다. 알림 기준은 의학적 권고량이 아니에요.';
             renderChart(); renderTodayList(); renderHistory(); renderInsights();
         }
 
-        function openModal() { $('#drinkTime').value = new Date().toTimeString().slice(0, 5); modal.classList.add('open'); document.body.style.overflow = 'hidden'; setTimeout(() => $('#drinkSelect').focus(), 20); }
+        function openModal() { $('#drinkDate').value = selectedDate; $('#drinkTime').value = new Date().toTimeString().slice(0, 5); modal.classList.add('open'); document.body.style.overflow = 'hidden'; setTimeout(() => $('#drinkSelect').focus(), 20); }
         function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
         function switchView(view) {
             $('#dashboardView').classList.toggle('hide', view !== 'today');
@@ -475,10 +504,14 @@
             const custom = event.target.value === '직접 입력';
             $('#customFields').classList.toggle('show', custom);
             $('#customName').required = custom;
-            $('#customMg').required = custom;
         });
         [['sleepQuality', 'sleepQualityOut'], ['effect', 'effectOut']].forEach(([input, output]) => $( `#${input}`).addEventListener('input', event => { $(`#${output}`).textContent = `${event.target.value}점`; }));
         $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
+        $('#selectedDate').addEventListener('change', event => {
+            if (!event.target.value) return;
+            selectedDate = event.target.value;
+            render();
+        });
         $('#setLimit').addEventListener('click', () => {
             const answer = window.prompt('앱 알림 기준(mg)을 입력해 주세요. 의학적 권고량이 아닌 개인 참고 설정입니다.', String(alertLimit));
             if (answer === null) return;
@@ -494,25 +527,27 @@
             const selected = $('#drinkSelect').selectedOptions[0];
             const custom = selected.value === '직접 입력';
             const name = custom ? $('#customName').value.trim() : selected.value;
-            const mg = custom ? Number($('#customMg').value) : Number(selected.dataset.mg);
-            const quantity = Number($('#quantity').value);
-            if (!name || !Number.isFinite(mg) || mg < 0 || !Number.isFinite(quantity) || quantity <= 0) return;
+            const caffeineMg = Number($('#caffeineMg').value);
+            const volumeMl = Number($('#volumeMl').value);
+            const drinkDate = $('#drinkDate').value;
+            if (!name || !Number.isInteger(caffeineMg) || caffeineMg < 0 || !Number.isInteger(volumeMl) || volumeMl <= 0 || !drinkDate) return;
             if (isSample) { records = []; isSample = false; }
             const record = {
                 id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-                name, mg, quantity, time: $('#drinkTime').value, date: todayKey,
+                name, caffeineMg, volumeMl, time: $('#drinkTime').value, date: drinkDate,
                 sleepHours: $('#sleepHours').value ? Number($('#sleepHours').value) : null,
                 sleepQuality: Number($('#sleepQuality').value), effect: Number($('#effect').value),
                 factors: Object.fromEntries(['stress', 'alcohol', 'unwell', 'routine'].map(key => [key, $(`input[name="${key}"]:checked`).value === 'yes']))
             };
             records.push(record);
+            selectedDate = drinkDate;
             localStorage.setItem(storeKey, JSON.stringify(records));
-            render(); closeModal(); event.target.reset(); $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
+            render(); closeModal(); event.target.reset(); $('#drinkDate').value = selectedDate; $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
             $('#sleepQuality').value = 70; $('#effect').value = 70; $('#sleepQualityOut').textContent = '70점'; $('#effectOut').textContent = '70점';
-            $('#customFields').classList.remove('show'); $('#customName').required = false; $('#customMg').required = false;
-            if (dayTotal(todayKey) >= alertLimit) {
+            $('#customFields').classList.remove('show'); $('#customName').required = false;
+            if (dayTotal(drinkDate) >= alertLimit) {
                 $('#progressRing').classList.remove('shake'); void $('#progressRing').getBoundingClientRect(); $('#progressRing').classList.add('shake');
-                showToast(`오늘 기록이 설정한 알림선 ${alertLimit}mg에 도달했어요. 이 기준은 개인 참고용입니다.`);
+                showToast(`${prettyDate(drinkDate)} 합계가 앱 알림선 ${alertLimit}mg에 도달했어요. 이 기준은 개인 참고용입니다.`);
             } else showToast('오늘의 기록을 저장했어요.');
         });
 
