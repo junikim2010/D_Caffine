@@ -5,20 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#fdf8f5">
     <link rel="icon" href="data:,">
-    <title>:DCaffein | Caffeine-Off</title>
+    <title>DCaffeine | Caffeine Journal</title>
     <style>
         :root {
             color-scheme: light;
-            --paper: #fdf8f5;
-            --ink: #302922;
-            --muted: #968a81;
-            --line: #eee5df;
-            --rose: #db8370;
-            --rose-dark: #b95d4b;
-            --rose-pale: #f8e9e3;
-            --sage: #84917c;
-            --sage-pale: #e9eee5;
-            --card: #fffdfb;
+            --paper: #f6f2e9;
+            --ink: #30281f;
+            --muted: #82766a;
+            --line: #e7ded1;
+            --rose: #b97848;
+            --rose-dark: #70432c;
+            --rose-pale: #eee3d5;
+            --sage: #65765e;
+            --sage-pale: #e8ece2;
+            --card: #fffdf8;
+            --coffee: #261e18;
+            --coffee-soft: #49372a;
+            --amber: #c18a51;
+            --amber-light: #f0e3cf;
+            --lime: #ddf16b;
         }
 
         * { box-sizing: border-box; }
@@ -33,21 +38,21 @@
         button, input, select { font: inherit; }
         button { color: inherit; }
         button:focus-visible, input:focus-visible, select:focus-visible {
-            outline: 3px solid #d99482;
+            outline: 3px solid #c18a51;
             outline-offset: 3px;
         }
         .app-shell { min-height: 100vh; display: grid; grid-template-columns: 236px minmax(0, 1fr); }
         .sidebar {
             position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column;
-            padding: 30px 18px 22px; border-right: 1px solid var(--line); background: #fffaf7;
+            padding: 30px 18px 22px; border-right: 1px solid var(--line); background: #f1ece2;
         }
         .brand { display: flex; align-items: center; gap: 11px; padding: 0 9px; }
         .brand-mark {
             width: 39px; height: 39px; display: grid; place-items: center; border-radius: 14px;
-            background: #eab5a7; color: white; font-weight: 800; letter-spacing: -2px; font-size: 15px;
+            background: var(--coffee); color: #f7eee0; font-weight: 800; letter-spacing: -1px; font-size: 15px;
         }
         .brand-name { font-weight: 800; letter-spacing: -0.8px; font-size: 17px; }
-        .brand-sub { margin-top: 2px; color: #a99c93; font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase; }
+        .brand-sub { margin-top: 2px; color: #887a6b; font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase; }
         .nav-label { margin: 42px 11px 12px; color: #b5a9a1; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; }
         .nav-list { display: grid; gap: 6px; }
         .nav-item {
@@ -55,10 +60,10 @@
             border: 0; border-radius: 13px; background: transparent; color: #877b73;
             text-align: left; cursor: pointer; transition: background .18s ease, color .18s ease;
         }
-        .nav-item:hover { background: #f8efea; color: var(--ink); }
-        .nav-item.active { background: var(--rose-pale); color: var(--rose-dark); font-weight: 700; }
+        .nav-item:hover { background: #e9e0d3; color: var(--ink); }
+        .nav-item.active { background: #e5d8c6; color: #60412e; font-weight: 700; }
         .nav-icon { width: 19px; height: 19px; display: block; flex: none; }
-        .side-note { margin-top: auto; padding: 16px 15px; border: 1px solid #eee4dc; border-radius: 16px; background: #fffdfb; }
+        .side-note { margin-top: auto; padding: 16px 15px; border: 1px solid #e2d8c9; border-radius: 16px; background: #faf7f0; }
         .side-note-title { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; }
         .side-note p { margin: 8px 0 0; color: #8e8178; font-size: 11px; line-height: 1.65; }
         .main { width: min(100%, 1420px); margin: 0 auto; padding: 31px clamp(20px, 4vw, 56px) 52px; }
@@ -66,11 +71,11 @@
         .eyebrow { color: var(--rose-dark); font-size: 11px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
         .today-date { margin-top: 6px; color: #91857c; font-size: 13px; }
         .date-tools { display: flex; align-items: center; gap: 12px; }
-        .date-picker { min-height: 35px; display: inline-flex; align-items: center; gap: 7px; padding: 0 9px; border: 1px solid #eee2da; border-radius: 9px; background: #fffdfb; color: #8e7d72; }
+        .date-picker { min-height: 35px; display: inline-flex; align-items: center; gap: 7px; padding: 0 9px; border: 1px solid #e4dacb; border-radius: 9px; background: #fffdf8; color: #796958; }
         .date-picker svg { flex: none; }
         .date-picker input { width: 125px; border: 0; background: transparent; color: #6e5c50; font-size: 11px; }
         .profile-chip { display: flex; align-items: center; gap: 10px; color: #71655d; font-size: 12px; }
-        .avatar { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 50%; background: #e8c9bd; color: #704f43; font-weight: 700; }
+        .avatar { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 50%; background: #e6d7c3; color: #5d4432; font-weight: 700; }
         .page-title { margin: 0; font-size: clamp(26px, 3vw, 34px); font-weight: 700; letter-spacing: -1.7px; }
         .hero {
             position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr);
@@ -82,8 +87,8 @@
         .hero-kicker { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid rgba(177, 100, 82, .15); border-radius: 999px; background: rgba(255,255,255,.44); color: #9e6455; font-size: 11px; font-weight: 600; }
         .hero-copy h2 { max-width: 430px; margin: 17px 0 10px; font-size: clamp(25px, 3vw, 36px); line-height: 1.25; letter-spacing: -1.5px; }
         .hero-copy p { margin: 0; color: #806f65; font-size: 13px; line-height: 1.75; }
-        .button-primary { min-height: 45px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 17px; border: 0; border-radius: 12px; background: #b96351; color: white; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 6px 14px rgba(150, 78, 61, .13); transition: transform .18s ease, background .18s ease; }
-        .button-primary:hover { transform: translateY(-1px); background: #a85141; }
+        .button-primary { min-height: 45px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 0 17px; border: 0; border-radius: 12px; background: #60422f; color: #fffaf1; font-weight: 700; font-size: 12px; cursor: pointer; box-shadow: 0 5px 12px rgba(60, 42, 29, .14); transition: transform .18s ease, background .18s ease, box-shadow .18s ease; }
+        .button-primary:hover { transform: translateY(-1px); background: #493225; box-shadow: 0 7px 16px rgba(60, 42, 29, .18); }
         .hero-copy .button-primary { margin-top: 21px; }
         .hero-summary { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 20px; }
         .ring-wrap { position: relative; width: 174px; height: 174px; flex: none; }
@@ -101,10 +106,89 @@
         .sample-notice { display: flex; align-items: flex-start; gap: 8px; margin: 14px 2px 0; color: #907a70; font-size: 10px; line-height: 1.6; }
         .dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(260px, .85fr); gap: 18px; margin-top: 20px; }
         .card { min-width: 0; padding: 23px; border: 1px solid var(--line); border-radius: 19px; background: var(--card); }
+        .caffeine-top-grid { display: grid; grid-template-columns: minmax(270px, .82fr) minmax(0, 1.18fr); gap: 16px; }
+        .caffeine-total-card { position: relative; overflow: hidden; background: var(--coffee); border-color: #594638; color: #fffaf1; }
+        .caffeine-total-card::after { content: ''; position: absolute; top: -72px; right: -56px; width: 180px; height: 180px; border: 1px solid rgba(224, 188, 135, .2); border-radius: 50%; box-shadow: 0 0 0 18px rgba(224,188,135,.035), 0 0 0 38px rgba(224,188,135,.03); pointer-events: none; }
+        .caffeine-total-card > * { position: relative; z-index: 1; }
+        .caffeine-total-card .card-head { align-items: center; }
+        .caffeine-total-card .eyebrow { color: #d6ad77; font-size: 9px; }
+        .caffeine-total-card .card-title { margin-top: 7px; color: #eadcca; font-size: 13px; }
+        .caffeine-total-card .text-button { color: #e0bd8d; }
+        .total-number { display: flex; align-items: baseline; gap: 9px; margin: 13px 0 6px; color: #fffaf1; }
+        .total-number span:first-child { font-size: clamp(44px, 6vw, 66px); font-weight: 700; letter-spacing: -3px; line-height: 1; }
+        .total-number span:last-child { color: #dfbd8f; font-size: 16px; font-weight: 600; }
+        .total-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: #d2c0a9; font-size: 10px; }
+        .limit-meter { height: 6px; overflow: hidden; margin-top: 12px; border-radius: 10px; background: rgba(255,255,255,.16); }
+        .limit-meter-fill { width: 0; height: 100%; border-radius: inherit; background: #d19a5b; transition: width .25s ease; }
+        .caffeine-total-card .sample-notice { display: block; margin: 12px 0 0; color: #d2c0a9; font-size: 10px; }
+        .recommendation-card { display: flex; flex-direction: column; background: #f8faf6; border-color: #e7ede3; }
+        .recommendation-card .card-sub { margin-top: 14px; color: #61705a; }
+        .recommendation-card h2 { margin: 7px 0 8px; font-size: 18px; line-height: 1.4; letter-spacing: -.6px; }
+        .recommendation-card > p:not(.card-sub) { margin: 0; color: #61705a; font-size: 11px; line-height: 1.75; }
+        .recommendation-card .insight-bottom { margin-top: auto; }
+        .caffeine-chart-card, .calculation-card { margin-top: 16px; }
+        .analysis-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); gap: 16px; margin-top: 16px; align-items: stretch; }
+        .analysis-grid .caffeine-chart-card, .analysis-grid .calculation-card { margin-top: 0; }
+        .analysis-grid .calculation-grid { grid-template-columns: 1fr; }
+        .week-chart { position: relative; }
+        .caffeine-chart-card .week-chart { height: 250px; padding: 22px 12px 0; }
+        .caffeine-chart-card .bar-area { height: 195px; }
+        .reference-line { position: absolute; z-index: 2; right: 9px; left: 9px; border-top: 2px dashed #65765e; pointer-events: none; }
+        .chart-legend { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px; color: #8d8178; font-size: 10px; }
+        .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+        .chart-legend [hidden] { display: none; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 3px; background: #b97848; }
+        .legend-line { width: 18px; border-top: 2px dashed #65765e; }
+        .week-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; padding-top: 13px; border-top: 1px solid #f1ebe6; }
+        .week-stats div { display: grid; gap: 5px; }
+        .week-stats span { color: #a0948b; font-size: 9px; }
+        .week-stats strong { color: #66564d; font-size: 12px; }
+        .calculation-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(220px, .8fr); gap: 18px; margin-top: 18px; }
+        .calculation-label { color: #75675e; font-size: 11px; font-weight: 700; }
+        .calculation-formula { margin-top: 7px; color: #92704e; font-size: 10px; }
+        .calculation-breakdown { display: grid; gap: 8px; margin-top: 12px; }
+        .calculation-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 9px 0; border-top: 1px solid #f1ebe6; color: #81756d; font-size: 10px; line-height: 1.5; }
+        .calculation-row strong { color: #815332; font-size: 11px; white-space: nowrap; }
+        .reference-basis { padding: 15px; border-radius: 13px; background: #f8faf6; color: #788271; font-size: 10px; line-height: 1.7; }
+        .reference-basis .calculation-label { margin-bottom: 8px; color: #65745c; }
+        .method-details { margin-top: 16px; border-top: 1px solid #f0e8e2; padding-top: 12px; color: #8e8178; font-size: 10px; }
+        .method-details summary { cursor: pointer; font-weight: 700; }
+        .method-details p { max-width: 760px; line-height: 1.7; }
+        .quick-record-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 17px; }
+        .quick-record-card { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 19px; }
+        .quick-record-card h2 { margin: 7px 0 5px; font-size: 14px; }
+        .quick-record-card p { margin: 0; color: #978a81; font-size: 10px; line-height: 1.5; }
+        .quick-step { color: #8b5b3b; font-size: 9px; font-weight: 700; letter-spacing: .8px; }
+        .sleep-quick-card { background: #f8faf6; border-color: #e7ede3; }
+        .sleep-quick-card .quick-step { color: #718068; }
+        .sleep-quick-card .button-primary { background: #74836a; }
+        .history-day-card { margin-top: 15px; }
+        .history-day-card .sleep-status { margin: 0 0 7px; }
+        .daily-record-card { margin-bottom: 17px; }
+        .daily-record-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+        .daily-record-heading h2 { margin: 7px 0 5px; font-size: 16px; }
+        .daily-record-heading p { margin: 0; color: #978a81; font-size: 11px; }
+        .daily-record-status { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 17px; padding-top: 13px; border-top: 1px solid #f1ebe6; }
+        .daily-record-status div { display: grid; gap: 5px; }
+        .daily-record-status span { color: #a0948b; font-size: 9px; }
+        .daily-record-status strong { color: #67584f; font-size: 11px; }
+        .record-section { margin-top: 13px; border: 1px solid #eee5df; border-radius: 12px; background: #fffdfa; }
+        .record-section > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 14px; color: #5f5149; font-size: 12px; font-weight: 700; cursor: pointer; }
+        .record-section > summary span { color: #a0948b; font-size: 10px; font-weight: 500; }
+        .record-section > .form-grid { padding: 0 14px 14px; }
+        .record-section-note { margin: 0; padding: 0 14px 12px; color: #8e8178; font-size: 10px; }
+        .record-section[open] > summary { border-bottom: 1px solid #f1ebe6; }
+        .timeline-details { margin-top: 14px; }
+        .timeline-details > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: #fffdfb; color: #65584f; font-size: 12px; font-weight: 700; cursor: pointer; list-style-position: inside; }
+        .timeline-details > summary span { color: #a0948b; font-size: 10px; font-weight: 500; }
+        .timeline-details[open] > .card { margin-top: 9px; }
+        .data-management .card { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .data-management p { margin: 0; color: #93877e; font-size: 10px; }
+        .data-management .card > div { display: flex; gap: 8px; }
         .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
         .card-title { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -.3px; }
         .card-sub { margin: 6px 0 0; color: #a0948b; font-size: 11px; }
-        .period-pill { padding: 7px 10px; border: 1px solid #eee5df; border-radius: 9px; background: #fffaf7; color: #887a70; font-size: 10px; }
+        .period-pill { padding: 7px 10px; border: 1px solid #eee5df; border-radius: 9px; background: #fffaf7; color: #887a70; font-size: 10px; white-space: nowrap; }
         .week-chart { height: 155px; display: grid; grid-template-columns: repeat(7, 1fr); align-items: end; gap: clamp(8px, 2.4vw, 25px); padding: 20px 8px 0; }
         .chart-day { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: end; gap: 9px; color: #a3978e; font-size: 10px; }
         .bar-area { width: 100%; height: 106px; display: flex; align-items: end; justify-content: center; }
@@ -123,18 +207,23 @@
         .text-button { border: 0; background: transparent; color: #66785f; font-size: 10px; font-weight: 700; cursor: pointer; }
         .log-card { margin-top: 18px; }
         .log-list { display: grid; gap: 2px; margin-top: 14px; }
-        .log-row { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto auto; align-items: center; gap: 12px; padding: 12px 2px; border-top: 1px solid #f1ebe6; }
+        .log-row { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 12px 2px; border-top: 1px solid #f1ebe6; }
         .drink-icon { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 13px; background: #f7ede7; color: #9c6553; }
         .drink-info { min-width: 0; }
         .drink-name { overflow: hidden; color: #493d35; font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
         .drink-detail { margin-top: 4px; color: #a1968d; font-size: 10px; }
         .sleep-score { padding: 6px 9px; border-radius: 8px; background: #f0f3eb; color: #718068; font-size: 10px; white-space: nowrap; }
+        .sleep-card { margin-top: 18px; background: #f8faf6; border-color: #e7ede3; }
+        .sleep-status { margin-top: 12px; color: #788271; font-size: 11px; line-height: 1.7; }
+        .sleep-card .button-primary { flex: none; background: #74836a; box-shadow: 0 6px 14px rgba(83, 102, 73, .12); }
+        .sleep-card .button-primary:hover { background: #65745c; }
         .log-time { color: #9b9088; font-size: 10px; white-space: nowrap; }
         .empty-state { padding: 27px 10px; color: #a0948b; text-align: center; font-size: 12px; }
         .history-view { display: none; }
         .history-view.show { display: block; }
         .dashboard-view.hide { display: none; }
         .history-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 5px 0 20px; }
+        .history-actions { display: flex; align-items: center; gap: 8px; }
         .history-head p { margin: 8px 0 0; color: #92877f; font-size: 12px; }
         .history-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 17px; }
         .mini-stat { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
@@ -158,19 +247,19 @@
         .field.full { grid-column: 1 / -1; }
         .field label, .fieldset-title { display: block; margin-bottom: 7px; color: #60544b; font-size: 11px; font-weight: 700; }
         .input, .select { width: 100%; min-height: 42px; padding: 0 11px; border: 1px solid #e9dfd8; border-radius: 10px; background: white; color: #40362f; font-size: 12px; }
-        .input:focus, .select:focus { border-color: #d99582; outline: 3px solid #f8e9e3; }
+        .input:focus, .select:focus { border-color: #b97848; outline: 3px solid #f0e3cf; }
         .custom-fields { display: none; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
         .custom-fields.show { display: grid; }
         .helper { margin: 6px 0 0; color: #a0948b; font-size: 10px; line-height: 1.5; }
         .range-line { display: flex; align-items: center; gap: 11px; }
-        input[type="range"] { width: 100%; accent-color: #ba6b59; }
-        .range-value { min-width: 49px; color: #9f5b4c; font-size: 12px; font-weight: 700; text-align: right; }
+        input[type="range"] { width: 100%; accent-color: #a96d3d; }
+        .range-value { min-width: 49px; color: #815332; font-size: 12px; font-weight: 700; text-align: right; }
         .yes-no { display: flex; gap: 8px; }
         .choice { position: relative; flex: 1; }
         .choice input { position: absolute; opacity: 0; pointer-events: none; }
         .choice span { min-height: 38px; display: grid; place-items: center; border: 1px solid #e9dfd8; border-radius: 9px; color: #897c73; font-size: 11px; cursor: pointer; transition: all .15s ease; }
-        .choice input:checked + span { border-color: #d89987; background: #fbefea; color: #a25645; font-weight: 700; }
-        .choice input:focus-visible + span { outline: 3px solid #d99482; outline-offset: 2px; }
+        .choice input:checked + span { border-color: #bd8853; background: #f3e8d7; color: #70432c; font-weight: 700; }
+        .choice input:focus-visible + span { outline: 3px solid #c18a51; outline-offset: 2px; }
         .form-divider { grid-column: 1 / -1; height: 1px; margin: 4px 0; background: #f0e8e2; }
         .modal-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 19px; }
         .button-secondary { min-height: 42px; padding: 0 14px; border: 1px solid #e9dfd8; border-radius: 11px; background: white; color: #82766d; font-size: 11px; font-weight: 600; cursor: pointer; }
@@ -190,12 +279,17 @@
             .ring-wrap { width: 145px; height: 145px; }
             .dashboard-grid { grid-template-columns: 1fr; }
             .insight-card { min-height: 210px; }
+            .quick-record-card { padding: 16px; }
         }
         @media (max-width: 650px) {
             .app-shell { display: block; padding-bottom: 73px; }
             .sidebar { display: none; }
             .main { padding: 22px 16px 32px; }
             .topbar { margin-bottom: 22px; }
+            .date-tools { gap: 7px; }
+            .today-date { white-space: nowrap; font-size: 11px; }
+            .date-picker input { width: 108px; }
+            .profile-chip { margin-left: 8px; }
             .hero { grid-template-columns: 1fr; gap: 22px; padding: 24px 21px; border-radius: 21px; }
             .hero-copy h2 { max-width: 350px; margin-top: 14px; font-size: 27px; }
             .hero-copy p { max-width: 340px; }
@@ -205,6 +299,14 @@
             .ring-center strong { font-size: 27px; }
             .ring-meta-value { font-size: 17px; }
             .dashboard-grid { gap: 13px; margin-top: 13px; }
+            .caffeine-top-grid, .quick-record-grid, .calculation-grid { grid-template-columns: 1fr; }
+            .analysis-grid { grid-template-columns: 1fr; }
+            .caffeine-chart-card, .calculation-card { margin-top: 13px; }
+            .quick-record-card { align-items: flex-start; }
+            .quick-record-card .button-primary { min-height: 40px; min-width: 102px; flex: none; padding-inline: 12px; white-space: nowrap; }
+            .daily-record-heading { align-items: flex-start; flex-direction: column; }
+            .daily-record-heading .button-primary { min-height: 42px; }
+            .data-management .card { align-items: flex-start; flex-direction: column; }
             .card { padding: 18px; border-radius: 16px; }
             .log-card { margin-top: 13px; }
             .week-chart { gap: 9px; padding-inline: 0; }
@@ -214,6 +316,7 @@
             .mobile-nav .nav-item { min-height: 48px; display: grid; justify-items: center; align-content: center; gap: 3px; padding: 4px; border-radius: 11px; font-size: 9px; }
             .mobile-nav .nav-icon { width: 17px; height: 17px; }
             .history-head { align-items: flex-start; flex-direction: column; }
+            .history-actions { width: 100%; flex-wrap: wrap; }
             .history-head .button-primary { min-height: 40px; }
             .history-summary { gap: 8px; }
             .mini-stat { padding: 13px 11px; }
@@ -234,14 +337,167 @@
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
         }
+        .main { padding-top: 28px; }
+        .sidebar { background: #211a15; border-color: #3c3026; }
+        .brand-mark { background: var(--lime); color: #251e18; }
+        .brand-name { color: #f5eddf; }
+        .brand-sub { color: #b6a995; }
+        .nav-label { color: #968777; }
+        .nav-item { color: #c2b6a6; }
+        .nav-item:hover { background: #32271f; color: #fff7e8; }
+        .nav-item.active { background: var(--lime); color: #28231b; }
+        .side-note { border-color: #44372b; background: #2b231d; color: #f3e9da; }
+        .side-note p { color: #c4b8a6; }
+        .eyebrow { color: #8a5b36; }
+        .today-date, .profile-chip { color: #76695d; }
+        .card { border-radius: 16px; box-shadow: 0 1px 2px rgba(62, 47, 35, .035); transition: border-color .18s ease, box-shadow .18s ease; }
+        .card:hover { border-color: #d9cbb8; box-shadow: 0 5px 16px rgba(62, 47, 35, .055); }
+        .caffeine-total-card { position: relative; overflow: hidden; background: var(--coffee); border-color: #594638; color: #fffaf1; }
+        .caffeine-total-card::after { content: ''; position: absolute; top: -82px; right: -44px; width: 200px; height: 200px; border: 1px solid rgba(221, 241, 107, .38); border-radius: 50%; box-shadow: 0 0 0 18px rgba(221,241,107,.045), 0 0 0 42px rgba(221,241,107,.035), 0 0 0 70px rgba(221,241,107,.025); pointer-events: none; }
+        .caffeine-total-card > * { position: relative; z-index: 1; }
+        .caffeine-total-card .eyebrow { color: var(--lime); }
+        .caffeine-total-card .card-title { color: #eadcca; }
+        .caffeine-total-card .text-button { color: var(--lime); }
+        .total-number { color: #fffaf1; }
+        .total-number span:first-child { color: #f2f4d8; font-size: clamp(58px, 7vw, 82px); text-shadow: 0 0 32px rgba(221, 241, 107, .12); }
+        .total-number span:last-child { color: var(--lime); }
+        .total-foot, .caffeine-total-card .sample-notice { color: #d2c0a9; }
+        .limit-meter { background: rgba(255,255,255,.16); }
+        .limit-meter-fill { background: var(--lime); }
+        .recommendation-card { background: #eef0e5; border-color: #dfe4d8; border-left: 4px solid #a2ba54; }
+        .recommendation-card .card-sub, .recommendation-card > p:not(.card-sub) { color: #57644f; }
+        .recommendation-card h2 { color: #333c31; }
+        .insight-tag { background: #e2e8db; color: #4f6048; }
+        .insight-icon { background: #e2e8db; color: #53684b; }
+        .caffeine-chart-card, .calculation-card { background: #fffdf8; }
+        .caffeine-chart-card .week-chart { background: repeating-linear-gradient(to top, transparent 0, transparent 47px, rgba(72, 59, 43, .055) 48px); }
+        .bar { background: #e5d8c5; }
+        .bar.today { background: var(--lime); box-shadow: 0 5px 18px rgba(153, 177, 63, .16); }
+        .chart-day.current { color: #53653b; }
+        .legend-dot { background: #a5bd4e; }
+        .reference-line, .legend-line { border-color: #b97848; }
+        .calculation-formula { color: #866443; }
+        .calculation-row strong { color: #815332; }
+        .reference-basis { background: #f0f1e9; color: #56634f; }
+        .reference-basis .calculation-label { color: #46583f; }
+        .daily-record-card { border-top: 3px solid #a87343; }
+        .daily-record-status strong { color: #544130; }
+        .record-section { border-color: #e5dccf; background: #fffdf8; }
+        .record-section[open] > summary { color: #67482f; }
+        .history-day-card { background: #fffdf8; }
+        .timeline-details > summary { background: #fffdf8; }
+        .period-pill { border-color: #e4dacb; background: #f5f0e7; color: #766450; }
+        .chart-legend, .week-stats span, .card-sub, .history-head p { color: #786d61; }
+        .drink-icon { background: #eee5d8; color: #765337; }
+        .drink-detail, .history-meta, .log-time { color: #766c61; }
+        .mobile-nav { border-color: #e4dacb !important; background: rgba(247, 243, 234, .97) !important; }
+        .button-secondary { border-color: #dfd4c5; background: #fffdf8; color: #645548; }
+        .button-primary { background: var(--lime); color: #26231b; box-shadow: 0 5px 14px rgba(144, 166, 57, .18); }
+        .button-primary:hover { background: #e8f985; box-shadow: 0 7px 18px rgba(144, 166, 57, .24); }
+        .mobile-nav .nav-item.active { background: var(--lime); color: #28231b; }
+        input[type="range"] { accent-color: #a5bd4e; }
+        .choice input:checked + span { border-color: #9cb14f; background: #edf3d4; color: #41502e; }
+        .close-button { background: #eee7dc; color: #604a38; }
+        .limit-note { background: #f2eadc; color: #705a43; }
+        .sensitivity-setting { display: grid; gap: 4px; color: #d4c4ac; font-size: 9px; text-align: right; }
+        .sensitivity-setting select { min-height: 30px; padding: 0 24px 0 9px; border: 1px solid rgba(221,241,107,.34); border-radius: 8px; background: #342920; color: #f7f0e3; font-size: 10px; cursor: pointer; }
+        .sensitivity-setting select:focus-visible { outline: 2px solid var(--lime); outline-offset: 2px; }
+        .sensitivity-setting option { background: #342920; color: #f7f0e3; }
+        .warning-mascot { display: flex; align-items: center; gap: 10px; min-height: 54px; margin-top: 13px; padding: 9px 11px; border: 1px solid rgba(221,241,107,.2); border-radius: 12px; background: rgba(255,255,255,.055); transition: border-color .2s ease, background .2s ease; }
+        .warning-emoji { width: 31px; flex: none; font-size: 25px; line-height: 1; text-align: center; }
+        .warning-mascot strong { display: block; color: var(--lime); font-size: 10px; }
+        .warning-mascot p { margin: 4px 0 0; color: #d3c6b3; font-size: 9px; line-height: 1.45; }
+        .warning-mascot.stage-1 { border-color: rgba(221,241,107,.5); }
+        .warning-mascot.stage-2 { border-color: rgba(237,190,96,.7); background: rgba(237,190,96,.08); }
+        .warning-mascot.stage-2 strong { color: #f2ca7e; }
+        .warning-mascot.stage-3 { border-color: rgba(237,151,91,.76); background: rgba(237,151,91,.1); }
+        .warning-mascot.stage-3 strong { color: #ffbd85; }
+        .warning-mascot.stage-4 { border-color: #e57868; background: rgba(192,67,55,.22); }
+        .warning-mascot.stage-4 strong { color: #ffaaa0; }
+        .total-foot #warningThresholdText { color: var(--lime); font-weight: 700; }
+        .caffeine-total-card:has(.stage-4) { border-color: #c96659; }
+        .reset-day-button { min-height: 44px; display: inline-flex; align-items: center; gap: 7px; margin-top: 5px; padding: 0 4px; border: 0; background: transparent; color: #c7b49d; font-size: 10px; cursor: pointer; transition: color .16s ease; }
+        .reset-day-button[hidden] { display: none; }
+        .reset-day-button:hover { color: #ffb2a3; }
+        .reset-day-button:focus-visible { border-radius: 6px; outline: 2px solid var(--lime); outline-offset: 2px; }
+        .no-caffeine-toggle { display: grid; grid-template-columns: 18px 1fr; align-items: center; gap: 4px 9px; margin-top: 12px; padding: 11px 13px; border: 1px solid #e5dccf; border-radius: 11px; background: #faf6ed; color: #534638; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .no-caffeine-toggle input { width: 16px; height: 16px; margin: 0; accent-color: #a5bd4e; }
+        .no-caffeine-toggle small { grid-column: 2; color: #837767; font-size: 9px; font-weight: 400; }
+        .sleep-model-section { margin-top: 25px; }
+        .sleep-model-heading { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin: 0 0 13px; }
+        .sleep-model-heading h2 { margin: 0; font-size: 19px; letter-spacing: -.6px; }
+        .sleep-model-heading p { margin: 6px 0 0; color: #786d61; font-size: 11px; }
+        .model-confidence { padding: 7px 10px; border: 1px solid #e4dacb; border-radius: 9px; background: #fffdf8; color: #796958; font-size: 10px; white-space: nowrap; }
+        .model-confidence.learning { border-color: #d2df9d; background: #f1f5df; color: #526339; }
+        .model-confidence.uncertain { border-color: #e5c897; background: #f7f0df; color: #795c2f; }
+        .model-confidence.pattern { border-color: #a9be63; background: #eaf1d1; color: #40552b; }
+        .sleep-model-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+        .model-chart-card { min-width: 0; padding: 20px; }
+        .sensitivity-chart-card { grid-column: 1 / -1; }
+        .model-chart { min-height: 195px; margin-top: 12px; }
+        .model-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+        .model-chart-note { min-height: 30px; margin: 7px 0 0; color: #766b60; font-size: 10px; line-height: 1.55; }
+        .model-chart-empty { min-height: 180px; display: grid; align-content: center; justify-items: center; gap: 8px; padding: 18px; border: 1px dashed #d8cebf; border-radius: 12px; color: #6e6257; text-align: center; font-size: 11px; line-height: 1.6; }
+        .model-chart-empty strong { color: #4d4136; font-size: 12px; }
+        .chart-grid-line { stroke: #e7dfd4; stroke-width: 1; }
+        .chart-axis-label { fill: #786d61; font: 10px 'Pretendard', sans-serif; }
+        .chart-series { fill: none; stroke: #a5bd4e; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+        .chart-series-area { fill: rgba(165,189,78,.12); }
+        .legend-no-caffeine { width: 9px; height: 9px; border: 2px solid #657954; border-radius: 50%; }
+        .bar.no-caffeine-confirmed { min-height: 12px; border: 2px solid #657954; border-radius: 50%; background: #eef2df; }
+        .chart-sleep-marker { stroke: #bc7948; stroke-width: 1.5; stroke-dasharray: 4 4; }
+        .chart-observation { fill: #bd7947; stroke: #fffdf8; stroke-width: 2; }
+        .chart-observation.no-caffeine { fill: #637954; }
+        .chart-trend { fill: none; stroke: #5e7749; stroke-width: 2.5; stroke-linejoin: round; }
+        .chart-confidence-band { fill: rgba(165,189,78,.18); stroke: none; }
+        .outcome-setting { display: grid; gap: 4px; color: #786d61; font-size: 9px; text-align: right; }
+        .outcome-setting select { min-height: 30px; padding: 0 8px; border: 1px solid #e4dacb; border-radius: 8px; background: #fffdf8; color: #544638; font-size: 10px; }
+        .model-factor-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 18px; margin-top: 12px; }
+        .model-factor-row { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-top: 1px solid #eee7dc; color: #6e6257; font-size: 10px; }
+        .model-factor-row strong { color: #4d6339; font-weight: 700; text-align: right; }
+        .model-factor-row .not-estimated { color: #8b7f70; font-weight: 500; }
+        .focus-effect-summary { margin-top: 15px; padding: 12px 14px; border-left: 3px solid #a5bd4e; border-radius: 0 10px 10px 0; background: #f2f4e9; color: #59674f; font-size: 11px; line-height: 1.6; }
+        @media (max-width: 650px) {
+            .sleep-model-grid { grid-template-columns: 1fr; }
+            .sensitivity-chart-card { grid-column: auto; }
+            .sleep-model-heading { align-items: flex-start; flex-direction: column; }
+            .model-factor-list { grid-template-columns: 1fr; }
+        }
+        .topbar-actions { display: flex; align-items: center; gap: 12px; }
+        .demo-mode-button { min-height: 36px; padding: 0 11px; border: 1px solid #d9cbb8; border-radius: 9px; background: #fffdf8; color: #62462f; font-size: 10px; font-weight: 700; cursor: pointer; }
+        .demo-mode-button:hover { border-color: #a5bd4e; background: #f2f5e4; }
+        .demo-banner { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 0 0 18px; padding: 14px 16px; border: 1px solid #d5dfaa; border-radius: 14px; background: #f0f4dc; }
+        .demo-banner[hidden] { display: none; }
+        .demo-banner-copy { display: flex; align-items: center; gap: 12px; }
+        .demo-banner-tag { padding: 6px 8px; border-radius: 7px; background: #dff16e; color: #374522; font-size: 9px; font-weight: 800; letter-spacing: .6px; white-space: nowrap; }
+        .demo-banner strong { color: #38422b; font-size: 11px; }
+        .demo-banner p { margin: 4px 0 0; color: #637151; font-size: 10px; }
+        .demo-nav { display: flex; align-items: center; gap: 5px; }
+        .demo-nav .nav-item { min-height: 34px; padding-inline: 10px; color: #5c664d; font-size: 10px; }
+        .demo-nav .nav-item.active { background: #dff16e; color: #2c361e; }
+        .demo-mode .sidebar, .demo-mode .mobile-nav { display: none !important; }
+        .demo-mode .app-shell { display: block; padding-bottom: 0; }
+        .demo-mode .main { width: min(100%, 930px); margin: 0 auto; }
+        .demo-mode .topbar-actions .profile-chip { display: none; }
+        .demo-mode .caffeine-top-grid, .demo-mode .analysis-grid, .demo-mode .calculation-grid, .demo-mode .sleep-model-grid { grid-template-columns: 1fr !important; }
+        .demo-mode .sensitivity-chart-card { grid-column: auto; }
+        .demo-mode #resetSelectedDay { display: none !important; }
+        .demo-mode #openDailyModal, .demo-mode #alertSensitivity { opacity: .55; }
+        .demo-mode .data-management { display: none; }
+        @media (max-width: 650px) {
+            .topbar-actions { gap: 5px; }
+            .demo-mode-button { min-height: 35px; padding-inline: 8px; font-size: 9px; }
+            .demo-banner { align-items: flex-start; flex-direction: column; }
+            .demo-banner-copy { align-items: flex-start; }
+        }
     </style>
 </head>
 <body>
     <div class="app-shell">
         <aside class="sidebar" aria-label="주 메뉴">
             <div class="brand">
-                <div class="brand-mark" aria-hidden="true">:D</div>
-                <div><div class="brand-name">:DCaffein</div><div class="brand-sub">caffeine-off journal</div></div>
+                <div class="brand-mark" aria-hidden="true">D</div>
+                <div><div class="brand-name">DCaffeine</div><div class="brand-sub">PERSONAL CAFFEINE LAB</div></div>
             </div>
             <div class="nav-label">WORKSPACE</div>
             <nav class="nav-list">
@@ -257,67 +513,82 @@
             </nav>
             <div class="side-note">
                 <div class="side-note-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 20 7v5.2c0 4.4-3 7.2-8 8.8-5-1.6-8-4.4-8-8.8V7l8-3.5Z" stroke="#8b987f" stroke-width="1.7"/><path d="m8.7 12.2 2.1 2.1 4.5-4.7" stroke="#8b987f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>나의 기록은 나만 보기</div>
-                <p>이 화면의 기록은 현재 사용 중인 브라우저에 저장됩니다. 샘플 기록은 직접 입력하면 교체돼요.</p>
+                <p>기록은 현재 브라우저에 저장돼요. JSON 파일로 팀원과 공유하거나 내보낼 수 있습니다.</p>
             </div>
         </aside>
 
         <main class="main">
             <header class="topbar">
-                <div><div class="eyebrow">CAFFEINE, IN BALANCE</div><div class="date-tools"><div class="today-date" id="todayDate"></div><label class="date-picker" aria-label="조회할 날짜"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 3v4M16.5 3v4M4 9h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input type="date" id="selectedDate" aria-label="카페인 기록을 조회할 날짜"></label></div></div>
-                <div class="profile-chip"><span>나의 기록 공간</span><div class="avatar" aria-hidden="true">D</div></div>
+                <div><div class="eyebrow">CAFFEINE, DECODED</div><div class="date-tools"><div class="today-date" id="todayDate"></div><label class="date-picker" aria-label="조회할 날짜"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M7.5 3v4M16.5 3v4M4 9h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input type="date" id="selectedDate" aria-label="카페인 기록을 조회할 날짜"></label></div></div>
+                <div class="topbar-actions"><button class="demo-mode-button" id="demoModeToggle" type="button">공통 시연 화면</button><div class="profile-chip"><span>나의 기록 공간</span><div class="avatar" aria-hidden="true">D</div></div></div>
             </header>
+            <section class="demo-banner" id="demoBanner" hidden>
+                <div class="demo-banner-copy"><span class="demo-banner-tag">SHARED DEMO</span><div><strong>공통 시연 화면</strong><p>팀원 모두 같은 가상 기록을 봅니다. 개인 기록은 변경되지 않아요.</p></div></div>
+                <button class="button-secondary" id="copyDemoLink" type="button">시연 링크 복사</button>
+                <nav class="demo-nav" aria-label="시연 화면 메뉴"><button class="nav-item active" data-view="today" type="button">한눈에</button><button class="nav-item" data-view="history" type="button">기록</button><button class="nav-item" data-view="insights" type="button">패턴</button></nav>
+            </section>
 
             <section class="dashboard-view" id="dashboardView">
                 <h1 class="page-title" id="dailyTitle" style="margin-bottom:18px">오늘 한눈에</h1>
-                <section class="hero" aria-labelledby="heroTitle">
-                    <div class="hero-copy">
-                        <div class="hero-kicker"><span aria-hidden="true">✦</span> 나를 알아가는 작은 기록</div>
-                        <h2 id="heroTitle">마신 음료를<br>정확하게 기록해 볼까요?</h2>
-                        <p>날짜별 음료 양과 제품 표시의 카페인 함량을 입력해<br>선택한 날의 섭취 합계를 확인할 수 있어요.</p>
-                        <button class="button-primary open-modal" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>카페인 기록하기</button>
-                    </div>
-                    <div class="hero-summary">
-                        <div class="ring-wrap" aria-label="오늘의 카페인 합계">
-                            <svg class="ring-svg" viewBox="0 0 150 150" role="img" aria-label="오늘의 카페인 섭취 진행 표시">
-                                <circle class="ring-track" cx="75" cy="75" r="65"/>
-                                <circle class="progress-ring__circle" id="progressRing" cx="75" cy="75" r="65"/>
-                            </svg>
-                            <div class="ring-center"><strong id="todayMg">0</strong><span>선택 날짜의 mg</span></div>
-                        </div>
-                        <div class="ring-meta"><div class="ring-meta-label">나의 알림 기준</div><div class="ring-meta-value"><span id="limitText">200</span> mg</div><div class="ring-meta-note">사용자가 정하는<br>참고용 알림선</div><button class="text-button" id="setLimit" type="button" style="margin-top:10px;padding:0">기준 변경</button></div>
-                    </div>
+                <section class="caffeine-top-grid">
+                    <article class="card caffeine-total-card">
+                        <div class="card-head"><div><div class="eyebrow">SELECTED DAY</div><h2 class="card-title" id="totalCaption">오늘 기록한 카페인</h2></div><label class="sensitivity-setting"><span>알림 민감도</span><select id="alertSensitivity" aria-label="카페인 경고 민감도"><option value="sensitive">민감 · 100mg부터</option><option value="standard">보통 · 200mg부터</option><option value="less">덜 민감 · 300mg부터</option></select></label></div>
+                        <div class="total-number"><span id="todayMg">142</span><span>mg</span></div>
+                        <div class="total-foot"><span id="dailyDrinkCount">2개 음료 기록</span><span id="warningThresholdText">다음 알림 200mg</span></div>
+                        <div class="warning-mascot stage-0" id="caffeineWarning" role="status" aria-live="polite"><span class="warning-emoji" id="warningEmoji" role="img" aria-label="기록 상태">😀</span><div><strong id="warningTitle">섭취 기록 확인 중</strong><p id="warningMessage">개인에 따라 카페인 반응은 다를 수 있어요.</p></div></div>
+                        <p class="sample-notice" id="sampleNotice">화면 예시를 위한 샘플 기록입니다. 실제 기록은 제품 표시값으로 계산해요.</p>
+                        <button class="reset-day-button" id="resetSelectedDay" type="button" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m3 0-.8 13H6.8L6 7m4 4v5m4-5v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="resetSelectedDayLabel">오늘 기록 초기화</span></button>
+                    </article>
+                    <article class="card recommendation-card">
+                        <div class="insight-top"><div class="insight-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5a7 7 0 0 0-4.3 12.5c.7.5 1.1 1.3 1.1 2.1h6.4c0-.8.4-1.6 1.1-2.1A7 7 0 0 0 12 3.5Z" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 21h5M10 18.2h4M12 7v4l2.4 1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="insight-tag" id="insightTag">기록을 모으는 중</span></div>
+                        <p class="card-sub">내 기록으로 학습하는 수면 민감도</p>
+                        <h2 id="insightTitle">기록이 충분해질 때까지 민감도 점수는 보류해요</h2>
+                        <p id="insightText">카페인 미섭취일과 섭취 시간, 다음 날 수면 결과를 함께 쌓으면 실제 기록에서 요인별 관계를 추정합니다.</p>
+                        <div class="insight-bottom"><span id="insightCount">분석 가능한 기록 0회</span><button class="text-button" type="button" data-view="history">기록 추가 <span aria-hidden="true">→</span></button></div>
+                    </article>
                 </section>
-                <p class="sample-notice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#a78878" stroke-width="1.6"/><path d="M12 11v5m0-8h.01" stroke="#a78878" stroke-width="1.8" stroke-linecap="round"/></svg><span id="sampleNotice">화면 예시를 위한 샘플 기록입니다. 원형 표시는 개인 건강 권고량이 아니라 앱 알림 기준의 예시예요.</span></p>
 
-                <div class="dashboard-grid">
-                    <section class="card" aria-labelledby="weekTitle">
-                        <div class="card-head"><div><h2 class="card-title" id="weekTitle">이번 주 섭취 기록</h2><p class="card-sub">하루하루의 기록을 가볍게 돌아봐요</p></div><span class="period-pill">최근 7일</span></div>
-                        <div class="week-chart" id="weekChart" aria-label="최근 7일 카페인 섭취 기록 막대 그래프"></div>
-                        <div class="chart-note"><span class="dot"></span>입력한 카페인 합계 <span style="color:#b5a9a1">·</span> 제품 표시값을 기준으로 계산해요</div>
-                    </section>
-                    <section class="card insight-card" aria-labelledby="insightTitle">
-                        <div class="insight-top"><div class="insight-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5a7 7 0 0 0-4.3 12.5c.7.5 1.1 1.3 1.1 2.1h6.4c0-.8.4-1.6 1.1-2.1A7 7 0 0 0 12 3.5Z" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 21h5M10 18.2h4M12 7v4l2.4 1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="insight-tag" id="insightTag">샘플 패턴</span></div>
-                        <h3 id="insightTitle">조금씩 쌓이면 패턴이 보여요</h3>
-                        <p id="insightText">수면 기록과 스트레스·숙취 같은 조건을 함께 남겨 보세요. 기록이 쌓이면 내 기록에서 관찰된 경향을 확인할 수 있어요.</p>
-                        <div class="insight-bottom"><span id="insightCount">현재 예시 기록 4일</span><button class="text-button" type="button" data-view="insights">기록 기준 보기 <span aria-hidden="true">→</span></button></div>
-                    </section>
+                <div class="analysis-grid">
+                <section class="card caffeine-chart-card" aria-labelledby="weekTitle">
+                    <div class="card-head"><div><h2 class="card-title" id="weekTitle">카페인 섭취 흐름</h2><p class="card-sub">하루 총량을 최근 7일 기록으로 비교해요</p></div><span class="period-pill">최근 7일</span></div>
+                    <div class="week-chart" id="weekChart" aria-label="최근 7일 카페인 섭취량"></div>
+                    <div class="chart-legend"><span><i class="legend-dot"></i>날짜별 카페인 합계</span><span id="noCaffeineLegend" hidden><i class="legend-no-caffeine"></i>카페인 미섭취 확인</span></div>
+                    <div class="week-stats"><div><span>7일 합계</span><strong id="weekTotal">0 mg</strong></div><div><span>하루 평균</span><strong id="weekAverage">0 mg</strong></div><div><span>가장 많이 마신 날</span><strong id="weekPeak">기록 없음</strong></div></div>
+                </section>
+
+                <section class="card calculation-card" aria-labelledby="calculationTitle">
+                    <div class="card-head"><div><h2 class="card-title" id="calculationTitle">합계와 수면 분석 근거</h2><p class="card-sub">카페인 총량과 학습에 사용 중인 요인을 확인해요</p></div></div>
+                    <div class="calculation-grid">
+                        <div><div class="calculation-label">선택 날짜 섭취 합계</div><div class="calculation-formula">제품별 카페인 계산값을 모두 더한 값</div><div id="calculationBreakdown" class="calculation-breakdown"></div></div>
+                        <div class="reference-basis"><div class="calculation-label">수면 영향 분석 상태</div><div id="modelBasis">카페인 잔여량과 수면 기록이 쌓이면 실제 기록을 바탕으로 분석합니다. 데이터가 부족하면 개인 민감도 점수는 표시하지 않습니다.</div></div>
+                    </div>
+                    <details class="method-details"><summary>분석 방식과 주의점</summary><p>각 음료의 표시 카페인량을 섭취 시각부터 잠들 때까지 반감기 5시간으로 감소시켜 합산하고, 최근 72시간 안의 섭취도 포함합니다. 민감도 계수는 잠들기까지 걸린 시간을 우선 분석하며 스트레스·음주·숙취·몸 상태·낮잠·화면 사용은 기록에서 충분히 비교할 수 있을 때만 모델에 추가합니다. 하나의 계수를 표시하려면 연결 기록 12회, 직접 입력한 잠복 시간 6회, 잔여 카페인 차이 100mg 이상, 비교 요인 기록 6일 이상이 필요하고, 추정 범위가 0을 포함하면 점수를 보류합니다. 총 수면 시간과 수면의 질은 별도 그래프에서 비교하고 하나의 임의 가중 점수로 합치지 않습니다. 이는 관찰된 연관성이며 원인이나 의료 진단을 뜻하지 않습니다.</p></details>
+                </section>
                 </div>
-
-                <section class="card log-card" aria-labelledby="logTitle">
-                    <div class="card-head"><div><h2 class="card-title" id="logTitle">선택한 날짜의 음료</h2><p class="card-sub">마신 양과 입력한 카페인 함량을 보여줘요</p></div><button class="text-button" type="button" data-view="history">전체 기록 <span aria-hidden="true">→</span></button></div>
-                    <div class="log-list" id="todayLogList"></div>
+                <section class="sleep-model-section" aria-labelledby="sleepModelTitle">
+                    <div class="sleep-model-heading"><div><h2 id="sleepModelTitle">수면 영향, 내 기록으로 알아보기</h2><p>미리 정한 가중치 없이 실제 기록이 쌓일수록 비교 모델을 갱신합니다.</p></div><span class="model-confidence" id="modelConfidence">기록 수집 전</span></div>
+                    <div class="sleep-model-grid">
+                        <article class="card model-chart-card"><div class="card-head"><div><h3 class="card-title">잠들 때 남은 카페인</h3><p class="card-sub">반감기 5시간 가정 · 전날 잔여량 포함</p></div></div><div id="decayChart" class="model-chart" role="img" aria-label="시간에 따른 예상 카페인 잔여량 그래프"></div><p class="model-chart-note" id="decaySummary">섭취 기록을 추가하면 시간별 잔여량을 계산합니다.</p></article>
+                        <article class="card model-chart-card"><div class="card-head"><div><h3 class="card-title">잔여 카페인과 수면</h3><p class="card-sub">한 점은 수면이 기록된 하루를 뜻해요</p></div><label class="outcome-setting"><span>수면 지표</span><select id="sleepOutcomeSelect" aria-label="그래프에 표시할 수면 지표"><option value="latency">잠들기까지</option><option value="duration">총 수면 시간</option><option value="quality">수면의 질</option></select></label></div><div id="sleepScatter" class="model-chart" role="img" aria-label="카페인 잔여량과 수면 지표 산점도"></div><p class="model-chart-note" id="scatterSummary">수면 기록을 같은 날짜의 카페인 기록과 연결하면 점을 표시합니다.</p></article>
+                        <article class="card model-chart-card sensitivity-chart-card"><div class="card-head"><div><h3 class="card-title">민감도 학습 흐름</h3><p class="card-sub">잠들기까지 걸린 시간 변화 · 잔여 카페인 100mg 기준</p></div><span class="period-pill" id="latencySampleCount">0회</span></div><div id="sensitivityTrend" class="model-chart trend-chart" role="img" aria-label="기록에 따라 달라지는 개인 민감도 추정과 불확실성"></div><p class="model-chart-note" id="sensitivitySummary">기록이 충분하지 않아 아직 개인 민감도 값을 계산하지 않았어요.</p><div id="modelFactors" class="model-factor-list"></div></article>
+                    </div>
                 </section>
             </section>
 
             <section class="history-view" id="historyView">
-                <div class="history-head"><div><h1 class="page-title">나의 기록</h1><p>마신 음료와 다음 날의 컨디션을 모아봤어요.</p></div><button class="button-primary open-modal" type="button">+ 카페인 기록하기</button></div>
-                <div class="history-summary"><div class="mini-stat"><span>선택 날짜 카페인 합계</span><strong><span id="historyToday">0</span> mg</strong></div><div class="mini-stat"><span>선택 날짜 음료 기록</span><strong><span id="historyCount">0</span> 건</strong></div><div class="mini-stat"><span>수면 기록</span><strong><span id="sleepCount">0</span> 회</strong></div></div>
-                <section class="card"><div class="card-head"><div><h2 class="card-title">전체 타임라인</h2><p class="card-sub">날짜와 음료별로 확인할 수 있어요</p></div></div><div id="historyList" style="margin-top:12px"></div></section>
+                <div class="history-head"><div><h1 class="page-title">나의 기록</h1><p>마실 때 카페인을 기록하고, 다음 날 수면을 이어서 남겨요.</p></div></div>
+                <section class="card daily-record-card" aria-label="오늘의 통합 기록">
+                    <div class="daily-record-heading"><div><span class="quick-step">ONE DAY · ONE CLEAR PICTURE</span><h2 id="dailyRecordTitle">오늘의 기록</h2><p>카페인을 마실 때 기록하고, 수면은 다음 날 같은 기록에 이어서 남겨요.</p></div><button class="button-primary" id="openDailyModal" type="button">오늘 기록하기</button></div>
+                    <div class="daily-record-status"><div><span>카페인</span><strong id="dailyCaffeineStatus">기록 전</strong></div><div><span>수면</span><strong id="dailySleepStatus">다음 날 이어서 기록</strong></div></div>
+                </section>
+                <section class="card history-day-card"><div class="card-head"><div><h2 class="card-title" id="historyDayTitle">선택한 날짜의 음료</h2><p class="card-sub">한눈에 필요한 기록만 보여줍니다</p></div></div><div class="sleep-status" id="historySleepSummary">아직 수면 기록이 없어요.</div><div class="log-list" id="todayLogList"></div></section>
+                <details class="timeline-details"><summary>전체 타임라인 <span id="timelineCount">0개 기록</span></summary><section class="card"><div id="historyList"></div></section></details>
+                <details class="timeline-details data-management" id="personalDataManagement"><summary>기록 가져오기·내보내기 및 삭제</summary><div class="card history-actions"><p>기록은 이 브라우저에 저장됩니다. 팀원이 내보낸 JSON을 가져오면 기록·조회 날짜·알림 민감도를 맞출 수 있어요. 가져오기는 이 브라우저의 현재 기록을 교체합니다.</p><div><button class="button-secondary" id="importData" type="button">기록 가져오기</button><button class="button-secondary" id="exportData" type="button">기록 내보내기</button><button class="button-secondary" id="clearData" type="button">전체 삭제</button><input id="importDataFile" type="file" accept=".json,application/json" hidden></div></div></details>
             </section>
 
             <section class="history-view" id="insightsView">
                 <div class="history-head"><div><h1 class="page-title">패턴 살펴보기</h1><p>기록을 쌓아 나만의 경향을 천천히 확인해요.</p></div></div>
-                <section class="card" style="margin-bottom:15px"><div class="insight-top"><div class="insight-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="m7 15 3.2-3.8 3.1 2.2L19 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="insight-tag" id="detailInsightTag">기록 참고</span></div><h2 id="detailInsightTitle" style="margin:17px 0 8px;font-size:17px">아직은 개인 패턴을 계산하기 어려워요</h2><p id="detailInsightText" style="max-width:700px;margin:0;color:#82786f;font-size:12px;line-height:1.8">음료 섭취 시각과 수면 상태, 스트레스·숙취 여부를 함께 기록해 주세요. 이 화면은 원인을 진단하지 않고 기록에서 함께 나타난 경향만 보여줍니다.</p><div class="limit-note">이 앱의 기록과 알림은 개인의 의료 조언이나 안전 섭취량을 뜻하지 않습니다. 음료별 카페인 함량은 제품과 제공량에 따라 다를 수 있어요.</div></section>
+                <section class="card" style="margin-bottom:15px"><div class="insight-top"><div class="insight-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19V5m0 14h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="m7 15 3.2-3.8 3.1 2.2L19 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="insight-tag" id="detailInsightTag">기록 참고</span></div><h2 id="detailInsightTitle" style="margin:17px 0 8px;font-size:17px">아직은 개인 패턴을 계산하기 어려워요</h2><p id="detailInsightText" style="max-width:700px;margin:0;color:#82786f;font-size:12px;line-height:1.8">음료 섭취 시각과 수면 상태, 스트레스·숙취 여부를 함께 기록해 주세요. 이 화면은 원인을 진단하지 않고 기록에서 함께 나타난 경향만 보여줍니다.</p><div class="focus-effect-summary" id="focusEffectSummary">집중 효과 만족도는 수면 민감도와 별도로 기록됩니다.</div><div class="limit-note">이 앱의 기록과 알림은 개인의 의료 조언이나 안전 섭취량을 뜻하지 않습니다. 음료별 카페인 함량은 제품과 제공량에 따라 다를 수 있어요.</div></section>
                 <section class="card"><div class="card-head"><div><h2 class="card-title">동반 요인 기록</h2><p class="card-sub">수면 평가 때 체크한 조건을 함께 살펴봅니다</p></div></div><div id="factorSummary" style="margin-top:16px"></div></section>
             </section>
         </main>
@@ -331,25 +602,43 @@
 
     <div class="modal-backdrop" id="recordModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <form class="modal" id="recordForm">
-            <div class="modal-head"><div><h2 id="modalTitle">카페인 기록하기</h2><p>마신 날짜와 양, 제품에 표시된 카페인 함량을 적어 주세요.</p></div><button class="close-button" id="closeModal" type="button" aria-label="창 닫기"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
-            <div class="form-grid">
-                <div class="field full"><label for="drinkSelect">음료 종류</label><select class="select" id="drinkSelect"><option value="아메리카노">아메리카노</option><option value="라테">라테</option><option value="드립커피">드립커피</option><option value="에너지 음료">에너지 음료</option><option value="콜라">콜라</option><option value="녹차">녹차</option><option value="홍차">홍차</option><option value="직접 입력">직접 입력하기</option></select><div class="custom-fields" id="customFields"><input class="input" id="customName" type="text" maxlength="40" placeholder="음료 이름"></div><p class="helper">음료 종류를 고른 뒤, 제품 라벨이나 매장 정보를 확인해 입력해 주세요.</p></div>
-                <div class="field"><label for="drinkDate">마신 날짜</label><input class="input" id="drinkDate" type="date" required></div>
-                <div class="field"><label for="drinkTime">마신 시각</label><input class="input" id="drinkTime" type="time" required></div>
-                <div class="field"><label for="volumeMl">실제로 마신 양 (mL)</label><input class="input" id="volumeMl" type="number" min="1" max="10000" step="1" placeholder="예: 355" required></div>
-                <div class="field"><label for="caffeineMg">해당 양의 카페인 (mg)</label><input class="input" id="caffeineMg" type="number" min="0" max="5000" step="1" placeholder="제품 표시값 입력" required><p class="helper">입력한 mg를 그대로 합산합니다.</p></div>
-                <div class="form-divider"></div>
-                <div class="field"><label for="sleepHours">마신 뒤 잠들기까지</label><select class="select" id="sleepHours"><option value="">다음 날 입력할게요</option><option value="1">1시간 이내</option><option value="2">1~2시간</option><option value="4">2~4시간</option><option value="6">4~6시간</option><option value="8">6~8시간</option><option value="10">8시간 이상</option></select></div>
-                <div class="field"><label for="sleepQuality">수면의 질</label><div class="range-line"><input id="sleepQuality" type="range" min="1" max="100" value="70"><output class="range-value" id="sleepQualityOut">70점</output></div></div>
-                <div class="field full"><label for="effect">카페인 효과 만족도</label><div class="range-line"><input id="effect" type="range" min="1" max="100" value="70"><output class="range-value" id="effectOut">70점</output></div><p class="helper">각성이나 집중에 얼마나 도움이 되었는지 생각하며 선택해 주세요.</p></div>
-                <div class="form-divider"></div>
-                <div class="field"><span class="fieldset-title">평소보다 스트레스가 컸나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="stress" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="stress" value="no" checked><span>아니요</span></label></div></div>
-                <div class="field"><span class="fieldset-title">음주 또는 숙취가 있었나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="alcohol" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="alcohol" value="no" checked><span>아니요</span></label></div></div>
-                <div class="field"><span class="fieldset-title">몸이 아프거나 불편했나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="unwell" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="unwell" value="no" checked><span>아니요</span></label></div></div>
-                <div class="field"><span class="fieldset-title">늦은 낮잠이나 취침 전 화면이 있었나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="routine" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="routine" value="no" checked><span>아니요</span></label></div></div>
-            </div>
-            <div class="limit-note">동반 요인은 수면에 영향을 줄 수 있는 조건을 기록하는 항목이며, 원인을 진단하지 않습니다. 건너뛰어도 괜찮아요.</div>
-            <div class="modal-actions"><button class="button-secondary" id="cancelModal" type="button">취소</button><button class="button-primary" type="submit">기록 저장하기</button></div>
+            <div class="modal-head"><div><h2 id="modalTitle">오늘의 기록</h2><p>카페인을 마셨을 때 남기고, 수면은 다음 날 같은 기록에 이어서 추가할 수 있어요.</p></div><button class="close-button" id="closeModal" type="button" aria-label="창 닫기"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div>
+            <div class="field full"><label for="drinkDate">기록 날짜</label><input class="input" id="drinkDate" type="date" required></div>
+            <label class="no-caffeine-toggle" for="noCaffeine"><input id="noCaffeine" type="checkbox"><span>이 날짜에는 카페인을 마시지 않았어요</span><small>수면 비교에 필요한 ‘카페인 0mg’ 기록으로 사용합니다.</small></label>
+            <details class="record-section" id="caffeineFields" open>
+                <summary>카페인 섭취 추가 <span>마신 직후</span></summary>
+                <div class="form-grid">
+                    <div class="field full"><label for="drinkSelect">음료 종류</label><select class="select" id="drinkSelect"><option value="아메리카노">아메리카노</option><option value="라테">라테</option><option value="드립커피">드립커피</option><option value="에너지 음료">에너지 음료</option><option value="콜라">콜라</option><option value="녹차">녹차</option><option value="홍차">홍차</option><option value="직접 입력">직접 입력하기</option></select><div class="custom-fields" id="customFields"><input class="input" id="customName" type="text" maxlength="40" placeholder="음료 이름"></div><p class="helper">제품·브랜드마다 함량이 다를 수 있어요. 음료 종류를 고른 뒤 제품 정보를 확인해 주세요.</p></div>
+                    <div class="field full"><label for="productDetails">제품명 또는 브랜드 (선택)</label><input class="input" id="productDetails" type="text" maxlength="60" placeholder="예: 제품명, 카페 메뉴명"></div>
+                    <div class="field"><label for="drinkTime">마신 시각</label><input class="input" id="drinkTime" type="time"></div>
+                    <div class="field"><label for="packageVolumeMl">제품 전체 용량 (mL)</label><input class="input" id="packageVolumeMl" type="number" min="1" max="10000" step="1" placeholder="예: 355"></div>
+                    <div class="field"><label for="labelCaffeineMg">제품 전체 카페인 (mg)</label><input class="input" id="labelCaffeineMg" type="number" min="0" max="5000" step="1" placeholder="제품 표시값"></div>
+                    <div class="field"><label for="volumeMl">실제로 마신 양 (mL)</label><input class="input" id="volumeMl" type="number" min="1" max="10000" step="1" placeholder="예: 250"></div>
+                    <div class="field"><label>마신 양의 카페인 계산값</label><div class="input" style="display:flex;align-items:center;background:#fbf6f2;color:#9f5b4c;font-weight:700"><output id="caffeinePreview">제품 정보를 입력해 주세요</output></div></div>
+                    <div class="field full"><p class="helper">제품 전체 카페인량 × 실제 마신 양 ÷ 제품 전체 용량으로 계산합니다.</p></div>
+                </div>
+            </details>
+            <details class="record-section" id="sleepFields">
+                <summary>다음 날 수면·컨디션 추가 <span>선택 입력</span></summary>
+                <p class="record-section-note">실제 잠든 시각을 입력하세요. 모르면 계획 시각과 잠복 시간으로 추정합니다. 시각 정보가 없더라도 직접 입력은 저장되지만 카페인 잔여량 비교에는 연결되지 않아요.</p>
+                <div class="form-grid">
+                    <div class="field"><label for="plannedBedtime">원래 자려고 한 시각</label><input class="input" id="plannedBedtime" type="time"></div>
+                    <div class="field"><label for="sleepOnset">실제로 잠든 시각</label><input class="input" id="sleepOnset" type="time"></div>
+                    <div class="field"><label for="sleepLatency">잠들기까지 걸린 시간 (분, 선택)</label><input class="input" id="sleepLatency" type="number" min="0" max="600" step="1" placeholder="모르면 두 시각으로 추정"></div>
+                    <div class="field"><label for="totalSleepHours">총 수면 시간 (시간)</label><input class="input" id="totalSleepHours" type="number" min="0" max="24" step="0.25" placeholder="예: 7.5"></div>
+                    <div class="field"><label for="napMinutes">낮잠 총 시간 (분)</label><input class="input" id="napMinutes" type="number" min="0" max="720" step="5" placeholder="없으면 0"></div>
+                    <div class="field"><label for="sleepQuality">수면의 질 (선택)</label><div class="range-line"><input id="sleepQuality" type="range" min="1" max="100" value="50"><output class="range-value" id="sleepQualityOut">미기록</output></div><p class="helper">슬라이더를 움직이지 않으면 분석에서 제외합니다.</p></div>
+                    <div class="field full"><label for="effect">카페인의 각성·집중 효과 만족도 (선택)</label><div class="range-line"><input id="effect" type="range" min="1" max="100" value="50"><output class="range-value" id="effectOut">미기록</output></div><p class="helper">집중 효과는 별도 참고값이며 수면 민감도 계산에는 넣지 않습니다.</p></div>
+                    <div class="form-divider"></div>
+                    <div class="field"><span class="fieldset-title">평소보다 스트레스가 컸나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="stress" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="stress" value="no"><span>아니요</span></label><label class="choice"><input type="radio" name="stress" value="unknown" checked><span>모름</span></label></div></div>
+                    <div class="field"><span class="fieldset-title">잠들기 전 24시간 안에 음주했나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="alcohol" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="alcohol" value="no"><span>아니요</span></label><label class="choice"><input type="radio" name="alcohol" value="unknown" checked><span>모름</span></label></div></div>
+                    <div class="field"><span class="fieldset-title">오늘 숙취나 음주 후 불편함이 있었나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="hangover" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="hangover" value="no"><span>아니요</span></label><label class="choice"><input type="radio" name="hangover" value="unknown" checked><span>모름</span></label></div></div>
+                    <div class="field"><span class="fieldset-title">몸이 아프거나 통증이 있었나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="unwell" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="unwell" value="no"><span>아니요</span></label><label class="choice"><input type="radio" name="unwell" value="unknown" checked><span>모름</span></label></div></div>
+                    <div class="field"><span class="fieldset-title">잠들기 전 1시간 동안 화면을 오래 봤나요?</span><div class="yes-no"><label class="choice"><input type="radio" name="screen" value="yes"><span>예</span></label><label class="choice"><input type="radio" name="screen" value="no"><span>아니요</span></label><label class="choice"><input type="radio" name="screen" value="unknown" checked><span>모름</span></label></div></div>
+                </div>
+            </details>
+            <div class="limit-note">한쪽만 작성해도 저장할 수 있습니다. 수면 결과는 다음 날 같은 날짜 기록에서 이어서 추가할 수 있어요.</div>
+            <div class="modal-actions"><button class="button-secondary" id="cancelModal" type="button">취소</button><button class="button-primary" type="submit">오늘 기록 저장</button></div>
         </form>
     </div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -357,59 +646,139 @@
     <script>
         const storeKey = 'dcaffein-records-v2';
         const legacyStoreKey = 'dcaffein-records-v1';
-        const limitKey = 'dcaffein-alert-limit-v1';
+        const sleepStoreKey = 'dcaffein-sleep-v1';
+        const sensitivityKey = 'dcaffein-alert-sensitivity-v1';
+        const selectedDateKey = 'dcaffeine-selected-date-v1';
+        const alertProfiles = {
+            sensitive: { first: 100, second: 200, third: 400 },
+            standard: { first: 200, second: 400, third: 550 },
+            less: { first: 300, second: 450, third: 550 }
+        };
         const todayKey = localDateString();
+        const demoDateKey = new Date().toISOString().slice(0, 10);
+        const demoMode = new URLSearchParams(window.location.search).get('demo') === '1';
         const demoRecords = [
-            { id: 'demo-1', name: '아메리카노', caffeineMg: 95, volumeMl: 200, time: '09:20', date: todayKey, sleepHours: 8, sleepQuality: 78, effect: 82, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true },
-            { id: 'demo-2', name: '라테', caffeineMg: 47, volumeMl: 150, time: '13:10', date: todayKey, sleepHours: 7, sleepQuality: 74, effect: 69, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true },
-            { id: 'demo-3', name: '드립커피', caffeineMg: 120, volumeMl: 240, time: '10:15', date: shiftDate(todayKey, -1), sleepHours: 8, sleepQuality: 82, effect: 77, factors: { stress: true, alcohol: false, unwell: false, routine: false }, sample: true },
-            { id: 'demo-4', name: '에너지 음료', caffeineMg: 100, volumeMl: 250, time: '15:40', date: shiftDate(todayKey, -2), sleepHours: 5, sleepQuality: 58, effect: 88, factors: { stress: false, alcohol: false, unwell: false, routine: true }, sample: true },
-            { id: 'demo-5', name: '녹차', caffeineMg: 30, volumeMl: 180, time: '11:00', date: shiftDate(todayKey, -3), sleepHours: 8, sleepQuality: 86, effect: 61, factors: { stress: false, alcohol: false, unwell: false, routine: false }, sample: true }
+            { id: 'demo-1', name: '아메리카노', caffeineMg: 95, productCaffeineMg: 95, productVolumeMl: 200, volumeMl: 200, time: '09:20', date: demoDateKey, sample: true },
+            { id: 'demo-2', name: '라테', caffeineMg: 47, productCaffeineMg: 47, productVolumeMl: 150, volumeMl: 150, time: '13:10', date: demoDateKey, sample: true },
+            { id: 'demo-3', name: '드립커피', caffeineMg: 120, productCaffeineMg: 120, productVolumeMl: 240, volumeMl: 240, time: '10:15', date: shiftDate(demoDateKey, -1), sample: true },
+            { id: 'demo-4', name: '에너지 음료', caffeineMg: 100, productCaffeineMg: 100, productVolumeMl: 250, volumeMl: 250, time: '15:40', date: shiftDate(demoDateKey, -2), sample: true },
+            { id: 'demo-5', name: '녹차', caffeineMg: 30, productCaffeineMg: 30, productVolumeMl: 180, volumeMl: 180, time: '11:00', date: shiftDate(demoDateKey, -3), sample: true }
         ];
+        const demoSleepEntries = Object.fromEntries([
+            [demoDateKey, { date: demoDateKey, noCaffeine: false, plannedBedtime: '22:30', onsetTime: '23:00', latencyMinutes: 30, latencySource: 'reported', totalSleepHours: 7.5, napMinutes: 0, sleepQuality: 78, sleepQualityReported: true, effect: 80, effectReported: true, factors: { stress: 'no', alcohol: 'no', hangover: 'no', unwell: 'no', screen: 'no' } }],
+            [shiftDate(demoDateKey, -1), { date: shiftDate(demoDateKey, -1), noCaffeine: false, plannedBedtime: '22:30', onsetTime: '22:50', latencyMinutes: 20, latencySource: 'reported', totalSleepHours: 8, napMinutes: 0, sleepQuality: 84, sleepQualityReported: true, effect: 75, effectReported: true, factors: { stress: 'no', alcohol: 'no', hangover: 'no', unwell: 'no', screen: 'no' } }],
+            [shiftDate(demoDateKey, -2), { date: shiftDate(demoDateKey, -2), noCaffeine: false, plannedBedtime: '22:30', onsetTime: '23:25', latencyMinutes: 55, latencySource: 'reported', totalSleepHours: 6.5, napMinutes: 45, sleepQuality: 62, sleepQualityReported: true, effect: 88, effectReported: true, factors: { stress: 'no', alcohol: 'no', hangover: 'no', unwell: 'no', screen: 'yes' } }],
+            [shiftDate(demoDateKey, -3), { date: shiftDate(demoDateKey, -3), noCaffeine: false, plannedBedtime: '22:30', onsetTime: '22:45', latencyMinutes: 15, latencySource: 'reported', totalSleepHours: 8.5, napMinutes: 0, sleepQuality: 88, sleepQualityReported: true, effect: 65, effectReported: true, factors: { stress: 'no', alcohol: 'no', hangover: 'no', unwell: 'no', screen: 'no' } }],
+            [shiftDate(demoDateKey, -4), { date: shiftDate(demoDateKey, -4), noCaffeine: true, plannedBedtime: '22:30', onsetTime: '22:45', latencyMinutes: 15, latencySource: 'reported', totalSleepHours: 8.5, napMinutes: 0, sleepQuality: 90, sleepQualityReported: true, effect: 70, effectReported: true, factors: { stress: 'no', alcohol: 'no', hangover: 'no', unwell: 'no', screen: 'no' } }]
+        ]);
         function localDateString(date = new Date()) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`; }
+        function validDateString(value) {
+            if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+            const parsed = new Date(`${value}T12:00:00`);
+            return !Number.isNaN(parsed.getTime()) && localDateString(parsed) === value;
+        }
         function shiftDate(date, offset) { const d = new Date(date + 'T12:00:00'); d.setDate(d.getDate() + offset); return localDateString(d); }
         let stored = null;
         let legacyStored = null;
+        let storedSleep = null;
         try {
             stored = JSON.parse(localStorage.getItem(storeKey));
             legacyStored = stored ? null : JSON.parse(localStorage.getItem(legacyStoreKey));
+            storedSleep = JSON.parse(localStorage.getItem(sleepStoreKey));
         } catch (_) {}
-        let records = Array.isArray(stored) ? stored : Array.isArray(legacyStored) ? legacyStored.map(item => ({ ...item, caffeineMg: null, volumeMl: null, legacyMgEstimate: Math.round((Number(item.mg) || 0) * (Number(item.quantity) || 0)) })) : demoRecords;
-        let isSample = !Array.isArray(stored) && !Array.isArray(legacyStored);
-        if (!Array.isArray(stored) && Array.isArray(legacyStored)) localStorage.setItem(storeKey, JSON.stringify(records));
-        let selectedDate = todayKey;
-        let alertLimit = Number(localStorage.getItem(limitKey)) || 200;
+        let records = demoMode ? demoRecords.map(item => ({ ...item, sample: false, demo: true })) : Array.isArray(stored) ? stored : Array.isArray(legacyStored) ? legacyStored.map(item => ({ ...item, caffeineMg: null, volumeMl: null, legacyMgEstimate: Math.round((Number(item.mg) || 0) * (Number(item.quantity) || 0)) })) : demoRecords;
+        let isSample = demoMode || (!Array.isArray(stored) && !Array.isArray(legacyStored));
+        if (!demoMode && !Array.isArray(stored) && Array.isArray(legacyStored)) localStorage.setItem(storeKey, JSON.stringify(records));
+        let sleepEntries = demoMode ? demoSleepEntries : storedSleep && typeof storedSleep === 'object' && !Array.isArray(storedSleep) ? storedSleep : {};
+        if (!demoMode && !storedSleep) {
+            records.filter(item => !item.sample && item.sleepQuality != null).forEach(item => {
+                if (sleepEntries[item.date]) return;
+                const oldFactors = item.factors || {};
+                sleepEntries[item.date] = {
+                    date: item.date, onsetTime: '', plannedBedtime: '', latencyMinutes: null, totalSleepHours: null, napMinutes: null, noCaffeine: false, sleepQualityReported: false, effectReported: false,
+                    sleepQuality: item.sleepQuality, effect: item.effect ?? 70, migrated: true,
+                    factors: {
+                        stress: oldFactors.stress == null ? 'unknown' : oldFactors.stress ? 'yes' : 'no',
+                        alcohol: oldFactors.alcohol == null ? 'unknown' : oldFactors.alcohol ? 'yes' : 'no',
+                        hangover: 'unknown', unwell: oldFactors.unwell == null ? 'unknown' : oldFactors.unwell ? 'yes' : 'no',
+                        lateNap: 'unknown', screen: 'unknown'
+                    }
+                };
+            });
+            if (Object.keys(sleepEntries).length) localStorage.setItem(sleepStoreKey, JSON.stringify(sleepEntries));
+        }
+        let selectedDate = demoMode ? demoDateKey : validDateString(localStorage.getItem(selectedDateKey)) ? localStorage.getItem(selectedDateKey) : todayKey;
+        let alertSensitivity = demoMode ? 'standard' : localStorage.getItem(sensitivityKey) || 'standard';
+        if (!alertProfiles[alertSensitivity]) alertSensitivity = 'standard';
         const $ = (selector, root = document) => root.querySelector(selector);
         const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
         const modal = $('#recordModal');
         const toast = $('#toast');
+        let sleepTouched = false;
+        let sleepQualityTouched = false;
+        let effectTouched = false;
+        let noCaffeineTouched = false;
 
         function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
         function dayTotal(date) { return records.filter(item => item.date === date && item.caffeineMg !== null && item.caffeineMg !== undefined && Number.isFinite(Number(item.caffeineMg))).reduce((sum, item) => sum + Number(item.caffeineMg), 0); }
         function dayRecords(date) { return records.filter(item => item.date === date).sort((a, b) => a.time.localeCompare(b.time)); }
-        function formatNumber(value) { return Number(value || 0).toLocaleString('ko-KR'); }
+        function formatNumber(value) { return Number(value || 0).toLocaleString('ko-KR', { maximumFractionDigits: 2 }); }
         function prettyDate(date) { const d = new Date(date + 'T12:00:00'); return new Intl.DateTimeFormat('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' }).format(d); }
         function showToast(message) { toast.textContent = message; toast.classList.add('show'); clearTimeout(showToast.timer); showToast.timer = setTimeout(() => toast.classList.remove('show'), 2800); }
         function iconCup() { return '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 8h12l-1 10H7L5 8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M17 10h1.4a2.1 2.1 0 0 1 0 4.2h-1.8M8 5c0 1 .8 1.1.8 2.1M12 5c0 1 .8 1.1.8 2.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>'; }
+        function warningState(total) {
+            const profile = alertProfiles[alertSensitivity];
+            const thresholds = [profile.first, profile.second, profile.third, 600];
+            const stage = total >= 600 ? 4 : total >= profile.third ? 3 : total >= profile.second ? 2 : total >= profile.first ? 1 : 0;
+            return { stage, next: thresholds.find(value => total < value) || null };
+        }
+
+        function renderCaffeineWarning(total) {
+            const state = warningState(total);
+            const warnings = [
+                ['😀', '섭취 기록 확인 중', '개인에 따라 카페인 반응은 다를 수 있어요.'],
+                ['👽', '민감도 알림 단계', '설정한 민감도 기준에 도달했어요. 음료의 카페인 함량을 확인해요.'],
+                ['🤢', '주의 단계', '오늘 섭취량이 늘고 있어요. 더 마시기 전 잠시 멈춰 확인하세요.'],
+                ['😥', '높은 섭취 단계', '오늘은 추가 섭취를 피하고 몸 상태를 살펴보세요.'],
+                ['💀', '600mg 이상 · 고섭취 경고', '과다 섭취는 위험할 수 있어요. 더 마시지 마세요. 심한 두근거림·구토·흉통 등 증상이 있으면 주변에 알리고 의료 도움을 받으세요.']
+            ];
+            const [emoji, title, message] = warnings[state.stage];
+            $('#caffeineWarning').className = `warning-mascot stage-${state.stage}`;
+            $('#warningEmoji').textContent = emoji;
+            $('#warningEmoji').setAttribute('aria-label', title);
+            $('#warningTitle').textContent = title;
+            $('#warningMessage').textContent = message;
+            $('#warningThresholdText').textContent = state.next ? `다음 알림 ${formatNumber(state.next)}mg` : '최고 경고 단계';
+        }
         function updateDate() {
             const date = new Date(selectedDate + 'T12:00:00');
+            const isCurrentViewDate = demoMode ? selectedDate === demoDateKey : selectedDate === todayKey;
             $('#selectedDate').value = selectedDate;
             $('#todayDate').textContent = new Intl.DateTimeFormat('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' }).format(date);
-            $('#dailyTitle').textContent = selectedDate === todayKey ? '오늘 한눈에' : `${date.getMonth() + 1}월 ${date.getDate()}일 기록`;
-            $('#logTitle').textContent = `${date.getMonth() + 1}월 ${date.getDate()}일의 음료`;
+            $('#dailyTitle').textContent = isCurrentViewDate ? '오늘 한눈에' : `${date.getMonth() + 1}월 ${date.getDate()}일 기록`;
+            $('#totalCaption').textContent = isCurrentViewDate ? '오늘 기록한 카페인' : `${date.getMonth() + 1}월 ${date.getDate()}일 카페인 합계`;
         }
 
         function renderChart() {
             const labels = ['일', '월', '화', '수', '목', '금', '토'];
             const days = Array.from({ length: 7 }, (_, i) => shiftDate(selectedDate, i - 6));
             const values = days.map(dayTotal);
-            const max = Math.max(200, ...values);
-            $('#weekChart').innerHTML = days.map((day, i) => {
+            const max = Math.max(100, ...values);
+            const total = values.reduce((sum, value) => sum + value, 0);
+            const peakIndex = values.indexOf(Math.max(...values));
+            $('#weekTotal').textContent = `${formatNumber(total)} mg`;
+            $('#weekAverage').textContent = `${formatNumber(total / 7)} mg`;
+            $('#weekPeak').textContent = total ? `${prettyDate(days[peakIndex])} · ${formatNumber(values[peakIndex])} mg` : '기록 없음';
+            const bars = days.map((day, i) => {
                 const date = new Date(day + 'T12:00:00');
                 const height = values[i] ? Math.max(12, Math.round(values[i] / max * 92)) : 5;
                 const label = labels[date.getDay()];
-                return `<div class="chart-day ${day === selectedDate ? 'current' : ''}" aria-label="${prettyDate(day)} ${formatNumber(values[i])}mg"><div class="bar-area"><div class="bar ${day === selectedDate ? 'today' : ''}" style="height:${height}%" title="${formatNumber(values[i])}mg"></div></div><span>${label}</span></div>`;
+                const confirmedZero = !values[i] && sleepEntries[day]?.noCaffeine && !dayRecords(day).some(item => !item.sample);
+                const barTitle = confirmedZero ? '카페인 미섭취 확인 · 0mg' : `${formatNumber(values[i])}mg`;
+                return `<div class="chart-day ${day === selectedDate ? 'current' : ''}" aria-label="${prettyDate(day)} ${barTitle}"><div class="bar-area"><div class="bar ${day === selectedDate ? 'today' : ''} ${confirmedZero ? 'no-caffeine-confirmed' : ''}" style="height:${height}%" title="${barTitle}"></div></div><span>${label}</span></div>`;
             }).join('');
+            $('#weekChart').innerHTML = bars;
+            $('#noCaffeineLegend').hidden = !days.some(day => sleepEntries[day]?.noCaffeine && !dayRecords(day).some(item => !item.sample));
         }
 
         function renderTodayList() {
@@ -417,8 +786,191 @@
             $('#todayLogList').innerHTML = items.length ? items.map(item => {
                 const legacy = item.legacyMgEstimate != null;
                 const amount = legacy ? `${formatNumber(item.legacyMgEstimate)}mg · 이전 추정 기록` : `${formatNumber(item.volumeMl)}mL · ${formatNumber(item.caffeineMg)}mg`;
-                return `<div class="log-row"><div class="drink-icon">${iconCup()}</div><div class="drink-info"><div class="drink-name">${escapeHtml(item.name)}${item.sample ? ' <span style="color:#bca99e;font-weight:500">· 예시</span>' : ''}</div><div class="drink-detail">${amount}</div></div><span class="sleep-score">수면 ${item.sleepQuality ? item.sleepQuality + '점' : '미기록'}</span><span class="log-time">${escapeHtml(item.time)}</span></div>`;
+                const name = item.productDetails ? `${item.name} · ${item.productDetails}` : item.name;
+                return `<div class="log-row"><div class="drink-icon">${iconCup()}</div><div class="drink-info"><div class="drink-name">${escapeHtml(name)}${item.sample || item.demo ? ' <span style="color:#bca99e;font-weight:500">· 시연</span>' : ''}</div><div class="drink-detail">${amount}</div></div><span class="log-time">${escapeHtml(item.time)}</span></div>`;
             }).join('') : '<div class="empty-state">선택한 날짜에는 기록이 없어요. 날짜를 바꾸거나 기록을 추가해 보세요.</div>';
+        }
+
+        function caffeineToSleepHours(date, sleepEntry) {
+            const onsetTime = sleepOnsetTime(sleepEntry);
+            if (!onsetTime) return null;
+            const target = overnightDateTime(date, onsetTime);
+            const last = caffeineEvents().filter(event => event.at <= target && target - event.at <= 72 * 60 * 60 * 1000).sort((a, b) => b.at - a.at)[0];
+            return last ? ((target - last.at) / (60 * 60 * 1000)).toFixed(1) : null;
+        }
+
+        function overnightDateTime(date, time) {
+            if (!date || !time) return null;
+            const result = new Date(`${date}T${time}:00`);
+            if (Number(time.slice(0, 2)) < 12) result.setDate(result.getDate() + 1);
+            return result;
+        }
+
+        function addMinutesToClock(time, minutes) {
+            if (!time || !Number.isFinite(Number(minutes))) return '';
+            const [hours, mins] = time.split(':').map(Number);
+            const total = (hours * 60 + mins + Number(minutes)) % (24 * 60);
+            return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
+        }
+
+        function sleepOnsetTime(entry) {
+            if (!entry) return '';
+            if (entry.onsetTime) return entry.onsetTime;
+            if (entry.plannedBedtime && entry.latencyMinutes != null) return addMinutesToClock(entry.plannedBedtime, entry.latencyMinutes);
+            return '';
+        }
+
+        function plannedSleepDelay(date, plannedBedtime, onsetTime) {
+            const planned = overnightDateTime(date, plannedBedtime);
+            const onset = overnightDateTime(date, onsetTime);
+            if (!planned || !onset) return null;
+            const minutes = (onset - planned) / 60000;
+            return minutes >= 0 && minutes <= 600 ? Math.round(minutes) : null;
+        }
+
+        function caffeineEvents() {
+            return records.filter(item => !item.sample && item.legacyMgEstimate == null && Number.isFinite(Number(item.caffeineMg)) && item.time && item.date).map(item => ({
+                date: item.date, time: item.time, name: item.name, caffeineMg: Number(item.caffeineMg), at: new Date(`${item.date}T${item.time}:00`)
+            }));
+        }
+
+        function residualCaffeineAt(target, events = caffeineEvents()) {
+            const cutoff = target.getTime() - 72 * 60 * 60 * 1000;
+            const remaining = events.filter(event => event.at <= target && event.at.getTime() >= cutoff).map(event => {
+                const hours = (target - event.at) / (60 * 60 * 1000);
+                return { ...event, hours, remainingMg: event.caffeineMg * Math.pow(0.5, hours / 5) };
+            });
+            return { total: remaining.reduce((sum, event) => sum + event.remainingMg, 0), components: remaining };
+        }
+
+        function buildSleepObservations() {
+            const events = caffeineEvents();
+            return Object.values(sleepEntries).map(entry => {
+                const onsetTime = sleepOnsetTime(entry);
+                const reportedSleepQuality = entry.sleepQualityReported === true && entry.sleepQuality != null ? Number(entry.sleepQuality) : null;
+                if (!onsetTime || (reportedSleepQuality == null && entry.totalSleepHours == null && entry.latencyMinutes == null && !entry.plannedBedtime)) return null;
+                const exactToday = events.some(event => event.date === entry.date);
+                const hasExposureRecord = exactToday || Boolean(entry.noCaffeine);
+                const target = overnightDateTime(entry.date, onsetTime);
+                if (!target) return null;
+                const residual = hasExposureRecord ? residualCaffeineAt(target, events) : null;
+                const reportedLatency = entry.latencyMinutes != null && Number.isFinite(Number(entry.latencyMinutes));
+                const latency = reportedLatency ? Number(entry.latencyMinutes) : plannedSleepDelay(entry.date, entry.plannedBedtime, onsetTime);
+                return {
+                    date: entry.date,
+                    residualMg: residual?.total ?? null,
+                    components: residual?.components || [],
+                    latencyMinutes: latency,
+                    latencySource: reportedLatency ? entry.latencySource || 'reported' : latency == null ? null : 'schedule',
+                    sleepQuality: reportedSleepQuality,
+                    totalSleepHours: entry.totalSleepHours == null ? null : Number(entry.totalSleepHours),
+                    napMinutes: entry.napMinutes == null ? null : Number(entry.napMinutes),
+                    factors: entry.factors || {},
+                    hasExposureRecord,
+                    noCaffeine: Boolean(entry.noCaffeine && !exactToday),
+                    plannedBedtime: entry.plannedBedtime || '',
+                    onsetTime
+                };
+            }).filter(Boolean).sort((a, b) => a.date.localeCompare(b.date));
+        }
+
+        function invertMatrix(matrix) {
+            const size = matrix.length;
+            const work = matrix.map((row, i) => [...row, ...Array.from({ length: size }, (_, j) => i === j ? 1 : 0)]);
+            for (let column = 0; column < size; column++) {
+                let pivot = column;
+                for (let row = column + 1; row < size; row++) if (Math.abs(work[row][column]) > Math.abs(work[pivot][column])) pivot = row;
+                if (Math.abs(work[pivot][column]) < 1e-10) return null;
+                [work[column], work[pivot]] = [work[pivot], work[column]];
+                const divisor = work[column][column];
+                for (let j = 0; j < size * 2; j++) work[column][j] /= divisor;
+                for (let row = 0; row < size; row++) {
+                    if (row === column) continue;
+                    const factor = work[row][column];
+                    for (let j = 0; j < size * 2; j++) work[row][j] -= factor * work[column][j];
+                }
+            }
+            return work.map(row => row.slice(size));
+        }
+
+        function fitAdaptiveModel(sourceRows, minimumRows = 8) {
+            const rows = sourceRows.filter(row => Number.isFinite(row.latencyMinutes) && Number.isFinite(row.residualMg));
+            if (rows.length < minimumRows) return null;
+            const exposures = rows.map(row => row.residualMg / 100);
+            const exposureRange = Math.max(...rows.map(row => row.residualMg)) - Math.min(...rows.map(row => row.residualMg));
+            if (exposureRange < 50) return null;
+            const candidates = [];
+            const binaryFactors = [
+                ['stress', '스트레스'], ['alcohol', '음주'], ['hangover', '숙취'], ['unwell', '몸 상태'], ['screen', '취침 전 화면']
+            ];
+            const minimumKnown = Math.max(5, Math.ceil(rows.length * .7));
+            for (const [key, label] of binaryFactors) {
+                const known = rows.map(row => row.factors[key]).filter(value => value === 'yes' || value === 'no');
+                const yes = known.filter(value => value === 'yes').length;
+                const no = known.length - yes;
+                if (known.length < minimumKnown || yes < 2 || no < 2) continue;
+                const mean = yes / known.length;
+                candidates.push({ key, label, unit: '예와 아니요 비교', coverage: known.length, values: rows.map(row => row.factors[key] === 'yes' ? 1 : row.factors[key] === 'no' ? 0 : mean) });
+            }
+            const naps = rows.map(row => row.napMinutes);
+            const knownNaps = naps.filter(Number.isFinite);
+            if (knownNaps.length >= minimumKnown && Math.max(...knownNaps) - Math.min(...knownNaps) >= 15) {
+                const mean = knownNaps.reduce((sum, value) => sum + value, 0) / knownNaps.length;
+                candidates.push({ key: 'napMinutes', label: '낮잠 시간', unit: '분당이 아닌 30분 증가 기준', coverage: knownNaps.length, values: naps.map(value => Number.isFinite(value) ? value / 30 : mean / 30) });
+            }
+            candidates.sort((a, b) => b.coverage - a.coverage);
+            const selectedFactors = candidates.slice(0, Math.max(0, rows.length - 6));
+            const features = [{ key: 'residualMg', label: '잔여 카페인', unit: '100mg 증가', coverage: rows.length, values: exposures }, ...selectedFactors];
+            const x = rows.map((_, index) => [1, ...features.map(feature => feature.values[index])]);
+            const y = rows.map(row => row.latencyMinutes);
+            const parameterCount = x[0].length;
+            if (rows.length < parameterCount + 4) return null;
+            const normal = Array.from({ length: parameterCount }, () => Array(parameterCount).fill(0));
+            const right = Array(parameterCount).fill(0);
+            for (let i = 0; i < rows.length; i++) {
+                for (let j = 0; j < parameterCount; j++) {
+                    right[j] += x[i][j] * y[i];
+                    for (let k = 0; k < parameterCount; k++) normal[j][k] += x[i][j] * x[i][k];
+                }
+            }
+            for (let i = 1; i < parameterCount; i++) normal[i][i] += .05;
+            const inverse = invertMatrix(normal);
+            if (!inverse) return null;
+            const coefficients = inverse.map(row => row.reduce((sum, value, i) => sum + value * right[i], 0));
+            const residuals = x.map((row, i) => y[i] - row.reduce((sum, value, j) => sum + value * coefficients[j], 0));
+            const degrees = rows.length - parameterCount;
+            const variance = residuals.reduce((sum, value) => sum + value * value, 0) / degrees;
+            const estimates = features.map((feature, i) => {
+                const index = i + 1;
+                const standardError = Math.sqrt(Math.max(0, variance * inverse[index][index]));
+                return { ...feature, estimate: coefficients[index], low: coefficients[index] - 1.96 * standardError, high: coefficients[index] + 1.96 * standardError };
+            });
+            const contextKeys = ['stress', 'alcohol', 'hangover', 'unwell', 'screen'];
+            const contextComparableCount = rows.filter(row => contextKeys.filter(key => row.factors[key] === 'yes' || row.factors[key] === 'no').length >= 3).length;
+            return { n: rows.length, exposureRange, contextComparableCount, features: estimates, caffeine: estimates[0], rows };
+        }
+
+        function renderSleepSummary() {
+            const entry = sleepEntries[selectedDate];
+            const drinks = dayRecords(selectedDate);
+            const realDrinks = drinks.filter(item => !item.sample && item.legacyMgEstimate == null);
+            $('#dailyRecordTitle').textContent = selectedDate === todayKey ? '오늘의 기록' : `${prettyDate(selectedDate)}의 기록`;
+            $('#dailyCaffeineStatus').textContent = entry?.noCaffeine && !realDrinks.length ? '카페인 미섭취 · 0mg' : drinks.length ? `${isSample ? '예시 ' : ''}${drinks.length}건 · ${formatNumber(dayTotal(selectedDate))}mg` : '아직 카페인 기록 전';
+            const dayLabel = selectedDate === (demoMode ? demoDateKey : todayKey) ? '오늘' : '선택 날짜';
+            $('#openDailyModal').textContent = realDrinks.length || entry ? `${dayLabel} 기록 이어쓰기` : `${dayLabel} 기록 시작하기`;
+            const hasSleepResult = entry && (entry.onsetTime || entry.latencyMinutes != null || entry.totalSleepHours != null || entry.sleepQualityReported);
+            if (!hasSleepResult) {
+                $('#dailySleepStatus').textContent = entry?.noCaffeine ? '카페인 미섭취 · 다음 날 수면 기록 전' : '수면은 다음 날 이어서 기록';
+                return;
+            }
+            const gap = caffeineToSleepHours(selectedDate, entry);
+            const parts = [];
+            if (entry.sleepQualityReported && entry.sleepQuality != null) parts.push(`수면 ${entry.sleepQuality}점`);
+            if (entry.latencyMinutes != null) parts.push(`잠들기까지 ${entry.latencyMinutes}분${entry.latencySource === 'schedule' ? ' (시각 차이 추정)' : ''}`);
+            if (entry.totalSleepHours != null) parts.push(`총 ${formatNumber(entry.totalSleepHours)}시간`);
+            if ((!entry.sleepQualityReported || entry.sleepQuality == null) && entry.latencyMinutes == null && entry.totalSleepHours == null && sleepOnsetTime(entry)) parts.push(`잠든 시각 ${sleepOnsetTime(entry)}${entry.onsetTime ? '' : ' (시각 추정)'}`);
+            if (gap != null) parts.push(`마지막 카페인 후 ${gap}시간 뒤 잠듦`);
+            $('#dailySleepStatus').textContent = parts.join(' · ');
         }
 
         function renderHistory() {
@@ -426,65 +978,312 @@
             $('#historyList').innerHTML = sorted.length ? sorted.map(item => {
                 const legacy = item.legacyMgEstimate != null;
                 const caffeine = legacy ? `이전 추정 ${formatNumber(item.legacyMgEstimate)}mg` : `${formatNumber(item.caffeineMg)}mg · ${formatNumber(item.volumeMl)}mL`;
-                return `<div class="history-item"><div class="drink-info"><div class="drink-name">${escapeHtml(item.name)}${item.sample ? ' <span style="color:#bca99e;font-weight:500">· 예시</span>' : ''}</div><div class="history-meta">${prettyDate(item.date)} · ${escapeHtml(item.time)} · ${caffeine}${item.sleepQuality ? ` · 수면 ${item.sleepQuality}점` : ''}</div></div><div class="history-right"><div class="history-mg">${legacy ? `이전 추정 ${formatNumber(item.legacyMgEstimate)}mg` : `${formatNumber(item.caffeineMg)}mg`}</div>${item.sample ? '' : `<button class="delete-button" type="button" data-delete="${escapeHtml(item.id)}">삭제</button>`}</div></div>`;
+                const name = item.productDetails ? `${item.name} · ${item.productDetails}` : item.name;
+                return `<div class="history-item"><div class="drink-info"><div class="drink-name">${escapeHtml(name)}${item.sample || item.demo ? ' <span style="color:#bca99e;font-weight:500">· 시연</span>' : ''}</div><div class="history-meta">${prettyDate(item.date)} · ${escapeHtml(item.time)} · ${caffeine}</div></div><div class="history-right"><div class="history-mg">${legacy ? `이전 추정 ${formatNumber(item.legacyMgEstimate)}mg` : `${formatNumber(item.caffeineMg)}mg`}</div>${item.sample || item.demo ? '' : `<button class="delete-button" type="button" data-delete="${escapeHtml(item.id)}">삭제</button>`}</div></div>`;
             }).join('') : '<div class="empty-state">아직 기록이 없어요.</div>';
-            $('#historyToday').textContent = formatNumber(dayTotal(selectedDate));
-            $('#historyCount').textContent = dayRecords(selectedDate).length;
-            $('#sleepCount').textContent = dayRecords(selectedDate).filter(item => item.sleepQuality != null).length;
+            const sleep = sleepEntries[selectedDate];
+            $('#historyDayTitle').textContent = `${prettyDate(selectedDate)}의 음료 기록`;
+            $('#timelineCount').textContent = `${sorted.length}개 기록`;
+            $('#historySleepSummary').textContent = sleep ? $('#dailySleepStatus').textContent : '이 날짜의 수면 기록은 아직 없어요. 위의 오늘의 기록 버튼에서 이어서 추가할 수 있습니다.';
+            renderTodayList();
+        }
+
+        function renderRecommendation(observations) {
+            const latencyRows = observations.filter(row => Number.isFinite(row.latencyMinutes));
+            const directLatencyCount = latencyRows.filter(row => row.latencySource === 'reported').length;
+            const allDirectInputs = Object.values(sleepEntries).filter(entry => entry.latencyMinutes != null && Number.isFinite(Number(entry.latencyMinutes)) && entry.latencySource !== 'schedule').length;
+            const pairedLatencyRows = latencyRows.filter(row => Number.isFinite(row.residualMg));
+            const directPairedLatencyCount = pairedLatencyRows.filter(row => row.latencySource === 'reported').length;
+            const model = fitAdaptiveModel(pairedLatencyRows, 8);
+            const doseRange = pairedLatencyRows.length ? Math.max(...pairedLatencyRows.map(row => row.residualMg)) - Math.min(...pairedLatencyRows.map(row => row.residualMg)) : 0;
+            const enoughRows = model && model.n >= 12 && doseRange >= 100 && directPairedLatencyCount >= 6 && model.contextComparableCount >= 6;
+            const directionClear = enoughRows && (model.caffeine.low > 0 || model.caffeine.high < 0);
+            const contexts = model?.features.slice(1) || [];
+            const contextText = contexts.length ? contexts.map(feature => `${feature.label} ${feature.coverage}/${model.n}일`).join(' · ') : '아직 반영 가능한 방해 요인 기록이 충분하지 않아요.';
+
+            $('#latencySampleCount').textContent = `직접 입력 ${allDirectInputs}회`;
+            $('#modelConfidence').className = `model-confidence ${directionClear ? 'pattern' : model ? 'uncertain' : ''}`;
+            $('#modelConfidence').textContent = directionClear ? '관찰 경향 · 불확실성 표시' : model ? '초기 추정 · 점수 보류' : '기록 수집 중';
+            $('#insightTag').textContent = directionClear ? '개인 기록 분석' : model ? '초기 학습 중' : '기록 수집 중';
+
+            if (!model) {
+                const unpairedDirectCount = Math.max(0, allDirectInputs - directPairedLatencyCount);
+                $('#insightTitle').textContent = unpairedDirectCount ? '직접 입력은 저장됐어요. 날짜와 수면 시각을 연결해 주세요' : latencyRows.length < 8 ? '수면 기록을 더 모으고 있어요' : '섭취량 차이가 더 필요해요';
+                $('#insightText').textContent = `잠복 시간 직접 입력 ${allDirectInputs}회 · 카페인 또는 미섭취(0mg) 기록과 연결된 수면 기록 ${pairedLatencyRows.length}회입니다. 연결 기록 12회와 충분한 잔여량 차이가 모일 때까지 민감도 점수는 표시하지 않습니다.`;
+                $('#insightCount').textContent = `직접 입력 ${allDirectInputs}회 · 카페인 연결 ${pairedLatencyRows.length}/12회`;
+                $('#modelBasis').textContent = `잠든 시각과 잠복 시간을 직접 기록했어도 같은 날짜의 카페인 음료 기록이나 '카페인 미섭취' 표시가 없으면 잔여량을 계산할 수 없습니다. 직접 입력 기록과 카페인에 연결된 수면 기록을 따로 집계합니다. 현재 직접 입력 ${allDirectInputs}회, 연결 기록 ${pairedLatencyRows.length}회입니다.`;
+                $('#modelFactors').innerHTML = '<div class="model-chart-empty"><strong>가중치 계산 전</strong><span>기록이 더 쌓이면 카페인과 비교 가능한 수면 요인의 계수를 데이터에서 학습합니다.</span></div>';
+            } else if (!directionClear) {
+                const intervalText = `${formatNumber(model.caffeine.low)}~${formatNumber(model.caffeine.high)}분 / 100mg`;
+                const reason = model.n < 12 ? `카페인과 연결된 기록 ${model.n}/12회입니다.` : doseRange < 100 ? `잔여 카페인 범위가 ${formatNumber(doseRange)}mg으로 좁습니다.` : directPairedLatencyCount < 6 ? `카페인과 연결된 직접 입력 잠복 시간이 ${directPairedLatencyCount}/6회입니다.` : model.contextComparableCount < 6 ? `수면 방해 요인을 3개 이상 기록한 날이 ${model.contextComparableCount}/6일입니다.` : `모델 범위 ${intervalText}가 0을 포함합니다.`;
+                $('#insightTitle').textContent = model.n < 12 ? '초기 추정 단계 · 민감도 점수는 아직 보류해요' : doseRange < 100 ? '카페인 잔여량 차이가 더 필요해요' : directPairedLatencyCount < 6 ? '직접 입력 기록을 카페인 기록과 더 연결해 주세요' : model.contextComparableCount < 6 ? '수면 방해 요인 기록이 더 필요해요' : '현재 기록으로는 영향 방향이 뚜렷하지 않아요';
+                $('#insightText').textContent = `${reason} 기준을 충족하기 전에는 하나의 정확한 민감도 점수로 단정하지 않습니다.`;
+                $('#insightCount').textContent = `비교 ${model.n}회 · 직접 입력 연결 ${directPairedLatencyCount}/6회 · 요인 비교 ${model.contextComparableCount}/6일`;
+                $('#modelBasis').textContent = `현재 모델에 포함된 비교 요인: ${contextText}. 모름·미입력은 '아니요'로 간주하지 않고, 알려진 응답의 평균으로만 보정합니다. 불확실성 범위가 0을 포함해 방향은 아직 미확정입니다.`;
+                $('#modelFactors').innerHTML = `<div class="model-chart-empty"><strong>민감도 점수 미확정</strong><span>근사 범위 ${intervalText}. 새 기록에 따라 추정치와 범위가 달라질 수 있습니다.</span></div>`;
+            } else {
+                const estimate = model.caffeine.estimate;
+                const intervalText = `${formatNumber(model.caffeine.low)}~${formatNumber(model.caffeine.high)}분 / 100mg`;
+                const direction = estimate > 0 ? '더 오래 걸리는' : '더 짧아지는';
+                $('#insightTitle').textContent = `잔여 카페인 +100mg과 잠들기까지 ${formatNumber(Math.abs(estimate))}분 ${direction} 경향`;
+                $('#insightText').textContent = `분석 기록 ${model.n}회, 직접 입력 잠복 시간 ${allDirectInputs}회, 근사 95% 범위 ${intervalText}. ${contexts.length ? `${contexts.length}개 수면 요인을 함께 보정했습니다.` : '수면 방해 요인 보정은 아직 충분하지 않습니다.'} 개인 기록의 연관성이며 인과관계나 의학적 권고는 아닙니다.`;
+                $('#insightCount').textContent = `${model.n}회 비교 · 직접 입력 ${directLatencyCount}회 · 잔여량 범위 ${formatNumber(doseRange)}mg`;
+                $('#modelBasis').textContent = `잠들기까지 걸린 시간을 결과값으로 두고, 잠들 때 남은 카페인(100mg 단위)과 비교 가능한 수면 요인을 회귀 모델로 함께 맞췄습니다. 직접 입력 잠복 시간 ${directPairedLatencyCount}회, 방해 요인 3개 이상이 기록된 날 ${model.contextComparableCount}회입니다. 반영 요인: ${contextText}. 계수는 정해두지 않고 새 기록이 저장될 때마다 다시 계산합니다.`;
+                $('#modelFactors').innerHTML = model.features.map(feature => {
+                    const range = `${formatNumber(feature.low)}~${formatNumber(feature.high)}`;
+                    const label = feature.key === 'residualMg' ? '잔여 카페인 +100mg' : feature.label;
+                    const unit = feature.key === 'napMinutes' ? ' / 30분' : feature.key === 'residualMg' ? ' / 100mg' : ' / 예 대 아니요';
+                    const crossesZero = feature.low <= 0 && feature.high >= 0;
+                    return `<div class="model-factor-row"><span>${label} <small>${feature.coverage}/${model.n}일</small></span><strong class="${crossesZero ? 'not-estimated' : ''}">${crossesZero ? '불확실 · ' : ''}${range}분${unit}</strong></div>`;
+                }).join('');
+            }
+            return { model, latencyRows, directionClear };
+        }
+
+        function chartEmpty(title, message) {
+            return `<div class="model-chart-empty"><strong>${title}</strong><span>${message}</span></div>`;
+        }
+
+        function renderDecayChart() {
+            const events = caffeineEvents();
+            const start = new Date(`${selectedDate}T00:00:00`);
+            const end = new Date(start.getTime() + 36 * 60 * 60 * 1000);
+            const relevant = events.filter(event => event.at <= end && event.at >= new Date(start.getTime() - 72 * 60 * 60 * 1000));
+            if (!relevant.length) {
+                $('#decayChart').innerHTML = chartEmpty('아직 잔여량을 그릴 기록이 없어요', '카페인을 마시지 않은 날도 표시하면 이전 날짜의 잔여량과 비교할 수 있어요.');
+                $('#decaySummary').textContent = '음료 기록은 72시간까지 반영합니다.';
+                return;
+            }
+            const points = Array.from({ length: 13 }, (_, i) => {
+                const at = new Date(start.getTime() + i * 3 * 60 * 60 * 1000);
+                return { at, mg: residualCaffeineAt(at, events).total };
+            });
+            const maxMg = Math.max(50, Math.ceil(Math.max(...points.map(point => point.mg)) / 50) * 50);
+            const width = 400, height = 205, left = 42, right = 12, top = 14, bottom = 33;
+            const plotW = width - left - right, plotH = height - top - bottom;
+            const x = index => left + plotW * index / (points.length - 1);
+            const y = mg => top + plotH * (1 - mg / maxMg);
+            const linePath = points.map((point, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(point.mg).toFixed(1)}`).join(' ');
+            const areaPath = `${linePath} L${x(points.length - 1)},${top + plotH} L${left},${top + plotH} Z`;
+            const grid = [0, .5, 1].map(fraction => {
+                const yPos = top + plotH * fraction;
+                return `<line class="chart-grid-line" x1="${left}" y1="${yPos}" x2="${width - right}" y2="${yPos}"/><text class="chart-axis-label" x="${left - 8}" y="${yPos + 3}" text-anchor="end">${formatNumber(maxMg * (1 - fraction))}</text>`;
+            }).join('');
+            const xLabels = [[0, '00시'], [4, '+12h'], [8, '+24h'], [12, '+36h']].map(([index, label]) => `<text class="chart-axis-label" x="${x(index)}" y="${height - 7}" text-anchor="middle">${label}</text>`).join('');
+            const sleepEntry = sleepEntries[selectedDate];
+            const targetTime = sleepOnsetTime(sleepEntry) || sleepEntry?.plannedBedtime;
+            const target = targetTime ? overnightDateTime(selectedDate, targetTime) : null;
+            let marker = '';
+            let summary = '예상 잔여량은 제품 표시 카페인량과 5시간 반감기를 사용한 계산값입니다.';
+            if (target && target >= start && target <= end) {
+                const position = (target - start) / (3 * 60 * 60 * 1000);
+                const remaining = residualCaffeineAt(target, events).total;
+                const sleepLabel = sleepEntry?.onsetTime ? '실제 잠든' : sleepEntry?.latencyMinutes != null ? '추정 잠든' : '예정 취침';
+                marker = `<line class="chart-sleep-marker" x1="${x(position)}" y1="${top}" x2="${x(position)}" y2="${top + plotH}"/><circle class="chart-observation" cx="${x(position)}" cy="${y(remaining)}" r="5"><title>${sleepLabel} 시각 잔여량 ${formatNumber(remaining)}mg</title></circle>`;
+                summary = `${sleepLabel} 시각 ${targetTime} 기준 예상 잔여량 ${formatNumber(remaining)}mg · 전날 포함 ${relevant.length}회 섭취 반영`;
+            } else if (sleepOnsetTime(sleepEntry) || sleepEntry?.plannedBedtime) {
+                summary = '취침 시각이 그래프 범위 밖입니다. 날짜나 시각 기록을 확인해 주세요.';
+            }
+            $('#decayChart').innerHTML = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true">${grid}<path class="chart-series-area" d="${areaPath}"/><path class="chart-series" d="${linePath}"/>${marker}${xLabels}<text class="chart-axis-label" x="10" y="12">mg</text></svg>`;
+            $('#decaySummary').textContent = summary;
+        }
+
+        function renderSleepScatter(observations) {
+            const metric = $('#sleepOutcomeSelect').value;
+            const metrics = {
+                latency: { label: '잠들기까지 시간', unit: '분', value: row => row.latencyMinutes },
+                duration: { label: '총 수면 시간', unit: '시간', value: row => row.totalSleepHours },
+                quality: { label: '수면의 질', unit: '점', value: row => row.sleepQuality }
+            };
+            const selected = metrics[metric];
+            const rows = observations.filter(row => Number.isFinite(row.residualMg) && Number.isFinite(selected.value(row)));
+            if (!rows.length) {
+                const directCount = observations.filter(row => Number.isFinite(row.latencyMinutes) && row.latencySource === 'reported').length;
+                $('#sleepScatter').innerHTML = chartEmpty('비교할 수면 기록이 아직 없어요', directCount ? `잠복 시간 직접 입력 ${directCount}회는 저장됐지만 같은 날짜의 카페인 섭취 또는 0mg 확인 기록이 없어 산점도에는 아직 연결되지 않았습니다.` : '잠든 시각과 수면 지표를 기록하면 카페인 잔여량과 함께 표시합니다.');
+                $('#scatterSummary').textContent = '카페인을 마시지 않은 날은 기록에서 0mg으로 확인해 주세요.';
+                return;
+            }
+            const width = 400, height = 205, left = 45, right = 13, top = 14, bottom = 35;
+            const plotW = width - left - right, plotH = height - top - bottom;
+            const xMax = Math.max(100, Math.ceil(Math.max(...rows.map(row => row.residualMg)) / 50) * 50);
+            const rawYMax = metric === 'quality' ? 100 : Math.max(metric === 'duration' ? 8 : 30, ...rows.map(row => selected.value(row)));
+            const yMax = metric === 'quality' ? 100 : Math.ceil(rawYMax / (metric === 'duration' ? 2 : 15)) * (metric === 'duration' ? 2 : 15);
+            const x = value => left + plotW * value / xMax;
+            const y = value => top + plotH * (1 - value / yMax);
+            const grid = [0, .5, 1].map(fraction => {
+                const yPos = top + plotH * fraction;
+                return `<line class="chart-grid-line" x1="${left}" y1="${yPos}" x2="${width - right}" y2="${yPos}"/><text class="chart-axis-label" x="${left - 8}" y="${yPos + 3}" text-anchor="end">${formatNumber(yMax * (1 - fraction))}</text>`;
+            }).join('');
+            const xLabels = [0, .5, 1].map(fraction => `<text class="chart-axis-label" x="${left + plotW * fraction}" y="${height - 7}" text-anchor="middle">${formatNumber(xMax * fraction)}</text>`).join('');
+            const dots = rows.map(row => `<circle class="chart-observation ${row.noCaffeine ? 'no-caffeine' : ''}" cx="${x(row.residualMg)}" cy="${y(selected.value(row))}" r="5"><title>${prettyDate(row.date)} · 잔여 ${formatNumber(row.residualMg)}mg · ${selected.label} ${formatNumber(selected.value(row))}${selected.unit}</title></circle>`).join('');
+            const noCaffeineCount = rows.filter(row => row.noCaffeine).length;
+            $('#sleepScatter').innerHTML = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true">${grid}${dots}${xLabels}<text class="chart-axis-label" x="${left + plotW / 2}" y="${height - 20}" text-anchor="middle">잠들 때 잔여 카페인 (mg)</text></svg>`;
+            $('#scatterSummary').textContent = `${rows.length}일 표시 · 초록 점 ${noCaffeineCount}개는 카페인 미섭취일입니다. 점의 모양은 연관성을 보여줄 뿐 원인을 증명하지 않습니다.`;
+        }
+
+        function renderSensitivityTrend(observations) {
+            const rows = observations.filter(row => Number.isFinite(row.latencyMinutes));
+            const estimates = [];
+            for (let i = 0; i < rows.length; i++) {
+                const pairedPrefix = rows.slice(0, i + 1).filter(row => Number.isFinite(row.residualMg));
+                const fit = fitAdaptiveModel(pairedPrefix, 8);
+                if (fit) estimates.push({ date: rows[i].date, n: fit.n, estimate: fit.caffeine.estimate, low: fit.caffeine.low, high: fit.caffeine.high });
+            }
+            if (!estimates.length) {
+                $('#sensitivityTrend').innerHTML = chartEmpty('민감도 값은 아직 보류 중이에요', `잠들기까지 시간이 계산 가능한 기록 ${rows.length}/8회입니다. 수치 점수 대신 필요한 기록 수만 보여드려요.`);
+                return;
+            }
+            const width = 720, height = 220, left = 48, right = 16, top = 16, bottom = 34;
+            const plotW = width - left - right, plotH = height - top - bottom;
+            const values = estimates.flatMap(point => [point.low, point.high, point.estimate, 0]);
+            const minY = Math.min(-5, ...values), maxY = Math.max(5, ...values);
+            const padding = Math.max(2, (maxY - minY) * .12);
+            const min = minY - padding, max = maxY + padding;
+            const x = index => left + (estimates.length === 1 ? plotW / 2 : plotW * index / (estimates.length - 1));
+            const y = value => top + plotH * (1 - (value - min) / (max - min));
+            const upper = estimates.map((point, i) => `${i ? 'L' : 'M'}${x(i)},${y(point.high)}`).join(' ');
+            const lower = [...estimates].reverse().map((point, reverseIndex) => {
+                const i = estimates.length - 1 - reverseIndex;
+                return `L${x(i)},${y(point.low)}`;
+            }).join(' ');
+            const line = estimates.map((point, i) => `${i ? 'L' : 'M'}${x(i)},${y(point.estimate)}`).join(' ');
+            const zeroY = y(0);
+            const xLabels = estimates.map((point, i) => i === 0 || i === estimates.length - 1 || i === Math.floor(estimates.length / 2) ? `<text class="chart-axis-label" x="${x(i)}" y="${height - 8}" text-anchor="middle">${point.n}회</text>` : '').join('');
+            const latest = estimates[estimates.length - 1];
+            $('#sensitivityTrend').innerHTML = `<svg viewBox="0 0 ${width} ${height}" aria-hidden="true"><line class="chart-grid-line" x1="${left}" y1="${zeroY}" x2="${width - right}" y2="${zeroY}"/><path class="chart-confidence-band" d="${upper} ${lower} Z"/><path class="chart-trend" d="${line}"/>${estimates.map((point, i) => `<circle class="chart-observation" cx="${x(i)}" cy="${y(point.estimate)}" r="4"><title>${point.n}회 기록 · 범위 ${formatNumber(point.low)}~${formatNumber(point.high)}분/100mg</title></circle>`).join('')}${xLabels}<text class="chart-axis-label" x="12" y="12">분 / 100mg</text></svg>`;
+            $('#sensitivitySummary').textContent = `현재 ${latest.n}회 기록 · 음영은 근사 95% 범위입니다. 새 기록이 추가되면 계수와 범위가 다시 계산됩니다. 이 그래프만으로 안전 섭취량을 판단하지 않습니다.`;
+        }
+
+        function renderSleepModel() {
+            const observations = buildSleepObservations();
+            renderRecommendation(observations);
+            renderDecayChart();
+            renderSleepScatter(observations);
+            renderSensitivityTrend(observations);
+        }
+
+        function renderCalculation() {
+            const items = dayRecords(selectedDate);
+            const rows = items.map(item => {
+                if (item.legacyMgEstimate != null) return `<div class="calculation-row"><span>${escapeHtml(item.name)} · 이전 추정 기록은 정확 합계에서 제외</span><strong>${formatNumber(item.legacyMgEstimate)} mg</strong></div>`;
+                const name = item.productDetails ? `${item.name} · ${item.productDetails}` : item.name;
+                return `<div class="calculation-row"><span>${escapeHtml(name)}: ${formatNumber(item.productCaffeineMg ?? item.caffeineMg)}mg ÷ ${formatNumber(item.productVolumeMl ?? item.volumeMl)}mL × ${formatNumber(item.volumeMl)}mL</span><strong>${formatNumber(item.caffeineMg)} mg</strong></div>`;
+            }).join('');
+            const total = `<div class="calculation-row"><span>선택 날짜의 입력값 합계</span><strong>${formatNumber(dayTotal(selectedDate))} mg</strong></div>`;
+            $('#calculationBreakdown').innerHTML = `${rows || '<div class="empty-state">선택 날짜에 계산할 음료 기록이 없어요.</div>'}${items.length ? total : ''}`;
         }
 
         function renderInsights() {
-            const observed = records.filter(item => !item.sample && item.sleepQuality != null);
-            const factorNames = { stress: '평소보다 높은 스트레스', alcohol: '음주 또는 숙취', unwell: '몸이 아프거나 불편함', routine: '늦은 낮잠 또는 취침 전 화면' };
+            const observed = Object.values(sleepEntries).filter(item => item.sleepQualityReported === true && item.sleepQuality != null);
+            const contextual = Object.values(sleepEntries).filter(item => item.onsetTime || item.latencyMinutes != null || item.totalSleepHours != null || item.sleepQualityReported === true);
+            const factorNames = { stress: '평소보다 높은 스트레스', alcohol: '취침 전 24시간 내 음주', hangover: '다음 날 숙취', unwell: '몸이 아프거나 통증', screen: '취침 전 화면 사용' };
             const factorEntries = Object.keys(factorNames).map(key => {
-                const yes = observed.filter(item => item.factors && item.factors[key]).length;
-                const no = observed.filter(item => item.factors && !item.factors[key]).length;
-                return `<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #f1ebe6;font-size:11px"><span style="color:#6f635a">${factorNames[key]}</span><span style="color:#93877e;white-space:nowrap">예 ${yes}회 · 아니요 ${no}회</span></div>`;
+                const yes = contextual.filter(item => item.factors && item.factors[key] === 'yes').length;
+                const no = contextual.filter(item => item.factors && item.factors[key] === 'no').length;
+                const unknown = contextual.filter(item => !item.factors || item.factors[key] === 'unknown').length;
+                return `<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #f1ebe6;font-size:11px"><span style="color:#6f635a">${factorNames[key]}</span><span style="color:#93877e;white-space:nowrap">예 ${yes}회 · 아니요 ${no}회 · 모름 ${unknown}회</span></div>`;
             }).join('');
-            $('#factorSummary').innerHTML = factorEntries || '<div class="empty-state">수면 평가와 동반 요인을 기록하면 여기에 모아 보여드려요.</div>';
+            const napRows = contextual.filter(item => item.napMinutes != null);
+            const noCaffeine = contextual.filter(item => item.noCaffeine).length;
+            const napAverage = napRows.length ? napRows.reduce((sum, item) => sum + Number(item.napMinutes), 0) / napRows.length : null;
+            const effectRows = Object.values(sleepEntries).filter(item => item.effectReported === true && item.effect != null);
+            const effectAverage = effectRows.length ? effectRows.reduce((sum, item) => sum + Number(item.effect), 0) / effectRows.length : null;
+            $('#focusEffectSummary').textContent = effectAverage == null ? '집중 효과 만족도는 아직 기록이 없어요. 이 값은 수면 민감도 계산과 별도로 요약합니다.' : `집중 효과 만족도 평균 ${formatNumber(effectAverage)}점 · 기록 ${effectRows.length}회. 수면 민감도 분석과는 별도로 집계합니다.`;
+            const extraFactors = `<div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #f1ebe6;font-size:11px"><span style="color:#6f635a">카페인 미섭취일</span><span style="color:#93877e;white-space:nowrap">${noCaffeine}회</span></div><div style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid #f1ebe6;font-size:11px"><span style="color:#6f635a">낮잠 시간 기록</span><span style="color:#93877e;white-space:nowrap">${napRows.length ? `${formatNumber(napAverage)}분 평균 · ${napRows.length}회` : '기록 없음'}</span></div>`;
+            $('#factorSummary').innerHTML = contextual.length ? `${factorEntries}${extraFactors}` : '<div class="empty-state">수면 평가와 동반 요인을 기록하면 여기에 모아 보여드려요.</div>';
             if (observed.length < 5) {
-                const message = `수면 평가가 입력된 나의 기록 ${observed.length}회 · 패턴을 살펴보려면 기록을 더 모아주세요.`;
                 $('#detailInsightTag').textContent = observed.length ? '기록 수집 중' : '기록 수집 전';
-                $('#detailInsightTitle').textContent = observed.length ? '조금 더 기록하면 나만의 비교가 가능해요' : '아직은 개인 패턴을 계산하기 어려워요';
-                $('#detailInsightText').textContent = `${message} 현재 화면의 샘플 기록은 분석에서 제외됩니다. 충분한 기록이 쌓이기 전에는 개인 권고량이나 취침 전 제한 시간을 정하지 않아요.`;
-                $('#insightTag').textContent = isSample ? '샘플 패턴' : '기록 수집 중';
-                $('#insightTitle').textContent = isSample ? '조금씩 쌓이면 패턴이 보여요' : '나의 기록을 모으고 있어요';
-                $('#insightText').textContent = isSample ? '수면 기록과 스트레스·숙취 같은 조건을 함께 남겨 보세요. 기록이 쌓이면 내 기록에서 관찰된 경향을 확인할 수 있어요.' : '수면 점수와 함께 스트레스·숙취 같은 조건을 기록해 주세요. 지금은 개인별 추천을 만들기에는 기록이 부족해요.';
-                $('#insightCount').textContent = isSample ? '현재 예시 기록 4일' : `수면 기록 ${observed.length}회`;
+                $('#detailInsightTitle').textContent = observed.length ? '조금 더 기록하면 경향을 살펴볼 수 있어요' : '아직 비교할 수면 기록이 없어요';
+                $('#detailInsightText').textContent = `수면 기록 ${observed.length}회입니다. 동반 요인 수치는 기록 현황일 뿐 원인이나 진단을 뜻하지 않습니다.`;
             } else {
-                const avgGood = observed.reduce((sum, item) => sum + item.sleepQuality, 0) / observed.length;
-                const withStress = observed.filter(item => item.factors && item.factors.stress);
-                const withoutStress = observed.filter(item => item.factors && !item.factors.stress);
-                let insight = `최근 기록 ${observed.length}회에서 수면 점수 평균은 ${Math.round(avgGood)}점이에요. 이 결과는 개인의 기록을 요약한 것이며 의학적 권고가 아닙니다.`;
-                if (withStress.length >= 2 && withoutStress.length >= 2) {
-                    const a = withStress.reduce((sum, item) => sum + item.sleepQuality, 0) / withStress.length;
-                    const b = withoutStress.reduce((sum, item) => sum + item.sleepQuality, 0) / withoutStress.length;
-                    insight += ` 스트레스 '예' 기록의 평균은 ${Math.round(a)}점, '아니요' 기록은 ${Math.round(b)}점으로 나타났어요.`;
-                }
-                $('#detailInsightTag').textContent = '내 기록 요약';
-                $('#detailInsightTitle').textContent = '기록에서 보이는 경향';
-                $('#detailInsightText').textContent = insight;
-                $('#insightTag').textContent = '내 기록';
-                $('#insightTitle').textContent = '나의 수면 기록 요약';
-                $('#insightText').textContent = insight;
-                $('#insightCount').textContent = `수면 기록 ${observed.length}회`;
+                const average = observed.reduce((sum, item) => sum + Number(item.sleepQuality), 0) / observed.length;
+                $('#detailInsightTag').textContent = '기록 요약';
+                $('#detailInsightTitle').textContent = `연결된 수면 기록 ${observed.length}회의 평균 점수 ${Math.round(average)}점`;
+                $('#detailInsightText').textContent = '이 요약은 사용자가 입력한 기록을 모아 보여줍니다. 카페인이나 다른 요인이 수면 변화의 원인이라고 단정하지 않습니다.';
             }
         }
 
         function render() {
             updateDate();
+            document.body.classList.toggle('demo-mode', demoMode);
+            $('#demoBanner').hidden = !demoMode;
+            $('#demoModeToggle').textContent = demoMode ? '내 기록 보기' : '시연 모드';
+            $('#selectedDate').disabled = demoMode;
+            $('#openDailyModal').disabled = demoMode;
+            $('#alertSensitivity').disabled = demoMode;
+            $('#personalDataManagement').hidden = demoMode;
             const total = dayTotal(selectedDate);
             $('#todayMg').textContent = formatNumber(total);
-            $('#limitText').textContent = alertLimit;
-            const ratio = Math.min(total / alertLimit, 1);
-            $('#progressRing').style.strokeDashoffset = String(408.4 * (1 - ratio));
-            $('#progressRing').style.stroke = total >= alertLimit ? '#b64f43' : '#bb6a57';
+            $('#dailyDrinkCount').textContent = `${dayRecords(selectedDate).length}개 음료 기록`;
+            const selectedRealDrinks = records.filter(item => item.date === selectedDate && !item.sample && !item.demo);
+            $('#resetSelectedDay').hidden = demoMode || (!selectedRealDrinks.length && !sleepEntries[selectedDate]);
+            $('#resetSelectedDayLabel').textContent = selectedDate === (demoMode ? demoDateKey : todayKey) ? '오늘 기록 초기화' : '선택 날짜 기록 초기화';
+            $('#alertSensitivity').value = alertSensitivity;
+            renderCaffeineWarning(total);
             const oldEstimates = dayRecords(selectedDate).filter(item => item.legacyMgEstimate != null).reduce((sum, item) => sum + item.legacyMgEstimate, 0);
-            $('#sampleNotice').textContent = isSample ? '화면 예시를 위한 샘플 기록입니다. 실제 기록은 제품 표시값의 mg를 입력해 정확히 합산하세요.' : oldEstimates ? `선택한 날짜의 정확 입력 합계는 ${formatNumber(total)}mg입니다. 기존 추정 기록 ${formatNumber(oldEstimates)}mg은 정확한 합계에서 제외했어요.` : '합계는 입력한 제품 표시값의 mg만 더합니다. 알림 기준은 의학적 권고량이 아니에요.';
-            renderChart(); renderTodayList(); renderHistory(); renderInsights();
+            $('#sampleNotice').textContent = demoMode ? '가상 시연 기록입니다. 실제 개인 기록이나 권고 결과가 아니며, 개인 저장 데이터는 변경하지 않습니다.' : isSample ? '샘플 데이터입니다. 실제 기록은 제품 표시량을 바탕으로 계산해요.' : oldEstimates ? `이전 추정 기록 ${formatNumber(oldEstimates)}mg은 정확 합계에서 제외했습니다.` : '민감도는 알림 시점만 바꾸며, 안전 섭취량을 뜻하지 않습니다.';
+            renderChart(); renderCalculation(); renderSleepSummary(); renderHistory(); renderInsights(); renderSleepModel();
         }
 
-        function openModal() { $('#drinkDate').value = selectedDate; $('#drinkTime').value = new Date().toTimeString().slice(0, 5); modal.classList.add('open'); document.body.style.overflow = 'hidden'; setTimeout(() => $('#drinkSelect').focus(), 20); }
+        function calculateCaffeine() {
+            if (['packageVolumeMl', 'labelCaffeineMg', 'volumeMl'].some(id => $(`#${id}`).value === '')) return null;
+            const packageVolume = Number($('#packageVolumeMl').value);
+            const packageCaffeine = Number($('#labelCaffeineMg').value);
+            const consumedVolume = Number($('#volumeMl').value);
+            if (packageVolume <= 0 || packageCaffeine < 0 || consumedVolume <= 0 || !Number.isFinite(packageVolume + packageCaffeine + consumedVolume)) return null;
+            return Number((packageCaffeine * consumedVolume / packageVolume).toFixed(2));
+        }
+        function updateCaffeinePreview() {
+            const amount = calculateCaffeine();
+            $('#caffeinePreview').textContent = amount == null ? '제품 정보를 입력해 주세요' : `${formatNumber(amount)} mg`;
+        }
+        function openModal() {
+            if (demoMode) { showToast('공통 시연 화면은 보기 전용입니다. 내 기록으로 돌아가면 기록을 추가할 수 있어요.'); return; }
+            const form = $('#recordForm');
+            const hasCaffeine = dayRecords(selectedDate).some(item => !item.sample && item.legacyMgEstimate == null);
+            const sleepEntry = sleepEntries[selectedDate];
+            const savedSleep = Boolean(sleepEntry && (sleepEntry.onsetTime || sleepEntry.latencyMinutes != null || sleepEntry.totalSleepHours != null || sleepEntry.sleepQualityReported || sleepEntry.effectReported));
+            form.reset();
+            $('#drinkDate').value = selectedDate;
+            $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
+            $('#customFields').classList.remove('show');
+            $('#customName').required = false;
+            $('#noCaffeine').checked = Boolean(sleepEntry?.noCaffeine);
+            $('#caffeineFields').open = !hasCaffeine && !sleepEntry?.noCaffeine;
+            $('#sleepFields').open = hasCaffeine || savedSleep || Boolean(sleepEntry?.noCaffeine);
+            $('#sleepQuality').value = 50;
+            $('#effect').value = 50;
+            $('#sleepQualityOut').textContent = '미기록';
+            $('#effectOut').textContent = '미기록';
+            sleepTouched = savedSleep;
+            sleepQualityTouched = false;
+            effectTouched = false;
+            noCaffeineTouched = Boolean(sleepEntry?.noCaffeine);
+            if (sleepEntry) {
+                $('#plannedBedtime').value = sleepEntry.plannedBedtime || '';
+                $('#sleepOnset').value = sleepEntry.onsetTime || '';
+                $('#sleepLatency').value = sleepEntry.latencyMinutes ?? '';
+                $('#totalSleepHours').value = sleepEntry.totalSleepHours ?? '';
+                $('#napMinutes').value = sleepEntry.napMinutes ?? '';
+                if (sleepEntry.sleepQualityReported && sleepEntry.sleepQuality != null) {
+                    $('#sleepQuality').value = sleepEntry.sleepQuality;
+                    $('#sleepQualityOut').textContent = `${sleepEntry.sleepQuality}점`;
+                    sleepQualityTouched = true;
+                }
+                if (sleepEntry.effectReported && sleepEntry.effect != null) {
+                    $('#effect').value = sleepEntry.effect;
+                    $('#effectOut').textContent = `${sleepEntry.effect}점`;
+                    effectTouched = true;
+                }
+                Object.entries(sleepEntry.factors || {}).forEach(([key, value]) => {
+                    const radio = $(`input[name="${key}"][value="${value}"]`, form);
+                    if (radio) radio.checked = true;
+                });
+            }
+            updateCaffeinePreview();
+            modal.classList.add('open'); document.body.style.overflow = 'hidden';
+            setTimeout(() => (hasCaffeine || savedSleep || sleepEntry?.noCaffeine ? $('#sleepOnset') : $('#drinkSelect')).focus(), 20);
+        }
         function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
         function switchView(view) {
             $('#dashboardView').classList.toggle('hide', view !== 'today');
@@ -494,7 +1293,17 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        $$('.open-modal').forEach(button => button.addEventListener('click', openModal));
+        $('#openDailyModal').addEventListener('click', openModal);
+        $('#demoModeToggle').addEventListener('click', () => {
+            const url = new URL(window.location.href);
+            if (demoMode) url.searchParams.delete('demo');
+            else url.searchParams.set('demo', '1');
+            window.location.href = url.toString();
+        });
+        $('#copyDemoLink').addEventListener('click', async () => {
+            try { await navigator.clipboard.writeText(window.location.href); showToast('공통 시연 링크를 복사했어요. 팀원에게 공유해 보세요.'); }
+            catch (_) { showToast('주소창의 시연 링크에 ?demo=1이 포함되어 있는지 확인해 공유해 주세요.'); }
+        });
         $('#closeModal').addEventListener('click', closeModal);
         $('#cancelModal').addEventListener('click', closeModal);
         modal.addEventListener('click', event => { if (event.target === modal) closeModal(); });
@@ -505,50 +1314,140 @@
             $('#customFields').classList.toggle('show', custom);
             $('#customName').required = custom;
         });
-        [['sleepQuality', 'sleepQualityOut'], ['effect', 'effectOut']].forEach(([input, output]) => $( `#${input}`).addEventListener('input', event => { $(`#${output}`).textContent = `${event.target.value}점`; }));
+        $('#noCaffeine').addEventListener('change', event => {
+            if (event.target.checked && dayRecords($('#drinkDate').value).some(item => !item.sample)) {
+                event.target.checked = false;
+                showToast('카페인 섭취 기록이 있는 날짜는 0mg으로 표시할 수 없어요.');
+                return;
+            }
+            noCaffeineTouched = true;
+            $('#caffeineFields').open = !event.target.checked;
+        });
+        [['sleepQuality', 'sleepQualityOut'], ['effect', 'effectOut']].forEach(([input, output]) => $(`#${input}`).addEventListener('input', event => { $(`#${output}`).textContent = `${event.target.value}점`; }));
+        $('#sleepQuality').addEventListener('input', () => { sleepQualityTouched = true; });
+        $('#effect').addEventListener('input', () => { effectTouched = true; });
+        [['sleepQuality', () => { sleepQualityTouched = true; }], ['effect', () => { effectTouched = true; }]].forEach(([id, mark]) => {
+            $(`#${id}`).addEventListener('pointerdown', mark);
+            $(`#${id}`).addEventListener('keydown', mark);
+        });
+        $('#sleepFields').addEventListener('input', () => { sleepTouched = true; });
+        $('#sleepFields').addEventListener('change', () => { sleepTouched = true; });
+        $('#sleepOutcomeSelect').addEventListener('change', () => renderSleepScatter(buildSleepObservations()));
+        ['packageVolumeMl', 'labelCaffeineMg', 'volumeMl'].forEach(id => $(`#${id}`).addEventListener('input', updateCaffeinePreview));
         $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
         $('#selectedDate').addEventListener('change', event => {
             if (!event.target.value) return;
             selectedDate = event.target.value;
+            if (!demoMode) localStorage.setItem(selectedDateKey, selectedDate);
             render();
         });
-        $('#setLimit').addEventListener('click', () => {
-            const answer = window.prompt('앱 알림 기준(mg)을 입력해 주세요. 의학적 권고량이 아닌 개인 참고 설정입니다.', String(alertLimit));
-            if (answer === null) return;
-            const nextLimit = Number(answer);
-            if (!Number.isFinite(nextLimit) || nextLimit <= 0 || nextLimit > 5000) { showToast('1~5000 사이의 숫자로 입력해 주세요.'); return; }
-            alertLimit = Math.round(nextLimit);
-            localStorage.setItem(limitKey, String(alertLimit));
-            render(); showToast(`앱 알림 기준을 ${alertLimit}mg으로 변경했어요.`);
+        $('#resetSelectedDay').addEventListener('click', () => {
+            if (demoMode) return;
+            const date = selectedDate;
+            const drinkCount = records.filter(item => item.date === date && !item.sample).length;
+            const hasSleep = Boolean(sleepEntries[date]);
+            if (!drinkCount && !hasSleep) return;
+            const linkedSleep = hasSleep ? '수면·미섭취 확인 기록도 함께 삭제됩니다. ' : '';
+            const message = `${prettyDate(date)}의 음료 기록 ${drinkCount}건을 초기화할까요? ${linkedSleep}해당 날짜는 미섭취일로 처리되지 않으며, 이후 날짜의 잔여 카페인 분석도 다시 계산됩니다.`;
+            if (!window.confirm(message)) return;
+            records = records.filter(item => item.date !== date || item.sample);
+            delete sleepEntries[date];
+            localStorage.setItem(storeKey, JSON.stringify(records));
+            localStorage.setItem(sleepStoreKey, JSON.stringify(sleepEntries));
+            render();
+            showToast(`${prettyDate(date)} 기록을 초기화했어요.`);
+        });
+        $('#alertSensitivity').value = alertSensitivity;
+        $('#alertSensitivity').addEventListener('change', event => {
+            if (demoMode) return;
+            alertSensitivity = alertProfiles[event.target.value] ? event.target.value : 'standard';
+            localStorage.setItem(sensitivityKey, alertSensitivity);
+            const profile = alertProfiles[alertSensitivity];
+            render();
+            showToast(`민감도 알림: ${profile.first} / ${profile.second} / ${profile.third} / 600mg`);
         });
 
         $('#recordForm').addEventListener('submit', event => {
             event.preventDefault();
+            if (demoMode) { showToast('공통 시연 화면에서는 기록을 변경할 수 없습니다.'); return; }
             const selected = $('#drinkSelect').selectedOptions[0];
             const custom = selected.value === '직접 입력';
             const name = custom ? $('#customName').value.trim() : selected.value;
-            const caffeineMg = Number($('#caffeineMg').value);
+            const caffeineMg = calculateCaffeine();
             const volumeMl = Number($('#volumeMl').value);
+            const productVolumeMl = Number($('#packageVolumeMl').value);
+            const productCaffeineMg = Number($('#labelCaffeineMg').value);
             const drinkDate = $('#drinkDate').value;
-            if (!name || !Number.isInteger(caffeineMg) || caffeineMg < 0 || !Number.isInteger(volumeMl) || volumeMl <= 0 || !drinkDate) return;
+            const caffeineStarted = Boolean($('#customName').value.trim() || $('#productDetails').value.trim() || $('#packageVolumeMl').value || $('#labelCaffeineMg').value || $('#volumeMl').value);
+            const hasCaffeine = caffeineStarted && Boolean(name) && caffeineMg != null && productVolumeMl > 0 && productCaffeineMg >= 0 && Number.isInteger(volumeMl) && volumeMl > 0 && Boolean($('#drinkTime').value);
+            const hasSleep = sleepTouched;
+            const noCaffeine = $('#noCaffeine').checked;
+            const hasDayStatus = noCaffeine || noCaffeineTouched;
+            if (!drinkDate) { showToast('기록 날짜를 선택해 주세요.'); return; }
+            if (caffeineStarted && !hasCaffeine) { showToast('카페인 기록을 저장하려면 제품 정보와 실제 마신 양을 모두 입력해 주세요.'); return; }
+            if (noCaffeine && (hasCaffeine || dayRecords(drinkDate).some(item => !item.sample))) { showToast('카페인 음료를 기록한 날짜는 미섭취일로 저장할 수 없어요.'); return; }
+            if (!hasCaffeine && !hasSleep && !hasDayStatus) { showToast('카페인 섭취, 미섭취 확인, 수면 중 기록할 내용을 입력해 주세요.'); return; }
+
+            const previousStage = isSample ? 0 : warningState(dayTotal(drinkDate)).stage;
             if (isSample) { records = []; isSample = false; }
-            const record = {
-                id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-                name, caffeineMg, volumeMl, time: $('#drinkTime').value, date: drinkDate,
-                sleepHours: $('#sleepHours').value ? Number($('#sleepHours').value) : null,
-                sleepQuality: Number($('#sleepQuality').value), effect: Number($('#effect').value),
-                factors: Object.fromEntries(['stress', 'alcohol', 'unwell', 'routine'].map(key => [key, $(`input[name="${key}"]:checked`).value === 'yes']))
-            };
-            records.push(record);
+            if (hasCaffeine) {
+            records.push({
+                    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+                    name, productDetails: $('#productDetails').value.trim(),
+                    caffeineMg, volumeMl, productVolumeMl, productCaffeineMg,
+                    time: $('#drinkTime').value, date: drinkDate
+            });
+            localStorage.setItem(selectedDateKey, selectedDate);
+                localStorage.setItem(storeKey, JSON.stringify(records));
+            }
+            if (hasSleep || hasDayStatus) {
+                const previous = sleepEntries[drinkDate] || {};
+                const plannedBedtime = $('#plannedBedtime').value;
+                const onsetTime = $('#sleepOnset').value;
+                const reportedLatency = $('#sleepLatency').value === '' ? null : Number($('#sleepLatency').value);
+                const derivedLatency = plannedBedtime && onsetTime ? plannedSleepDelay(drinkDate, plannedBedtime, onsetTime) : null;
+                sleepEntries[drinkDate] = {
+                    ...previous,
+                    date: drinkDate,
+                    noCaffeine,
+                    ...(hasSleep ? {
+                        plannedBedtime,
+                        onsetTime,
+                        latencyMinutes: reportedLatency ?? derivedLatency ?? previous.latencyMinutes ?? null,
+                        latencySource: reportedLatency != null ? 'reported' : derivedLatency != null ? 'schedule' : previous.latencySource ?? null,
+                        totalSleepHours: $('#totalSleepHours').value === '' ? null : Number($('#totalSleepHours').value),
+                        napMinutes: $('#napMinutes').value === '' ? null : Number($('#napMinutes').value),
+                        sleepQuality: sleepQualityTouched ? Number($('#sleepQuality').value) : previous.sleepQuality ?? null,
+                        sleepQualityReported: sleepQualityTouched || previous.sleepQualityReported === true,
+                        effect: effectTouched ? Number($('#effect').value) : previous.effect ?? null,
+                        effectReported: effectTouched || previous.effectReported === true,
+                        factors: Object.fromEntries(['stress', 'alcohol', 'hangover', 'unwell', 'screen'].map(key => [key, $(`input[name="${key}"]:checked`, event.currentTarget)?.value || 'unknown']))
+                    } : {})
+                };
+                localStorage.setItem(sleepStoreKey, JSON.stringify(sleepEntries));
+            }
             selectedDate = drinkDate;
-            localStorage.setItem(storeKey, JSON.stringify(records));
-            render(); closeModal(); event.target.reset(); $('#drinkDate').value = selectedDate; $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
-            $('#sleepQuality').value = 70; $('#effect').value = 70; $('#sleepQualityOut').textContent = '70점'; $('#effectOut').textContent = '70점';
-            $('#customFields').classList.remove('show'); $('#customName').required = false;
-            if (dayTotal(drinkDate) >= alertLimit) {
-                $('#progressRing').classList.remove('shake'); void $('#progressRing').getBoundingClientRect(); $('#progressRing').classList.add('shake');
-                showToast(`${prettyDate(drinkDate)} 합계가 앱 알림선 ${alertLimit}mg에 도달했어요. 이 기준은 개인 참고용입니다.`);
-            } else showToast('오늘의 기록을 저장했어요.');
+            render(); closeModal();
+            event.currentTarget.reset();
+            $('#drinkDate').value = selectedDate;
+            $('#drinkTime').value = new Date().toTimeString().slice(0, 5);
+            $('#caffeineFields').open = true;
+            $('#sleepFields').open = false;
+            $('#customFields').classList.remove('show');
+            $('#customName').required = false;
+            $('#sleepQuality').value = 50;
+            $('#effect').value = 50;
+            $('#sleepQualityOut').textContent = '미기록';
+            $('#effectOut').textContent = '미기록';
+            sleepQualityTouched = false; effectTouched = false;
+            sleepTouched = false; noCaffeineTouched = false;
+            updateCaffeinePreview();
+            const nextStage = warningState(dayTotal(drinkDate)).stage;
+            const stageMessages = ['', '민감도 알림', '주의 단계', '높은 섭취 단계', '고섭취 경고'];
+            const stageEmojis = ['😀', '👽', '🤢', '😥', '💀'];
+            if (hasCaffeine && nextStage > previousStage && nextStage > 0) showToast(`${stageEmojis[nextStage]} ${stageMessages[nextStage]} · ${formatNumber(dayTotal(drinkDate))}mg`);
+            else if (hasSleep && !sleepOnsetTime(sleepEntries[drinkDate])) showToast('수면 기록을 저장했어요. 잠든 시각 또는 계획 시각과 잠복 시간을 입력하면 카페인 분석에 연결됩니다.');
+            else showToast(`${prettyDate(drinkDate)} 오늘의 기록을 저장했어요.`);
         });
 
         $('#historyList').addEventListener('click', event => {
@@ -556,6 +1455,76 @@
             if (!button) return;
             records = records.filter(item => item.id !== button.dataset.delete);
             localStorage.setItem(storeKey, JSON.stringify(records)); render(); showToast('기록을 삭제했어요.');
+        });
+
+        $('#importData').addEventListener('click', () => { if (!demoMode) $('#importDataFile').click(); });
+        $('#importDataFile').addEventListener('change', async event => {
+            if (demoMode) { event.target.value = ''; return; }
+            const file = event.target.files[0];
+            if (!file) return;
+            try {
+                if (file.size > 5 * 1024 * 1024) throw new Error('파일이 너무 큽니다.');
+                const snapshot = JSON.parse(await file.text());
+                if (!snapshot || !Array.isArray(snapshot.drinks) || !Array.isArray(snapshot.sleep)) throw new Error('DCaffeine 기록 파일이 아닙니다.');
+                const validTime = value => typeof value === 'string' && /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+                const validDrinks = snapshot.drinks.every(item => {
+                    if (!item || typeof item !== 'object' || !validDateString(item.date) || typeof item.name !== 'string' || !item.name.trim() || !validTime(item.time)) return false;
+                    if (item.legacyMgEstimate != null) return Number.isFinite(Number(item.legacyMgEstimate)) && Number(item.legacyMgEstimate) >= 0;
+                    const optionalProductValueIsValid = ['productCaffeineMg', 'productVolumeMl'].every(key => item[key] == null || (typeof item[key] === 'number' && Number.isFinite(item[key]) && item[key] >= 0));
+                    return typeof item.caffeineMg === 'number' && Number.isFinite(item.caffeineMg) && item.caffeineMg >= 0 && typeof item.volumeMl === 'number' && Number.isFinite(item.volumeMl) && item.volumeMl > 0 && optionalProductValueIsValid;
+                });
+                const optionalSleepNumberIsValid = (value, min, max) => value == null || (typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max);
+                const validSleep = snapshot.sleep.every(item => item && typeof item === 'object' && validDateString(item.date)
+                    && (item.onsetTime == null || item.onsetTime === '' || validTime(item.onsetTime))
+                    && (item.plannedBedtime == null || item.plannedBedtime === '' || validTime(item.plannedBedtime))
+                    && optionalSleepNumberIsValid(item.latencyMinutes, 0, 600)
+                    && optionalSleepNumberIsValid(item.totalSleepHours, 0, 24)
+                    && optionalSleepNumberIsValid(item.napMinutes, 0, 720)
+                    && optionalSleepNumberIsValid(item.sleepQuality, 1, 100)
+                    && optionalSleepNumberIsValid(item.effect, 1, 100)
+                    && (item.noCaffeine == null || typeof item.noCaffeine === 'boolean'));
+                if (!validDrinks || !validSleep) throw new Error('기록의 날짜나 카페인 정보가 올바르지 않습니다.');
+                const sensitivity = alertProfiles[snapshot.alertSensitivity] ? snapshot.alertSensitivity : 'standard';
+                const dates = [...snapshot.drinks.map(item => item.date), ...snapshot.sleep.map(item => item.date)].sort();
+                const importedDate = validDateString(snapshot.selectedDate) ? snapshot.selectedDate : dates[dates.length - 1] || todayKey;
+                const accepted = window.confirm(`가져온 파일의 음료 ${snapshot.drinks.length}건과 수면 ${snapshot.sleep.length}건으로 현재 이 브라우저 기록을 교체할까요?`);
+                if (!accepted) return;
+                records = snapshot.drinks.map(item => ({ ...item, sample: false }));
+                sleepEntries = Object.fromEntries(snapshot.sleep.map(item => [item.date, item]));
+                selectedDate = importedDate;
+                alertSensitivity = sensitivity;
+                isSample = false;
+                localStorage.setItem(storeKey, JSON.stringify(records));
+                localStorage.setItem(sleepStoreKey, JSON.stringify(sleepEntries));
+                localStorage.setItem(sensitivityKey, alertSensitivity);
+                localStorage.setItem(selectedDateKey, selectedDate);
+                localStorage.removeItem(legacyStoreKey);
+                render();
+                showToast('팀원 기록을 이 브라우저에 불러왔어요.');
+            } catch (error) {
+                showToast(error instanceof SyntaxError ? 'JSON 파일을 읽지 못했어요.' : error.message || '기록 파일을 불러오지 못했어요.');
+            } finally {
+                event.target.value = '';
+            }
+        });
+
+        $('#exportData').addEventListener('click', () => {
+            if (demoMode) { showToast('시연 데이터는 개인 기록 파일에 포함되지 않아요.'); return; }
+            const data = { format: 'dcaffeine-snapshot-v1', exportedAt: new Date().toISOString(), selectedDate, alertSensitivity, drinks: records.filter(item => !item.sample && !item.demo), sleep: Object.values(sleepEntries) };
+            const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+            const link = document.createElement('a');
+            link.href = url; link.download = `dcaffein-records-${todayKey}.json`; link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            showToast('기록 파일을 내보냈어요.');
+        });
+        $('#clearData').addEventListener('click', () => {
+            if (demoMode) return;
+            if (!window.confirm('저장된 음료 기록과 수면 기록을 모두 지울까요? 이 작업은 되돌릴 수 없어요.')) return;
+            records = []; sleepEntries = {}; isSample = false; alertSensitivity = 'standard'; selectedDate = todayKey;
+            localStorage.setItem(storeKey, JSON.stringify(records));
+            localStorage.setItem(sleepStoreKey, JSON.stringify(sleepEntries));
+            localStorage.removeItem(legacyStoreKey); localStorage.removeItem(sensitivityKey); localStorage.removeItem(selectedDateKey);
+            render(); showToast('음료 기록과 수면 기록을 모두 삭제했어요.');
         });
 
         updateDate(); render();

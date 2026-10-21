@@ -1,0 +1,121 @@
+- generic [active] [ref=e1]:
+  - main [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: CAFFEINE, DECODED
+        - generic [ref=e7]:
+          - generic [ref=e8]: 2026년 10월 17일 토요일
+          - generic "조회할 날짜" [ref=e9]:
+            - img [ref=e10]
+            - textbox "카페인 기록을 조회할 날짜" [ref=e13]: 2026-10-17
+      - generic [ref=e15]: D
+    - generic [ref=e16]:
+      - heading "오늘 한눈에" [level=1] [ref=e17]
+      - generic [ref=e18]:
+        - article [ref=e19]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - generic [ref=e22]: SELECTED DAY
+              - heading "오늘 기록한 카페인" [level=2] [ref=e23]
+            - generic [ref=e24]:
+              - generic [ref=e25]: 알림 민감도
+              - combobox "카페인 경고 민감도" [ref=e26] [cursor=pointer]:
+                - option "민감"
+                - option "보통" [selected]
+                - option "덜 민감"
+          - generic [ref=e27]:
+            - generic [ref=e28]: "142"
+            - generic [ref=e29]: mg
+          - generic [ref=e30]:
+            - generic [ref=e31]: 2개 음료 기록
+            - generic [ref=e32]: 다음 알림 200mg
+          - status [ref=e33]:
+            - img "섭취 기록 확인 중" [ref=e34]: 😀
+            - generic [ref=e35]:
+              - strong [ref=e36]: 섭취 기록 확인 중
+              - paragraph [ref=e37]: 개인에 따라 카페인 반응은 다를 수 있어요.
+          - paragraph [ref=e38]: 샘플 데이터입니다. 실제 기록은 제품 표시량을 바탕으로 계산해요.
+        - article [ref=e39]:
+          - generic [ref=e40]:
+            - img [ref=e42]
+            - generic [ref=e45]: 기록을 모으는 중
+          - paragraph [ref=e46]: 내 기록에서 찾은 카페인 참고선
+          - heading "카페인 기록과 수면 기록을 같은 날짜로 연결해 주세요" [level=2] [ref=e47]
+          - paragraph [ref=e48]: 현재 연결 기록은 0/3일, 수면 점수 75점 이상 기록은 0/2일입니다. 날짜를 선택한 뒤 음료를 기록하고, 다음 날 같은 날짜의 수면 기록을 추가하면 자동으로 연결됩니다.
+          - generic [ref=e49]:
+            - generic [ref=e50]: 연결 기록 0/3일 · 점수 기준 기록 0/2일
+            - button "기록 추가" [ref=e51] [cursor=pointer]: 기록 추가 →
+      - generic [ref=e52]:
+        - region "카페인 섭취 흐름" [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - heading "카페인 섭취 흐름" [level=2] [ref=e56]
+              - paragraph [ref=e57]: 하루 총량과 개인 참고선을 최근 7일 기록으로 비교해요
+            - generic [ref=e58]: 최근 7일
+          - generic "최근 7일 카페인 섭취량과 개인 참고선" [ref=e59]:
+            - generic "10월 11일 (일) 0mg" [ref=e60]:
+              - generic "0mg" [ref=e62]
+              - generic [ref=e63]: 일
+            - generic "10월 12일 (월) 0mg" [ref=e64]:
+              - generic "0mg" [ref=e66]
+              - generic [ref=e67]: 월
+            - generic "10월 13일 (화) 0mg" [ref=e68]:
+              - generic "0mg" [ref=e70]
+              - generic [ref=e71]: 화
+            - generic "10월 14일 (수) 30mg" [ref=e72]:
+              - generic "30mg" [ref=e74]
+              - generic [ref=e75]: 수
+            - generic "10월 15일 (목) 100mg" [ref=e76]:
+              - generic "100mg" [ref=e78]
+              - generic [ref=e79]: 목
+            - generic "10월 16일 (금) 120mg" [ref=e80]:
+              - generic "120mg" [ref=e82]
+              - generic [ref=e83]: 금
+            - generic "10월 17일 (토) 142mg" [ref=e84]:
+              - generic "142mg" [ref=e86]
+              - generic [ref=e87]: 토
+          - generic [ref=e89]: 날짜별 카페인 합계
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - generic [ref=e93]: 7일 합계
+              - strong [ref=e94]: 392 mg
+            - generic [ref=e95]:
+              - generic [ref=e96]: 하루 평균
+              - strong [ref=e97]: 56 mg
+            - generic [ref=e98]:
+              - generic [ref=e99]: 가장 많이 마신 날
+              - strong [ref=e100]: 10월 17일 (토) · 142 mg
+        - region "합계와 개인 참고선은 이렇게 계산해요" [ref=e101]:
+          - generic [ref=e103]:
+            - heading "합계와 개인 참고선은 이렇게 계산해요" [level=2] [ref=e104]
+            - paragraph [ref=e105]: 계산 과정과 근거가 된 기록을 확인할 수 있어요
+          - generic [ref=e106]:
+            - generic [ref=e107]:
+              - generic [ref=e108]: 선택 날짜 섭취 합계
+              - generic [ref=e109]: 제품별 카페인 계산값을 모두 더한 값
+              - generic [ref=e110]:
+                - generic [ref=e111]:
+                  - generic [ref=e112]: "아메리카노: 95mg ÷ 200mL × 200mL"
+                  - strong [ref=e113]: 95 mg
+                - generic [ref=e114]:
+                  - generic [ref=e115]: "라테: 47mg ÷ 150mL × 150mL"
+                  - strong [ref=e116]: 47 mg
+                - generic [ref=e117]:
+                  - generic [ref=e118]: 선택 날짜의 입력값 합계
+                  - strong [ref=e119]: 142 mg
+            - generic [ref=e120]:
+              - generic [ref=e121]: 개인 참고선의 기준
+              - generic [ref=e122]: 카페인 기록과 다음 날 수면 기록의 날짜가 같아야 연결됩니다. 연결된 날이 3일 이상이고 수면 점수 75점 이상인 날이 2일 이상이면 그날들의 카페인 총량 중앙값을 참고선으로 표시합니다. 현재 연결 기록은 0일, 점수 기준 기록은 0일입니다.
+          - group [ref=e123]:
+            - generic "참고선 계산 방식과 주의점" [ref=e124] [cursor=pointer]
+  - navigation "모바일 메뉴" [ref=e125]:
+    - button "오늘" [ref=e126] [cursor=pointer]:
+      - img [ref=e127]
+      - text: 오늘
+    - button "기록" [ref=e132] [cursor=pointer]:
+      - img [ref=e133]
+      - text: 기록
+    - button "패턴" [ref=e135] [cursor=pointer]:
+      - img [ref=e136]
+      - text: 패턴
+  - status

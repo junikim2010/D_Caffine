@@ -1,0 +1,37 @@
+{
+  "exportedAt": "2026-10-20T14:15:47.077Z",
+  "drinks": [
+    {
+      "id": "1792505746389-td3no5",
+      "name": "에너지 음료",
+      "productDetails": "검증용 음료",
+      "caffeineMg": 112.68,
+      "volumeMl": 250,
+      "productVolumeMl": 355,
+      "productCaffeineMg": 160,
+      "time": "15:00",
+      "date": "2026-10-20"
+    }
+  ],
+  "sleep": [
+    {
+      "date": "2026-10-20",
+      "noCaffeine": false,
+      "plannedBedtime": "22:30",
+      "onsetTime": "23:00",
+      "latencyMinutes": 20,
+      "latencySource": "reported",
+      "totalSleepHours": 7.5,
+      "napMinutes": 30,
+      "sleepQuality": 82,
+      "effect": 86,
+      "factors": {
+        "stress": "no",
+        "alcohol": "unknown",
+        "hangover": "unknown",
+        "unwell": "unknown",
+        "screen": "unknown"
+      }
+    }
+  ]
+}

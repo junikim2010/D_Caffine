@@ -1,0 +1,88 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary "주 메뉴" [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]: D
+        - generic [ref=e6]:
+          - generic [ref=e7]: DCaffeine
+          - generic [ref=e8]: CAFFEINE JOURNAL
+      - generic [ref=e9]: WORKSPACE
+      - navigation [ref=e10]:
+        - button "오늘 한눈에" [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - text: 오늘 한눈에
+        - button "나의 기록" [active] [ref=e17] [cursor=pointer]:
+          - img [ref=e18]
+          - text: 나의 기록
+        - button "패턴 살펴보기" [ref=e23] [cursor=pointer]:
+          - img [ref=e24]
+          - text: 패턴 살펴보기
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - img [ref=e30]
+          - text: 나의 기록은 나만 보기
+        - paragraph [ref=e33]: 기록은 현재 브라우저에 저장돼요. 나의 기록에서 내보내거나 모두 지울 수 있습니다.
+    - main [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - generic [ref=e37]: CAFFEINE, IN BALANCE
+          - generic [ref=e38]:
+            - generic [ref=e39]: 2026년 10월 17일 토요일
+            - generic "조회할 날짜" [ref=e40]:
+              - img [ref=e41]
+              - textbox "카페인 기록을 조회할 날짜" [ref=e44]: 2026-10-17
+        - generic [ref=e45]:
+          - generic [ref=e46]: 나의 기록 공간
+          - generic [ref=e47]: D
+      - generic [ref=e140]:
+        - generic [ref=e142]:
+          - heading "나의 기록" [level=1] [ref=e143]
+          - paragraph [ref=e144]: 마실 때 카페인을 기록하고, 다음 날 수면을 이어서 남겨요.
+        - region "빠른 기록" [ref=e145]:
+          - article [ref=e146]:
+            - generic [ref=e147]:
+              - text: 01 · 마신 직후
+              - heading "카페인 섭취 기록" [level=2] [ref=e148]
+              - paragraph [ref=e149]: 음료, 제품 표시량, 실제 마신 mL를 입력합니다.
+            - button "+ 카페인 기록" [ref=e150] [cursor=pointer]
+          - article [ref=e151]:
+            - generic [ref=e152]:
+              - text: 02 · 다음 날
+              - heading "수면 결과 기록" [level=2] [ref=e153]
+              - paragraph [ref=e154]: 수면 결과는 다음 날 입력해도 괜찮아요. 수면 점수와 잠든 시각을 남겨 보세요.
+            - button "수면 기록하기" [ref=e155] [cursor=pointer]
+        - generic [ref=e156]:
+          - generic [ref=e157]:
+            - text: 선택 날짜 카페인 합계
+            - strong [ref=e158]: 142 mg
+          - generic [ref=e159]:
+            - text: 선택 날짜 음료 기록
+            - strong [ref=e160]: 2 건
+          - generic [ref=e161]:
+            - text: 수면 기록
+            - strong [ref=e162]: 0 회
+        - generic [ref=e163]:
+          - generic [ref=e165]:
+            - heading "10월 17일 (토)의 음료 기록" [level=2] [ref=e166]
+            - paragraph [ref=e167]: 한눈에 필요한 기록만 보여줍니다
+          - generic [ref=e168]: 이 날짜의 수면 기록은 아직 없어요. 다음 날 수면 기록 버튼에서 추가할 수 있습니다.
+          - generic [ref=e169]:
+            - generic [ref=e170]:
+              - img [ref=e172]
+              - generic [ref=e175]:
+                - generic [ref=e176]: 아메리카노 · 예시
+                - generic [ref=e177]: 200mL · 95mg
+              - generic [ref=e178]: 09:20
+            - generic [ref=e179]:
+              - img [ref=e181]
+              - generic [ref=e184]:
+                - generic [ref=e185]: 라테 · 예시
+                - generic [ref=e186]: 150mL · 47mg
+              - generic [ref=e187]: 13:10
+        - group [ref=e188]:
+          - generic "전체 타임라인 5개 기록" [ref=e189] [cursor=pointer]:
+            - text: 전체 타임라인
+            - generic [ref=e190]: 5개 기록
+        - group [ref=e191]:
+          - generic "기록 내보내기 및 삭제" [ref=e192] [cursor=pointer]
+  - status
