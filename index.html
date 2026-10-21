@@ -610,9 +610,9 @@
             <details class="record-section" id="caffeineFields" open>
                 <summary>카페인 섭취 추가 <span>마신 직후</span></summary>
                 <div class="form-grid">
-                    <div class="field full" id="savedProductsWrap" hidden><label for="savedProductSelect">저장한 제품 빠르게 불러오기</label><select class="select" id="savedProductSelect"><option value="">제품 선택 (선택 사항)</option></select></div>
+                    <div class="field full" id="savedProductsWrap"><label for="savedProductSelect">저장한 제품 빠르게 불러오기</label><select class="select" id="savedProductSelect"><option value="">저장된 제품이 없어요. 첫 기록 후 자동으로 추가돼요.</option></select></div>
                     <div class="field full"><label for="drinkSelect">음료 종류</label><select class="select" id="drinkSelect"><option value="아메리카노">아메리카노</option><option value="라테">라테</option><option value="드립커피">드립커피</option><option value="에너지 음료">에너지 음료</option><option value="콜라">콜라</option><option value="녹차">녹차</option><option value="홍차">홍차</option><option value="직접 입력">직접 입력하기</option></select><div class="custom-fields" id="customFields"><input class="input" id="customName" type="text" maxlength="40" placeholder="음료 이름"></div><p class="helper">제품·브랜드마다 함량이 다를 수 있어요. 음료 종류를 고른 뒤 제품 정보를 확인해 주세요.</p></div>
-                    <div class="field full"><label for="productDetails">제품명 또는 브랜드 (빠른 불러오기에 필요)</label><input class="input" id="productDetails" type="text" maxlength="60" placeholder="예: 제품명, 카페 메뉴명"></div>
+                    <div class="field full"><label for="productDetails">제품명 또는 브랜드 (선택)</label><input class="input" id="productDetails" type="text" maxlength="60" placeholder="예: 제품명, 카페 메뉴명"><p class="helper">브랜드가 없어도 음료 종류·용량·카페인 표시량으로 저장할 수 있어요.</p></div>
                     <label class="remember-product" for="rememberProduct"><input id="rememberProduct" type="checkbox" checked><span>제품 용량과 카페인 표시량을 저장해 다음에는 음료만 선택하기</span></label>
                     <div class="field"><label for="drinkTime">마신 시각</label><input class="input" id="drinkTime" type="time"></div>
                     <div class="field"><label for="packageVolumeMl">제품 전체 용량 (mL)</label><input class="input" id="packageVolumeMl" type="number" min="1" max="10000" step="1" placeholder="예: 355"></div>
@@ -728,17 +728,21 @@
         let noCaffeineTouched = false;
 
         function escapeHtml(value) { return String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
-        function productProfileKey(drinkType, productName) {
+        function productProfileKey(drinkType, productName, productVolumeMl, productCaffeineMg) {
             const name = String(productName || '').trim().toLocaleLowerCase('ko-KR');
-            return name ? `${drinkType}::${name}` : '';
+            const identity = name || (drinkType !== '직접 입력' ? `${Number(productVolumeMl)}ml:${Number(productCaffeineMg)}mg` : '');
+            return identity ? `${drinkType}::${identity}` : '';
         }
         function renderSavedProducts() {
             const profiles = Object.values(productProfiles);
-            $('#savedProductsWrap').hidden = demoMode || profiles.length === 0;
-            $('#savedProductSelect').innerHTML = `<option value="">제품 선택 (선택 사항)</option>${profiles.map(profile => {
-                const name = profile.drinkType === '직접 입력' ? profile.name : `${profile.drinkType} · ${profile.productDetails}`;
-                return `<option value="${escapeHtml(profile.key)}">${escapeHtml(name)} · ${formatNumber(profile.productVolumeMl)}mL / ${formatNumber(profile.productCaffeineMg)}mg</option>`;
-            }).join('')}`;
+            $('#savedProductsWrap').hidden = demoMode;
+            $('#savedProductSelect').disabled = demoMode || profiles.length === 0;
+            $('#savedProductSelect').innerHTML = profiles.length ? `<option value="">저장 제품 선택</option>${profiles.map(profile => {
+                const details = `${formatNumber(profile.productVolumeMl)}mL · ${formatNumber(profile.productCaffeineMg)}mg`;
+                const productName = profile.drinkType === '직접 입력' ? profile.name : profile.productDetails;
+                const label = `${profile.drinkType} · ${productName ? `${productName} · ` : ''}${details}`;
+                return `<option value="${escapeHtml(profile.key)}">${escapeHtml(label)}</option>`;
+            }).join('')}` : '<option value="">저장된 제품이 없어요. 첫 기록 후 자동으로 추가돼요.</option>';
         }
         function dayTotal(date) { return records.filter(item => item.date === date && item.caffeineMg !== null && item.caffeineMg !== undefined && Number.isFinite(Number(item.caffeineMg))).reduce((sum, item) => sum + Number(item.caffeineMg), 0); }
         function dayRecords(date) { return records.filter(item => item.date === date).sort((a, b) => a.time.localeCompare(b.time)); }
@@ -1444,7 +1448,7 @@
                 localStorage.setItem(storeKey, JSON.stringify(records));
                 if ($('#rememberProduct').checked) {
                     const productName = custom ? name : $('#productDetails').value.trim();
-                    const key = productProfileKey(selected.value, productName);
+                    const key = productProfileKey(selected.value, productName, productVolumeMl, productCaffeineMg);
                     if (key) {
                         productProfiles[key] = {
                             key,
@@ -1547,8 +1551,8 @@
                 const importedProducts = Array.isArray(snapshot.products) ? snapshot.products : [];
                 const validProducts = importedProducts.every(item => {
                     if (!item || typeof item !== 'object' || !['아메리카노', '라테', '드립커피', '에너지 음료', '콜라', '녹차', '홍차', '직접 입력'].includes(item.drinkType)) return false;
-                    const identity = item.drinkType === '직접 입력' ? item.name : item.productDetails;
-                    return typeof identity === 'string' && identity.trim() !== '' && Number.isInteger(item.productVolumeMl) && item.productVolumeMl > 0 && typeof item.productCaffeineMg === 'number' && Number.isFinite(item.productCaffeineMg) && item.productCaffeineMg >= 0;
+                    const identityValid = item.drinkType !== '직접 입력' || (typeof item.name === 'string' && item.name.trim() !== '');
+                    return identityValid && Number.isInteger(item.productVolumeMl) && item.productVolumeMl > 0 && typeof item.productCaffeineMg === 'number' && Number.isFinite(item.productCaffeineMg) && item.productCaffeineMg >= 0;
                 });
                 if (!validDrinks || !validSleep || !validProducts) throw new Error('기록이나 제품 정보 형식이 올바르지 않습니다.');
                 const sensitivity = alertProfiles[snapshot.alertSensitivity] ? snapshot.alertSensitivity : 'standard';
@@ -1559,7 +1563,7 @@
                 records = snapshot.drinks.map(item => ({ ...item, sample: false }));
                 sleepEntries = Object.fromEntries(snapshot.sleep.map(item => [item.date, item]));
                 productProfiles = Object.fromEntries(importedProducts.map(item => {
-                    const key = productProfileKey(item.drinkType, item.drinkType === '직접 입력' ? item.name : item.productDetails);
+                    const key = productProfileKey(item.drinkType, item.drinkType === '직접 입력' ? item.name : item.productDetails, item.productVolumeMl, item.productCaffeineMg);
                     return [key, { ...item, key }];
                 }));
                 selectedDate = importedDate;
